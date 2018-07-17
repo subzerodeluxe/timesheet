@@ -16,32 +16,32 @@
 
   <div [ngSwitch]="segment">
     <div *ngSwitchCase="'today'">
-      <ion-list class="schedule-list">
-        <!-- <ion-item class="schedule-item" *ngFor="let item of schedule.today">
+      <ion-list class="schedule-list" *ngFor="let date of timesheet.dateLines">
+        <ion-item class="schedule-item">
           <ion-row>
             <ion-col width-20 class="schedule-date">
-              <h2 class="schedule-day">{{item.date.day}}</h2>
-              <h3 class="schedule-month">{{item.date.month_name}}</h3>
-              <h4 class="schedule-time">{{item.date.time}}</h4>
+              <h2 class="schedule-day">{{date.dayNumber}}</h2>
+              <h3 class="schedule-month">{{date.month}}</h3>
+              <h4 class="schedule-time">{{date.year}}</h4>
             </ion-col>
-            <ion-col width-80 class="schedule-data">
+            <ion-col width-80 class="schedule-data" *ngFor="let activity of date.activities">
               <div class="data-item">
                 <div class="item-content">
-                  <h2 class="item-title one-line">{{item.subject}}</h2>
+                  <h2 class="item-title one-line">{{activity.customer}}</h2>
                   <div class="item-description">
-                    <ion-icon class="description-icon" name="clock"></ion-icon>
-                    <p class="description-text">{{item.date.full}}</p>
+                    <ion-icon class="description-icon" name="time"></ion-icon>
+                    <p class="description-text">{{activity.startTime}} - {{activity.endTime}} uur</p>
                   </div>
                   <div class="item-description">
-                    <ion-icon class="description-icon" name="navigate"></ion-icon>
-                    <p class="description-text one-line">{{item.location}}</p>
+                    <ion-icon class="description-icon" name="checkbox-outline"></ion-icon>
+                    <p class="description-text one-line">Totaal {{activity.hours}} uur</p>
                   </div>
                 </div>
                 <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
               </div>
             </ion-col>
           </ion-row>
-        </ion-item> -->
+        </ion-item>
       </ion-list>
     </div>
     <div *ngSwitchCase="'overview'">

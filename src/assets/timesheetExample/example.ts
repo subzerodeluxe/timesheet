@@ -9,16 +9,16 @@ export class Example {
         },
         weekNumber: 21,
         dateLines: [{
-                date: 'Maandag 16 augustus',
-                    activities: [{
-                        hours: 3,
-                        customer: 'Needse molen',
-                        activity: ['Voorwerk', 'Aflakken']
-                    }, {
-                        hours: 4.5,
-                        customer: 'Gemeente Berkelland',
-                        activity: ['Voorwerk', 'Grondverven']
-                    }],
+            date: 'Maandag 16 augustus',
+                activities: [{
+                    hours: 3,
+                    customer: 'Needse molen',
+                    activity: ['Voorwerk', 'Aflakken']
+                }, {
+                    hours: 4.5,
+                    customer: 'Gemeente Berkelland',
+                    activity: ['Voorwerk', 'Grondverven']
+                }],
                 totalHours: 7.5
             }, {
                 date: 'Dinsdag 17 augustus',
