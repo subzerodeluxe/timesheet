@@ -46,7 +46,7 @@ walkthrough-page {
 
 		.main-title {
 			margin: 35px 20px 20px;
-			font-size: 3.4rem;
+			font-size: 2.8rem;
 			font-weight: 900;
 			font-style: italic;
 			text-align: center;
@@ -60,9 +60,17 @@ walkthrough-page {
 			text-align: center;
 			color: $white;
 		}
-			}
+
+		.sub-text {
+			font-size: 1.4rem;
+			margin: 15px 20%;
+			line-height: 1.35;
+			text-align: center;
+			color: $white;
+		}
+	}
 			
-			.slide-4
+	.slide-3
 	{
 		.main-title
 		{
@@ -76,8 +84,8 @@ walkthrough-page {
 
 			& > .button
 			{
-				@include segment-text-styles(color($colors, button-alt, base));
-				background-color: color($colors, button-alt, contrast);
+				@include segment-text-styles(color($colors, button, base));
+				background-color: color($colors, button, contrast);
 				margin: 0px;
 				border-radius: 0px;
 				flex:1;
@@ -89,7 +97,7 @@ walkthrough-page {
 					&::after
 					{
 						content: '';
-						background-color: color($colors, button-alt, base);
+						background-color: color($colors, button, base);
 						width: 2px;
 						height: calc(100% - 20px);
 						margin: 10px 0px;
