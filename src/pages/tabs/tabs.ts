@@ -14,6 +14,8 @@ export class TabsNavigationPage {
   tab3Root = ContactPage;
 
   constructor() {
-
+    this.tab1Root = HomePage;
+    this.tab2Root = AboutPage;
+    this.tab3Root = ContactPage;
   }
 }
