@@ -23,11 +23,23 @@ $app-direction: ltr;
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
 
-$white: #FFFFFF;
+// MAIN THEM COLORS
 $theme-color: #8a2c2c; 
 $secondary-theme-color: #5e5874; 
 
+
+// HELPER COLORS
+$white: #FFFFFF;
+$white-a: darken($white, 3%);
+$white-b: darken($white, 6%);
+$white-c: darken($white, 12%);
 $white-d: darken($white, 24%);
+
+$black: rgba(#000000, .8);
+$black-a: lighten($black, 10%);
+$black-b: lighten($black, 20%);
+$black-c: lighten($black, 40%);
+$black-d: lighten($black, 60%);
 
 // // $theme-color: #6AA7F0;
 // // $secondary-theme-color: #81f2f8;
@@ -81,6 +93,10 @@ $colors: (
   tabs-navigation:(
     base: $white,
     contrast: $white-d
+  ),
+  background:(
+    base: $white-a,
+    contrast: $black-b
   )
 );
 

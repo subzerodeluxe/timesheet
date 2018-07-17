@@ -12,6 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
 import { PreloadImage } from '../components/preload-image/preload-image';
 import { TabsNavigationPage } from '../pages/tabs/tabs';
+import { TimesheetsPage } from '../pages/timesheets/timesheets';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TabsNavigationPage } from '../pages/tabs/tabs';
     HomePage,
     TabsNavigationPage,
     WalkthroughPage,
-    PreloadImage
+    PreloadImage,
+    TimesheetsPage
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,8 @@ import { TabsNavigationPage } from '../pages/tabs/tabs';
     ContactPage,
     HomePage,
     TabsNavigationPage,
-    WalkthroughPage
+    WalkthroughPage,
+    TimesheetsPage
   ],
   providers: [
     StatusBar,
