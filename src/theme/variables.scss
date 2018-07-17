@@ -23,7 +23,12 @@ $app-direction: ltr;
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
 
+$white: #FFFFFF;
+$theme-color: #f53d3d; 
+$secondary-theme-color: #5e5874; 
 
+// // $theme-color: #6AA7F0;
+// // $secondary-theme-color: #81f2f8;
 
 // Named Color Variables
 // --------------------------------------------------
@@ -38,7 +43,39 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  facebook:(
+    base: #3b5998,
+    contrast: $white
+  ),
+  google:(
+    base: #cc181e,
+    contrast: $white
+  ),
+  walkthrough:(
+    base: $theme-color,
+    contrast: $white
+  ),
+  walkthrough-header:(
+    base: transparent,
+    contrast: $white
+  ),
+  walkthrough-alt:(
+    base: $secondary-theme-color,
+    contrast: $white
+  ),
+  header:(
+    base: $theme-color,
+    contrast: $white
+  ),
+  button:(
+    base: $theme-color,
+    contrast: $white
+  ),
+  button-alt:(
+    base: $secondary-theme-color,
+    contrast: $white
+  ),
 );
 
 

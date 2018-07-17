@@ -1,0 +1,61 @@
+<ion-header class="walkthrough-header">
+  <ion-toolbar>
+    <ion-buttons end>
+      <button ion-button color="primary" class="skip-button" (click)="skipIntro()" [hidden]="lastSlide">Overslaan</button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="walkthrough-content">
+  <ion-slides #slider (ionSlideDidChange)="onSlideChanged()" pager="true">
+    <ion-slide class="slide-1">
+
+      <ion-row class="intro-image-row">
+        <ion-col center width-64 no-padding>
+          <!-- <preload-image [ratio]="{w:1, h:1}" src="./assets/images/slide-2-img.png"></preload-image>
+         <img src="./assets/images/slide-2-img.png"/> -->
+        </ion-col>
+      </ion-row>
+
+      <h2 class="logo-title">WeeklyHours</h2>
+      <p class="intro-text">
+        Vul dagelijks je uren in
+      </p>
+    </ion-slide>
+
+    <ion-slide class="slide-2">
+      <ion-row class="intro-image-row">
+        <ion-col center width-64 no-padding>
+          <!-- <preload-image [ratio]="{w:1, h:1}" src="./assets/images/slide-3-img.png"></preload-image>
+          <img src="./assets/images/slide-3-img.png"/>  -->
+        </ion-col>
+      </ion-row>
+
+      <h2 class="main-title"></h2>
+      <p class="intro-text">
+          Om jou uit te dagen om juist die “money” te blijven maken stellen wij personal challenges op 
+          <br>die jou uitdagen op verschillende gebieden.
+      </p>    
+    </ion-slide>
+
+    <ion-slide class="slide-4">
+      <ion-row class="intro-image-row">
+        <ion-col center width-64 no-padding>
+          <!-- <preload-image [ratio]="{w:1, h:1}" src="./assets/images/slide-4-img.png" alt="slide 4 img" title="ion2FullApp"></preload-image> 
+          <img src="./assets/images/slide-4-img.png"/> -->
+        </ion-col>
+      </ion-row>
+
+      <h2 class="main-title">Klaar voor?</h2>
+      <p class="intro-text">
+        Maak een account aan om te beginnen.
+      </p>
+
+      <div class="button-bar">
+        <button ion-button primary (click)="goToLogin()">Inloggen</button>
+        <button ion-button primary (click)="goToLogin()">Registreren</button>
+      </div>
+    </ion-slide>
+
+  </ion-slides>
+</ion-content>
