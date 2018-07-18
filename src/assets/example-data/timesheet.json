@@ -1,0 +1,62 @@
+{
+    "employee": {
+        "firstName": "Willem",
+        "lastName": "Waanders"
+    },
+    "weekNumber": 29,
+    "dateLines": [{
+            "dayNumber": 16,
+            "month": "Jul",
+            "fullDate": "Maandag 16 juli",
+            "year": 2018,
+            "activities": [{
+                "hours": 7.5,
+                "startTime": "7:30",
+                "endTime": "16:00",
+                "customer": "Needse molen",
+                "activity": ["Voorwerk", "Aflakken"]
+            }],
+            "totalHours": 7.5
+        },
+        {
+            "dayNumber": 17,
+            "month": "Jul",
+            "fullDate": "Dinsdag 17 juli",
+            "year": 2018,
+            "activities": [{
+                "hours": 4.5,
+                "startTime": "7:30",
+                "endTime": "12:00",
+                "customer": "Zwembad Borculo",
+                "activity": ["Voorwerk", "Aflakken"]
+            },{
+                "hours": 3,
+                "startTime": "12:30",
+                "endTime": "15:30",
+                "customer": "Boomhuis Lichtenvoorde",
+                "activity": ["Voorwerk", "Aflakken"]
+            }],
+            "totalHours": 7.5
+        },
+        {
+            "dayNumber": 18,
+            "month": "Jul",
+            "fullDate": "Dinsdag 18 juli",
+            "year": 2018,
+            "activities": [{
+                "hours": 7.5,
+                "startTime": "7:30",
+                "endTime": "16:00",
+                "customer": "Needse molen",
+                "activity": ["Schuren", "Aflakken"]
+            }],
+            "totalHours": 7.5
+        }
+    ],
+    "allDates": "Maandag 16 juli t/m vrijdag 20 juli",
+    "totalHours": 37.5,
+    "vehicleInformation": {
+        "licensePlate": "44-VD-356",
+        "mileAge": 120.000
+    }
+}

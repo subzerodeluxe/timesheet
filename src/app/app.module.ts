@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AccountPage } from '../pages/account/account';
 import { BackgroundImage } from '../components/background-image/background-image';
 import { TextMaskModule } from 'angular2-text-mask';
+import { DayDetailPage } from '../pages/day-detail/day-detail';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TextMaskModule } from 'angular2-text-mask';
     WalkthroughPage,
     PreloadImage,
     BackgroundImage,
-    TimesheetPage
+    TimesheetPage,
+    DayDetailPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,8 @@ import { TextMaskModule } from 'angular2-text-mask';
     HomePage,
     TabsNavigationPage,
     WalkthroughPage,
-    TimesheetPage
+    TimesheetPage,
+    DayDetailPage
   ],
   providers: [
     StatusBar,
