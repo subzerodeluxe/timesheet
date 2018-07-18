@@ -11,6 +11,7 @@ export class TimesheetPage {
 
   segment: string;
   timesheet: any;
+  singleActivity: any; 
   weekNumber: string;
   loading: any;
 
@@ -24,13 +25,16 @@ export class TimesheetPage {
     console.log('ionViewDidLoad TimesheetsPage');
     this.weekNumber = this.time.getCurrentWeekNumber().toString();
     
+    // this.timesheet = this.time.getData();
      this.time.getData()
       .subscribe(
         (res) => {
         console.log('Binnengekomen data ', res);
         this.timesheet = res;
+        this.singleActivity = res.dateLines[0];
+        console.log('Single: ', this.singleActivity);
         this.loading.dismiss();
-      })
+      });
   }
 
   onSegmentChanged(segmentButton: SegmentButton) {

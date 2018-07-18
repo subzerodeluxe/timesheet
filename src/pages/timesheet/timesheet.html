@@ -16,15 +16,15 @@
 
  <div [ngSwitch]="segment">
     <div *ngSwitchCase="'today'">
-      <ion-list class="schedule-list" *ngFor="let date of timesheet.dateLines">
+      <ion-list class="schedule-list">
         <ion-item class="schedule-item">
           <ion-row>
             <ion-col width-20 class="schedule-date">
-              <h2 class="schedule-day">{{date.dayNumber}}</h2>
-              <h3 class="schedule-month">{{date.month}}</h3>
-              <h4 class="schedule-time">{{date.year}}</h4>
+              <h2 class="schedule-day">{{singleActivity?.dayNumber}}</h2>
+              <h3 class="schedule-month">{{singleActivity?.month}}</h3>
+              <h4 class="schedule-time">{{singleActivity?.year}}</h4>
             </ion-col>
-            <ion-col width-80 class="schedule-data" *ngFor="let activity of date.activities">
+            <ion-col width-80 class="schedule-data" *ngFor="let activity of (singleActivity)?.activities">
               <div class="data-item">
                 <div class="item-content">
                   <h2 class="item-title one-line">{{activity.customer}}</h2>
@@ -50,15 +50,15 @@
     </div>
 
     <div *ngSwitchCase="'overview'">
-      <ion-list class="schedule-list">
-        <ion-item class="schedule-item" *ngFor="let date of timesheet.dateLines">
+        <ion-list class="schedule-list" *ngFor="let date of (timesheet)?.dateLines">
+          <ion-item class="schedule-item">
           <ion-row>
             <ion-col width-20 class="schedule-date">
                 <h2 class="schedule-day">{{date.dayNumber}}</h2>
                 <h3 class="schedule-month">{{date.month}}</h3>
                 <h4 class="schedule-time">{{date.year}}</h4>
             </ion-col>
-            <ion-col width-80 class="schedule-data" *ngFor="let activity of date.activities">
+            <ion-col width-80 class="schedule-data" *ngFor="let activity of (date)?.activities">
                 <div class="data-item">
                     <div class="item-content">
                       <h2 class="item-title one-line">{{activity.customer}}</h2>
