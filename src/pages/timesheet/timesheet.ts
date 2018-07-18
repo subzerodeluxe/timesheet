@@ -9,14 +9,13 @@ import { TimesheetProvider } from '../../providers/timesheet/timesheet';
 export class TimesheetPage {
 
   segment: string;
-  loading: any;
   timesheet: any;
+  weekNumber: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public loadingCtrl: LoadingController, public time: TimesheetProvider) {
     this.segment = "today";
-    this.loading = this.loadingCtrl.create();
-
+  
     this.timesheet = {
       employee: { 
           firstName: 'Willem',
@@ -68,9 +67,7 @@ export class TimesheetPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TimesheetsPage');
-    setTimeout(() => {  
-      this.loading.dismiss();
-    }, 3000)
+    this.weekNumber = this.time.getCurrentWeekNumber().toString();
   }
 
   onSegmentChanged(segmentButton: SegmentButton) {

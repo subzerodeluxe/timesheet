@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Profiel</ion-title>
+    <ion-buttons end [hidden]="!profileForm.dirty">
+      <button ion-button>
+        Opslaan
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="profile-content">
+
+  <div class="user-image-content">
+    <ion-row no-padding class="user-image-row">
+      <ion-col no-padding width-40>
+        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="profileImage" alt="this is the image" title="IMAGE!"></preload-image>
+      </ion-col>
+    </ion-row>
+    <ion-row no-padding class="user-image-row">
+      <ion-col no-padding width-60>
+        <button class="image-action-button" ion-button outline block small (click)="openImagePicker()">
+          Wijzig afbeelding</button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+
+    <form [formGroup]="profileForm" class="profile-form">
+        <ion-list class="user-data-content">
+          <ion-item>
+            <ion-label stacked>Voornaam</ion-label>
+            <ion-input type="text" formControlName="firstName"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Achternaam</ion-label>
+            <ion-input type="text" formControlName="lastName"></ion-input>
+          </ion-item>
+          <!-- <ion-item>
+            <ion-label stacked>{{ 'DESCRIPTION' | translate }}</ion-label>
+            <ion-textarea formControlName="description" rows="5" placeholder="Your description here..."></ion-textarea>
+          </ion-item> -->
+        </ion-list>
+    
+        <ion-row class="user-preferences-row">
+          <ion-item>
+            <ion-label stacked>Kentekenplaat</ion-label>
+            <ion-input type="text" formControlName="licensePlate"></ion-input>
+          </ion-item>
+        </ion-row>
+
+        <ion-row class="user-preferences-row">
+            <ion-item>
+              <ion-label stacked>Kilometerstand</ion-label>
+              <ion-input type="number" formControlName="mileage"></ion-input>
+            </ion-item>
+          </ion-row>
+      </form>
+</ion-content>

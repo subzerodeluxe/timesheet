@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 
@@ -14,27 +13,32 @@ import { PreloadImage } from '../components/preload-image/preload-image';
 import { TabsNavigationPage } from '../pages/tabs/tabs';
 import { TimesheetProvider } from '../providers/timesheet/timesheet';
 import { TimesheetPage } from '../pages/timesheet/timesheet';
+import { HttpClientModule } from '@angular/common/http';
+import { AccountPage } from '../pages/account/account';
+import { BackgroundImage } from '../components/background-image/background-image';
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
     ContactPage,
+    AccountPage,
     HomePage,
     TabsNavigationPage,
     WalkthroughPage,
     PreloadImage,
+    BackgroundImage,
     TimesheetPage
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
     ContactPage,
+    AccountPage,
     HomePage,
     TabsNavigationPage,
     WalkthroughPage,
