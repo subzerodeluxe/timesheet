@@ -10,7 +10,7 @@
       Vandaag  
     </ion-segment-button>
     <ion-segment-button value="overview" (ionSelect)="onSegmentSelected($event)">
-      Rest van de week
+      Rest v.d. week
     </ion-segment-button>
   </ion-segment>
 
@@ -33,10 +33,14 @@
                     <p class="description-text">{{activity.startTime}} - {{activity.endTime}} uur</p>
                   </div>
                   <div class="item-description">
-                    <ion-icon class="description-icon" name="checkbox-outline"></ion-icon>
-                    <p class="description-text one-line">Totaal {{activity.hours}} uur</p>
+                    <ion-icon class="description-icon" name="calendar"></ion-icon>
+                    <p class="description-text one-line">{{ singleActivity.fullDate }}</p>
+
+                    <h3 class="sub-hours">{{ activity.hours }}</h3>
                   </div>
+
                 </div>
+
                 <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
               </div>
             </ion-col>
@@ -44,9 +48,21 @@
         </ion-item>
       </ion-list>
 
-      <ion-fab right button>
-          <button ion-fab mini><ion-icon name="add"></ion-icon></button>
-      </ion-fab>
+      <div class="footer">
+          <ion-fab right button>
+              <button ion-fab><ion-icon name="add"></ion-icon></button>
+          </ion-fab>
+    
+          <ion-list class="user-data-content">
+            <section class="hour-section">
+              <h3 class="section-title">Totaal aantal uren</h3>
+      
+              <ion-item>
+                <ion-label>{{ singleActivity?.totalHours }}</ion-label>
+              </ion-item>
+            </section>
+          </ion-list>
+      </div>
     </div>
 
     <div *ngSwitchCase="'overview'">
@@ -67,8 +83,8 @@
                         <p class="description-text">{{activity.startTime}} - {{activity.endTime}} uur</p>
                       </div>
                       <div class="item-description">
-                        <ion-icon class="description-icon" name="checkbox-outline"></ion-icon>
-                        <p class="description-text one-line">Totaal {{activity.hours}} uur</p>
+                        <ion-icon class="description-icon" name="calendar"></ion-icon>
+                        <p class="description-text one-line">{{ date.fullDate }}</p>
                       </div>
                     </div>
                     <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
