@@ -3,6 +3,28 @@ page-account {
 	{
 		background-color: color($colors, background, base);
 
+		.form-section
+			{
+				padding: 0px 14px;
+
+				.item:first-child
+				{
+					margin-top: 20px;
+				}
+			}
+
+			.section-title
+			{
+				font-size: 1.8rem;
+				line-height: 1.2;
+				letter-spacing: 1.1px;
+				text-align: center;
+				color: $theme-color;
+				font-weight: 400;
+				margin: 0px;
+				padding-bottom: 20px;
+			}
+
 		.user-image-content
 		{
 			padding: 16px;
@@ -36,6 +58,7 @@ page-account {
 			padding: 0px;
 			margin-bottom: 20px;
 
+			
 			ion-item {
 				@include basic-select-style(color($colors, background, base), $theme-color, $white-d);
 				
@@ -105,7 +128,7 @@ page-account {
 			margin-bottom: 80px;
 		}
 
-		// @include radio-tags-styles($white, $theme-color-1, $white);
+		// @include radio-tags-styles($white, $theme-color, $white);
 
 		.radio-tags
 		{

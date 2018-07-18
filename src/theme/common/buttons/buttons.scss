@@ -1,7 +1,9 @@
-@mixin button-styles($background, $color){
+@mixin call-to-action-button-styles($background, $color){
 	border-radius: 6px;
 	color: $color;
 	background-color: $background;
 	font-size: 1.6rem;
 	font-weight: 500;
 }
+
+@import "./segment";

@@ -14,7 +14,7 @@
 
 		&:not(:last-child)
 		{
-			border-right: solid 2px rgba($white, .3);
+			border-right: solid 2px rgba($white-d, .3);
 		}
 
 		&.segment-activated
@@ -22,5 +22,22 @@
 			color: $active-color;
 			background-color: transparent;
 		}
+	}
+}
+
+@mixin segment-button-ios-styles(){
+	.segment-button
+	{
+		&:hover:not(.segment-activated)
+		{
+			background-color: transparent;
+		}
+	}
+}
+
+@mixin segment-button-wp-styles(){
+	.segment-button
+	{
+		flex: 1;
 	}
 }

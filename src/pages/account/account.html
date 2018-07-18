@@ -18,7 +18,7 @@
     </ion-row>
     <ion-row no-padding class="user-image-row">
       <ion-col no-padding width-60>
-        <button class="image-action-button" ion-button outline block small (click)="openImagePicker()">
+        <button class="image-action-button" ion-button outline block small>
           Wijzig afbeelding</button>
       </ion-col>
     </ion-row>
@@ -40,19 +40,22 @@
             <ion-textarea formControlName="description" rows="5" placeholder="Your description here..."></ion-textarea>
           </ion-item> -->
         </ion-list>
-    
-        <ion-row class="user-preferences-row">
-          <ion-item>
-            <ion-label stacked>Kentekenplaat</ion-label>
-            <ion-input type="text" formControlName="licensePlate"></ion-input>
-          </ion-item>
-        </ion-row>
 
-        <ion-row class="user-preferences-row">
-            <ion-item>
-              <ion-label stacked>Kilometerstand</ion-label>
-              <ion-input type="number" formControlName="mileage"></ion-input>
-            </ion-item>
-          </ion-row>
+        <section class="form-section">
+            <h2 class="section-title">Aanvullende informatie</h2>
+  
+                <ion-item>
+                  <ion-label stacked>Kenteken bedrijfsauto</ion-label>
+                  <ion-input type="text" formControlName="licensePlate"></ion-input>
+                </ion-item>
+           
+      
+              
+                  <ion-item>
+                    <ion-label stacked>Kilometerstand bedrijfsauto</ion-label>
+                    <ion-input type="text" formControlName="mileage"></ion-input>
+                  </ion-item>
+                
+        </section>
       </form>
 </ion-content>

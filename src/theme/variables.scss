@@ -66,6 +66,10 @@ $colors: (
     base: #cc181e,
     contrast: $white
   ),
+  twitter:(
+    base: #00aced,
+    contrast: $white
+  ),
   walkthrough:(
     base: $theme-color,
     contrast: $white
@@ -80,6 +84,10 @@ $colors: (
   ),
   header:(
     base: $theme-color,
+    contrast: $white
+  ),
+  header-alt:(
+    base: $secondary-theme-color,
     contrast: $white
   ),
   button:(

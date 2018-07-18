@@ -1,12 +1,14 @@
 @mixin header-styles($background, $color){
-	.toolbar-background {
+	.toolbar-background
+	{
 		border: none !important;
 		background-color: $background;
 	}
 
 	.toolbar-title,
 	.back-button,
-	.bar-button {
+	.bar-button
+	{
 		color: $color;
 	}
 }

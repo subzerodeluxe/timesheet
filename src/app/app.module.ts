@@ -16,6 +16,7 @@ import { TimesheetPage } from '../pages/timesheet/timesheet';
 import { HttpClientModule } from '@angular/common/http';
 import { AccountPage } from '../pages/account/account';
 import { BackgroundImage } from '../components/background-image/background-image';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { BackgroundImage } from '../components/background-image/background-image
   imports: [
     BrowserModule,
     HttpClientModule,
+    TextMaskModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
