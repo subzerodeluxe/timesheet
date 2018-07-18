@@ -25,7 +25,7 @@
               <h4 class="schedule-time">{{singleActivity?.year}}</h4>
             </ion-col>
             <ion-col width-80 class="schedule-data" *ngFor="let activity of (singleActivity)?.activities">
-              <div class="data-item">
+              <div class="data-item" (click)="openActivity(activity)">
                 <div class="item-content">
                   <h2 class="item-title one-line">{{activity.customer}}</h2>
                   <div class="item-description">
@@ -49,7 +49,7 @@
       </ion-list>
 
       <div class="footer">
-          <ion-fab right button>
+          <ion-fab right button (click)="newActivity()">
               <button ion-fab><ion-icon name="add"></ion-icon></button>
           </ion-fab>
     

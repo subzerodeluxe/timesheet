@@ -16,7 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AccountPage } from '../pages/account/account';
 import { BackgroundImage } from '../components/background-image/background-image';
 import { TextMaskModule } from 'angular2-text-mask';
-import { DayDetailPage } from '../pages/day-detail/day-detail';
+import { AddActivityPage } from '../pages/add-activity/add-activity';
+import { ActivityDetailPage } from '../pages/activity-detail/activity-detail';
 
 @NgModule({
   declarations: [
@@ -28,13 +29,19 @@ import { DayDetailPage } from '../pages/day-detail/day-detail';
     PreloadImage,
     BackgroundImage,
     TimesheetPage,
-    DayDetailPage
+    ActivityDetailPage,
+    AddActivityPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     TextMaskModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp, {
+			modalEnter: 'modal-slide-in',
+			modalLeave: 'modal-slide-out',
+			pageTransition: 'ios-transition',
+			swipeBackEnabled: false
+		})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -44,7 +51,8 @@ import { DayDetailPage } from '../pages/day-detail/day-detail';
     TabsNavigationPage,
     WalkthroughPage,
     TimesheetPage,
-    DayDetailPage
+    ActivityDetailPage,
+    AddActivityPage
   ],
   providers: [
     StatusBar,

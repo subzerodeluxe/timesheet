@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, SegmentButton, LoadingController } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet';
 import { TimeSheet } from '../../models/timesheet.interface';
+import { AddActivityPage } from '../add-activity/add-activity';
+import { ActivityDetailPage } from '../activity-detail/activity-detail';
 
 @Component({
   selector: 'page-timesheet',
@@ -43,6 +45,14 @@ export class TimesheetPage {
 
   onSegmentSelected(segmentButton: SegmentButton) {
     console.log('Segment selected', segmentButton.value);
+  }
+
+  newActivity() {
+    this.navCtrl.push(AddActivityPage);
+  }
+
+  openActivity(activity) {
+    this.navCtrl.push(ActivityDetailPage, { activity: activity });
   }
 
 
