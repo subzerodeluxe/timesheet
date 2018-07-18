@@ -12,7 +12,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
 import { PreloadImage } from '../components/preload-image/preload-image';
 import { TabsNavigationPage } from '../pages/tabs/tabs';
-import { TimesheetsPage } from '../pages/timesheets/timesheets';
+import { TimesheetProvider } from '../providers/timesheet/timesheet';
+import { TimesheetPage } from '../pages/timesheet/timesheet';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { TimesheetsPage } from '../pages/timesheets/timesheets';
     TabsNavigationPage,
     WalkthroughPage,
     PreloadImage,
-    TimesheetsPage
+    TimesheetPage
   ],
   imports: [
     BrowserModule,
@@ -37,12 +38,13 @@ import { TimesheetsPage } from '../pages/timesheets/timesheets';
     HomePage,
     TabsNavigationPage,
     WalkthroughPage,
-    TimesheetsPage
+    TimesheetPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    TimesheetProvider
   ]
 })
 export class AppModule {}

@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, SegmentButton, LoadingController } from 'ionic-angular';
+import { TimesheetProvider } from '../../providers/timesheet/timesheet';
 
 @Component({
-  selector: 'page-timesheets',
-  templateUrl: 'timesheets.html',
+  selector: 'page-timesheet',
+  templateUrl: 'timesheet.html',
 })
-export class TimesheetsPage {
+export class TimesheetPage {
 
   segment: string;
   loading: any;
   timesheet: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    public loadingCtrl: LoadingController, public time: TimesheetProvider) {
     this.segment = "today";
     this.loading = this.loadingCtrl.create();
 
@@ -78,5 +80,6 @@ export class TimesheetsPage {
   onSegmentSelected(segmentButton: SegmentButton) {
     console.log('Segment selected', segmentButton.value);
   }
+
 
 }

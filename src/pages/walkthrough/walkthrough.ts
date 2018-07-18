@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 import { TabsNavigationPage } from '../tabs/tabs';
 
-
 @Component({
   selector: 'walkthrough-page',
   templateUrl: 'walkthrough.html'
