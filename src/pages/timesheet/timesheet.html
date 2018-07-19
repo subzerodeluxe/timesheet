@@ -14,7 +14,7 @@
     </ion-segment-button>
   </ion-segment>
 
- <div [ngSwitch]="segment">
+ <div [ngSwitch]="segment" blur-on-scroll>
     <div *ngSwitchCase="'today'">
       <ion-list class="schedule-list">
         <ion-item class="schedule-item">
@@ -48,21 +48,25 @@
         </ion-item>
       </ion-list>
 
-      <div class="footer">
-          <ion-fab right button (click)="newActivity()">
-              <button ion-fab><ion-icon name="add"></ion-icon></button>
-          </ion-fab>
-    
-          <ion-list class="user-data-content">
-            <section class="hour-section">
-              <h3 class="section-title">Totaal aantal uren</h3>
-      
-              <ion-item>
-                <ion-label>{{ singleActivity?.totalHours }}</ion-label>
-              </ion-item>
-            </section>
-          </ion-list>
+
+      <div class="total-hours-box">
+          <ion-list>
+              <section class="hour-section">
+                <h3 class="section-title">Totaal aantal uren</h3>
+        
+                <ion-item>
+                  <ion-label>{{ singleActivity?.totalHours }}</ion-label>
+                </ion-item>
+              </section>
+            </ion-list>
       </div>
+     
+      <ion-fab bottom right>
+        <button ion-fab (click)="addNewActivity()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab>
+    
     </div>
 
     <div *ngSwitchCase="'overview'">
@@ -93,6 +97,16 @@
           </ion-row>
         </ion-item>
       </ion-list>
+
+      <ion-list class="total-hours-box">
+          <section class="hour-section">
+            <h3 class="section-title">Totaal aantal uren</h3>
+    
+            <ion-item>
+              <ion-label>{{ singleActivity?.totalHours }}</ion-label>
+            </ion-item>
+          </section>
+        </ion-list>
       </div>
   </div>
 </ion-content> 

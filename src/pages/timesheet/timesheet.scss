@@ -9,7 +9,8 @@ page-timesheet {
 		background-color: color($colors, background, base);
 
 		.footer {
-			padding-top: 75px;
+			padding-top: 45px;
+
 		}
 
 		.hour-section
@@ -34,10 +35,15 @@ page-timesheet {
 				padding-bottom: 15px;
 			}
 
-			.user-data-content
+			.total-hours-box
 			{
-				padding: 0px;
-				margin-bottom: 20px;
+				// padding-bottom: 45px;
+				// margin-bottom: 20px;
+				position: sticky;
+				bottom: 25px;
+				left: 0;
+				right: 0;
+				z-index: 9999; 
 	
 				
 				ion-item {
@@ -70,6 +76,11 @@ page-timesheet {
 		.schedule-segment
 		{
 			padding: 14px 0px;
+			position: sticky;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 9999; 
 			background-color: $white;
 			@include element-shadow();
 

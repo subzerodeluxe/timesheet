@@ -18,6 +18,7 @@ import { ActivityDetailPage } from '../pages/activity-detail/activity-detail';
 import { ExpandableComponent } from '../components/expandable/expandable';
 import { ArchivePage } from '../pages/archive/archive';
 import { SettingsPage } from '../pages/settings/settings';
+import { BlurOnScrollDirective } from '../directives/blur-on-scroll/blur-on-scroll';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SettingsPage } from '../pages/settings/settings';
     ActivityDetailPage,
     AddActivityPage,
     ArchivePage,
-    SettingsPage
+    SettingsPage,
+    BlurOnScrollDirective
   ],
   imports: [
     BrowserModule,

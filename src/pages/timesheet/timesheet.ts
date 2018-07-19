@@ -47,7 +47,7 @@ export class TimesheetPage {
     console.log('Segment selected', segmentButton.value);
   }
 
-  newActivity() {
+  addNewActivity() {
     this.navCtrl.push(AddActivityPage);
   }
 
