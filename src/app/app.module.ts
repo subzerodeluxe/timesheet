@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, Scroll } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { ContactPage } from '../pages/contact/contact';
@@ -18,6 +18,7 @@ import { BackgroundImage } from '../components/background-image/background-image
 import { TextMaskModule } from 'angular2-text-mask';
 import { AddActivityPage } from '../pages/add-activity/add-activity';
 import { ActivityDetailPage } from '../pages/activity-detail/activity-detail';
+import { ExpandableComponent } from '../components/expandable/expandable';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ActivityDetailPage } from '../pages/activity-detail/activity-detail';
     WalkthroughPage,
     PreloadImage,
     BackgroundImage,
+    ExpandableComponent,
     TimesheetPage,
     ActivityDetailPage,
     AddActivityPage

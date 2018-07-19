@@ -7,7 +7,7 @@
     "dateLines": [{
             "dayNumber": 16,
             "month": "Jul",
-            "fullDate": "Maandag 16 juli",
+            "fullDate": "Ma 16 juli",
             "year": 2018,
             "activities": [{
                 "hours": 7.5,
@@ -21,7 +21,7 @@
         {
             "dayNumber": 17,
             "month": "Jul",
-            "fullDate": "Dinsdag 17 juli",
+            "fullDate": "Di 17 juli",
             "year": 2018,
             "activities": [{
                 "hours": 4.5,
@@ -41,7 +41,7 @@
         {
             "dayNumber": 18,
             "month": "Jul",
-            "fullDate": "Dinsdag 18 juli",
+            "fullDate": "Wo 18 juli",
             "year": 2018,
             "activities": [{
                 "hours": 7.5,
