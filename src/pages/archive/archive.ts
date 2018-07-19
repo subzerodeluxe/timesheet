@@ -1,19 +1,21 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {  NavController, NavParams } from 'ionic-angular';
+import { getLocaleWeekEndRange } from '@angular/common';
+
 
 @Component({
-  selector: 'page-contact',
-  templateUrl: 'contact.html'
+  selector: 'page-archive',
+  templateUrl: 'archive.html',
 })
-export class ContactPage {
-
-  items: any = [];
+export class ArchivePage {
+  archiveAugust: any = [];
+  archiveSeptember: any = [];
   itemExpandHeight: number = 100;
 
   constructor(public navCtrl: NavController) {
 
-      this.items = [{
-            month: 'Juli 2018',
+      this.archiveAugust = [{
+            month: 'Augustus 2018',
             weeks: [{ expanded: false,
             weekNumber: 29,
             fullDate: '16 augustus t/m 23 augustus 2018',
@@ -28,9 +30,12 @@ export class ContactPage {
               weekNumber: 31,
               fullDate: '3 september t/m 7 september 2018',
               totalHours: 35
-            }]},
+            }]}
+          ];
+        
+      this.archiveSeptember = [
             {
-              month: 'Augustus 2018',
+              month: 'September 2018',
               weeks: [{ expanded: false,
                 weekNumber: 32,
                 fullDate: '10 september t/m 14 september 2018',
@@ -46,26 +51,34 @@ export class ContactPage {
                   fullDate: '24 september t/m 28 september 2018',
                   totalHours: 35
                 }]
-            }
-          ];
+              }];
   }
  
   expandItem(item, week){
-      console.log('Week: ', week); 
-      console.log('Item: ', item);
-
-      this.items[0].weeks.map((listItem) => {
-          console.log(listItem);
-          if(item == listItem){
-              listItem.expanded = !listItem.expanded;
-          } else {
-              listItem.expanded = false;
-          }
-
-          return listItem;
-
-      });
-
+      if (week.month === "Augustus 2018") {
+        console.log(week.month);
+        this.loop(this.archiveAugust, item);
+      } else {
+        console.log(week.month);
+        this.loop(this.archiveSeptember, item);
+      }
   }
- 
+
+  loop(array, item) {
+
+    array[0].weeks.map((listItem) => {
+      console.log(listItem);
+      if(item == listItem){
+          listItem.expanded = !listItem.expanded;
+      } else {
+          listItem.expanded = false;
+      }
+
+      return listItem;
+
+  });
+  }
+
+
+
 }

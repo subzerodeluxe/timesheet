@@ -1,0 +1,43 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>
+        Archief
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content class="notifications-content">
+  
+    <div *ngFor="let item of archiveAugust">
+        <ion-item-group>
+            <ion-item-divider class="notifications-divider">{{ item.month }}</ion-item-divider>
+            <ion-item (click)="expandItem(week, item)" class="notification-item" *ngFor="let week of item.weeks">
+              <h2 class="item-title">Week {{ week.weekNumber }}</h2>
+              <p class="item-description">{{ week.fullDate }}</p>
+              <expandable [expandHeight]="itemExpandHeight" [expanded]="week.expanded">
+                <ion-icon class="description-icon" name="clock"></ion-icon>
+                <p>{{ week.totalHours }}</p>
+                <p>Download als PDF</p>
+              </expandable>
+              <button ion-button clear item-end>Bekijk</button>
+            </ion-item>
+          </ion-item-group>
+    </div>
+
+    <div *ngFor="let item of archiveSeptember">
+        <ion-item-group>
+            <ion-item-divider class="notifications-divider">{{ item.month }}</ion-item-divider>
+            <ion-item (click)="expandItem(week, item)" class="notification-item" *ngFor="let week of item.weeks">
+              <h2 class="item-title">Week {{ week.weekNumber }}</h2>
+              <p class="item-description">{{ week.fullDate }}</p>
+              <expandable [expandHeight]="itemExpandHeight" [expanded]="week.expanded">
+                <ion-icon class="description-icon" name="clock"></ion-icon>
+                <p>{{ week.totalHours }}</p>
+                <p>Download als PDF</p>
+              </expandable>
+              <button ion-button clear item-end>Bekijk</button>
+            </ion-item>
+          </ion-item-group>
+    </div>
+  </ion-content>
+  

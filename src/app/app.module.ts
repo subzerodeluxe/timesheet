@@ -2,9 +2,6 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler, Scroll } from 'ionic-angular';
 import { MyApp } from './app.component';
-
-import { ContactPage } from '../pages/contact/contact';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
@@ -19,11 +16,12 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { AddActivityPage } from '../pages/add-activity/add-activity';
 import { ActivityDetailPage } from '../pages/activity-detail/activity-detail';
 import { ExpandableComponent } from '../components/expandable/expandable';
+import { ArchivePage } from '../pages/archive/archive';
+import { SettingsPage } from '../pages/settings/settings';
 
 @NgModule({
   declarations: [
     MyApp,
-    ContactPage,
     AccountPage,
     TabsNavigationPage,
     WalkthroughPage,
@@ -32,7 +30,9 @@ import { ExpandableComponent } from '../components/expandable/expandable';
     ExpandableComponent,
     TimesheetPage,
     ActivityDetailPage,
-    AddActivityPage
+    AddActivityPage,
+    ArchivePage,
+    SettingsPage
   ],
   imports: [
     BrowserModule,
@@ -48,13 +48,14 @@ import { ExpandableComponent } from '../components/expandable/expandable';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    ContactPage,
     AccountPage,
     TabsNavigationPage,
     WalkthroughPage,
     TimesheetPage,
     ActivityDetailPage,
-    AddActivityPage
+    AddActivityPage,
+    ArchivePage,
+    SettingsPage
   ],
   providers: [
     StatusBar,

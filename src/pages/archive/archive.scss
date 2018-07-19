@@ -1,4 +1,4 @@
-page-contact {
+page-archive {
     .notifications-content
 	{
 		.notifications-divider
@@ -20,7 +20,12 @@ page-contact {
 			padding: 12px;
 			border: none;
 			box-shadow: inset 0 -0.5px 0 0 $black-d;
-            align-items: flex-start;
+			align-items: flex-start;
+			
+			
+			.description-icon {
+				color: $theme-color;
+			}
             
 			.item-inner
 			{
