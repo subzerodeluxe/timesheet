@@ -19,6 +19,7 @@ import { ExpandableComponent } from '../components/expandable/expandable';
 import { ArchivePage } from '../pages/archive/archive';
 import { SettingsPage } from '../pages/settings/settings';
 import { BlurOnScrollDirective } from '../directives/blur-on-scroll/blur-on-scroll';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { BlurOnScrollDirective } from '../directives/blur-on-scroll/blur-on-scro
 			pageTransition: 'ios-transition',
       swipeBackEnabled: false,
       scrollPadding: false,
-      scrollAssist: false
+      scrollAssist: true,
+      autoFocusAssist: false
 		})
   ],
   bootstrap: [IonicApp],
@@ -65,7 +67,8 @@ import { BlurOnScrollDirective } from '../directives/blur-on-scroll/blur-on-scro
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    TimesheetProvider
+    TimesheetProvider,
+    Keyboard
   ]
 })
 export class AppModule {}
