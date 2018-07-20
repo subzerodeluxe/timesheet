@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Slides } from 'ionic-angular';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NavController, NavParams, Slides, ToastController } from 'ionic-angular';
+import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -14,30 +14,40 @@ export class AddActivityPage {
   lastSlide = false;
   @ViewChild('slider') slider: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    public formBuilder: FormBuilder, public toastCtrl: ToastController) {
 
     this.firstActivityForm = new FormGroup({
       clientName: new FormControl('', Validators.compose([
         Validators.maxLength(25),
         Validators.minLength(4),
         Validators.required
-      ])),
+        ])),
       location: new FormControl('', Validators.required)
-      // from_date: new FormControl('2016-09-18', Validators.required),
-      // from_time: new FormControl('13:00', Validators.required),
-      // to_date: new FormControl('', Validators.required),
-      // to_time: new FormControl('', Validators.required)
     });
 
-    this.secondActivityForm = new FormGroup({
-      date: new FormControl('2016-09-18', Validators.required),
-      // from_time: new FormControl('13:00', Validators.required),
-    })
+    this.secondActivityForm = this.formBuilder.group({
+      activities: this.formBuilder.array([
+         this.initActivityFields()
+      ])
+   });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AddActivityPage');
+  initActivityFields(): FormGroup {
+   return this.formBuilder.group({
+      name: ['', Validators.required]
+   });
   }
+
+  addNewInputField(): void {
+   const control = <FormArray>this.secondActivityForm.controls.activities;
+   control.push(this.initActivityFields());
+  }
+
+  removeInputField(i: number): void {
+   const control = <FormArray>this.secondActivityForm.controls.activities;
+   control.removeAt(i);
+}
 
   onSlideChanged() {
     // If it's the last slide, then hide the 'Skip' button on the header
@@ -56,15 +66,32 @@ export class AddActivityPage {
   save() {
     if(!this.firstActivityForm.valid){
       this.slider.slideTo(0);
+      // boodschap: niet alle velden zijn (correct) ingevuld!
+      this.presentToast();
     }
     else if(!this.secondActivityForm.valid){
         this.slider.slideTo(1);
+        this.presentToast();
     }
     else {
         console.log("success!")
         console.log(this.firstActivityForm.value);
         console.log(this.secondActivityForm.value);
     }
+  }
+
+  presentToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Niet alle velden zijn (correct) ingevuld',
+      duration: 3000,
+      position: 'bottom'
+    });
+  
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+  
+    toast.present();
   }
 
   validation_messages = {
