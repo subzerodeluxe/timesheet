@@ -27,7 +27,7 @@ export class BlurOnScrollDirective {
     // this.testContent = this.element.nativeElement.getElementsByClassName('test')[0];
     console.log(this.hoursBox);
 
-    this.renderer.setStyle(this.hoursBox, 'opacity', '1');
+    // this.renderer.setStyle(this.hoursBox, 'opacity', '1');
     // this.renderer.setStyle(this.testContent, 'opacity', '0.5');
   }
 

@@ -2,10 +2,91 @@
   <ion-navbar>
     <ion-title>Nieuwe activiteit</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="forms-validations-content">
+    
+<ion-slides #slider (ionSlideDidChange)="onSlideChanged()" [pager]="true">
+  <form class="activity-form validations-form" [formGroup]="activityForm"  
+    (ngSubmit)="onSubmit(activityForm.value)">
+
+  <ion-slide class="slide-1">
+    <section class="form-section">  
+      <h2 class="section-title">Waar ben je geweest?</h2>
+      <ion-item>
+        <ion-label floating>Naam van klant</ion-label>
+        <ion-input type="text" formControlName="location" class="form-controll" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label floating>Locatie</ion-label>
+          <ion-input type="text" formControlName="title" class="form-controll" required></ion-input>
+        </ion-item>
+    </section>
+
+    <button ion-button (click)="nextSlide()">Volgende</button>
+  </ion-slide>
+
+  <ion-slide class="slide-2">
+    <p>Hallo</p>
+      <button ion-button (click)="previousSlide()">Vorige</button>
+    </ion-slide>
+
+
+    <ion-slide class="slide-2">
+        <button ion-button (click)="previousSlide()">Vorige</button>
+      </ion-slide>
+
+    </form>
+</ion-slides>
+
 
 </ion-content>
+
+
+
+
+
+
+<!-- <form class="sample-form event-form" [formGroup]="event_form" (ngSubmit)="createEvent()">
+  <section class="form-section">
+    <h2 class="section-title">Waar ben je geweest?</h2>
+    <ion-item>
+      <ion-input type="text" placeholder="Event title" formControlName="title"></ion-input>
+    </ion-item>
+    <ion-item icon-end>
+      <ion-input type="text" placeholder="Location" formControlName="location"></ion-input>
+      <ion-icon name="navigate" item-right></ion-icon>
+    </ion-item>
+    <ion-row no-padding class="multi-input-row">
+      <ion-col no-padding width-60>
+        <ion-item class="multi-input time-item">
+          <ion-label floating>aasdf</ion-label>
+          <ion-datetime formControlName="from_date" displayFormat="DD/MM/YY" pickerFormat="DD-MM-YYYY"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col no-padding width-40>
+        <ion-item class="multi-input time-item">
+          <ion-datetime formControlName="from_time" displayFormat="h mm a" pickerFormat="h mm A"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row no-padding class="multi-input-row">
+      <ion-col no-padding width-60>
+        <ion-item class="multi-input time-item">
+          <ion-label floating>dddd</ion-label>
+          <ion-datetime formControlName="to_date" displayFormat="DD/MM/YY" pickerFormat="DD-MM-YYYY"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col no-padding width-40>
+        <ion-item class="multi-input time-item">
+          <ion-datetime formControlName="to_time" displayFormat="h mm a" pickerFormat="h mm A"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </section>
+  <section class="form-section">
+    <button ion-button block class="form-action-button create-event-button" type="submit" [disabled]="!event_form.valid">Done!</button>
+  </section>
+</form> -->
