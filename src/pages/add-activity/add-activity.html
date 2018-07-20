@@ -7,7 +7,7 @@
 
 <ion-content padding class="forms-validations-content">
     
-<ion-slides #slider (ionSlideDidChange)="onSlideChanged()" [pager]="true">
+<ion-slides #slider (ionSlideDidChange)="onSlideChanged()" [pager]="true" paginationType="progress">
   <form class="activity-form validations-form" [formGroup]="activityForm"  
     (ngSubmit)="onSubmit(activityForm.value)">
 
@@ -29,9 +29,15 @@
   </ion-slide>
 
   <ion-slide class="slide-2">
-    <p>Hallo</p>
+    <section class="form-section">
+        <h2 class="section-title">Deel je werkzaamheden</h2>
+        <ion-item>
+          <ion-label floating>Naam van klant</ion-label>
+          <ion-input type="text" formControlName="location" class="form-controll" required></ion-input>
+        </ion-item>
       <button ion-button (click)="previousSlide()">Vorige</button>
-    </ion-slide>
+    </section>
+  </ion-slide>
 
 
     <ion-slide class="slide-2">

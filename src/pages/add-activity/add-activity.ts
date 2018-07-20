@@ -35,6 +35,7 @@ export class AddActivityPage {
   }
 
   nextSlide() {
+    // this.slider.lockSwipeToNext(true);
     this.slider.slideNext();
   }
 

@@ -5,7 +5,11 @@ page-add-activity {
 
   .forms-validations-content
 	{
-		background-color: color($colors, background, base);
+        background-color: color($colors, background, base);
+        
+        .swiper-pagination-progress .swiper-pagination-progressbar {
+            background: $theme-color;
+          }
 
     .activity-form
 		{

@@ -44,7 +44,9 @@ import { BlurOnScrollDirective } from '../directives/blur-on-scroll/blur-on-scro
 			modalEnter: 'modal-slide-in',
 			modalLeave: 'modal-slide-out',
 			pageTransition: 'ios-transition',
-			swipeBackEnabled: false
+      swipeBackEnabled: false,
+      scrollPadding: false,
+      scrollAssist: false
 		})
   ],
   bootstrap: [IonicApp],
