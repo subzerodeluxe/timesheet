@@ -11,7 +11,7 @@ export class ShowHideInput
     this.type = 'password';
   }
 
-  changeType(type:string) {
+  changeType (type:string) {
     this.type = type;
     this.el.nativeElement.children[0].type = this.type;
   }

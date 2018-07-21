@@ -20,7 +20,7 @@ export class LoginPage {
   public authProvider: AuthProvider) {
     this.loginForm = new FormGroup({
       email: new FormControl('', Validators.required),
-      password: new FormControl('test', Validators.required)
+      password: new FormControl('', Validators.required)
     });
   }
 
@@ -28,6 +28,13 @@ export class LoginPage {
     this.navCtrl.push('register');
   }
 
-
-
+  regularLogin(value) {
+    console.log(value);
+    this.authProvider.regularLogin(value)
+      .then(res => {
+        console.log('Success!')
+      }, err => {
+        this.errorMessage = err.message
+      });
+  }
 }
