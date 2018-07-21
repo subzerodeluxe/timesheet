@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import {  NavController, NavParams } from 'ionic-angular';
-import { getLocaleWeekEndRange } from '@angular/common';
+import {  NavController, IonicPage } from 'ionic-angular';
 
-
+@IonicPage({
+  name: 'archive'
+})
 @Component({
   selector: 'page-archive',
   templateUrl: 'archive.html',

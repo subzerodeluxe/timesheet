@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 
-
+@IonicPage({
+  name: 'account'
+})
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html',

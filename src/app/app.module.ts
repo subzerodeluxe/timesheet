@@ -4,43 +4,28 @@ import { IonicApp, IonicModule, IonicErrorHandler, Scroll } from 'ionic-angular'
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
-import { PreloadImage } from '../components/preload-image/preload-image';
-import { TabsNavigationPage } from '../pages/tabs/tabs';
-import { TimesheetProvider } from '../providers/timesheet/timesheet';
-import { TimesheetPage } from '../pages/timesheet/timesheet';
 import { HttpClientModule } from '@angular/common/http';
-import { AccountPage } from '../pages/account/account';
-import { BackgroundImage } from '../components/background-image/background-image';
 import { TextMaskModule } from 'angular2-text-mask';
-import { AddActivityPage } from '../pages/add-activity/add-activity';
-import { ActivityDetailPage } from '../pages/activity-detail/activity-detail';
-import { ExpandableComponent } from '../components/expandable/expandable';
-import { ArchivePage } from '../pages/archive/archive';
-import { SettingsPage } from '../pages/settings/settings';
-import { BlurOnScrollDirective } from '../directives/blur-on-scroll/blur-on-scroll';
 import { Keyboard } from '@ionic-native/keyboard';
+
+// Providers
+import { AuthProvider } from '../providers/auth/auth';
+import { TimesheetProvider } from '../providers/timesheet/timesheet';
+
+// Angular Fire
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { environment } from '../environment/environment';
+import { ComponentsModule } from '../components/components.module';
+import { DirectivesModule } from '../directives/directives.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-    MyApp,
-    AccountPage,
-    TabsNavigationPage,
-    WalkthroughPage,
-    PreloadImage,
-    BackgroundImage,
-    ExpandableComponent,
-    TimesheetPage,
-    ActivityDetailPage,
-    AddActivityPage,
-    ArchivePage,
-    SettingsPage,
-    BlurOnScrollDirective
+    MyApp
   ],
   imports: [
-    BrowserModule,
-    HttpClientModule,
-    TextMaskModule,
     IonicModule.forRoot(MyApp, {
 			modalEnter: 'modal-slide-in',
 			modalLeave: 'modal-slide-out',
@@ -49,26 +34,28 @@ import { Keyboard } from '@ionic-native/keyboard';
       scrollPadding: false,
       scrollAssist: true,
       autoFocusAssist: false
-		})
+    }),
+    BrowserModule,
+    CommonModule,
+    HttpClientModule,
+    ComponentsModule,
+    DirectivesModule,
+    TextMaskModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AccountPage,
-    TabsNavigationPage,
-    WalkthroughPage,
-    TimesheetPage,
-    ActivityDetailPage,
-    AddActivityPage,
-    ArchivePage,
-    SettingsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TimesheetProvider,
-    Keyboard
+    Keyboard,
+    AuthProvider
   ]
 })
 export class AppModule {}

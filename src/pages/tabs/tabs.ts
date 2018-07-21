@@ -1,25 +1,24 @@
 import { Component } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
 
-import { TimesheetPage } from '../timesheet/timesheet';
-import { AccountPage } from '../account/account';
-import { ArchivePage } from '../archive/archive';
-import { SettingsPage } from '../settings/settings';
-
+@IonicPage({
+  name: 'tabs'
+})
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsNavigationPage {
 
-  tab1Root = TimesheetPage;
-  tab2Root = AccountPage;
-  tab3Root = ArchivePage;
-  tab4Root = SettingsPage;
+  tab1Root = 'timesheet';
+  tab2Root = 'account';
+  tab3Root = 'archive';
+  tab4Root = 'settings';
 
   constructor() {
-    this.tab1Root = TimesheetPage;
-    this.tab2Root = AccountPage;
-    this.tab3Root = ArchivePage;
-    this.tab4Root = SettingsPage;
+    this.tab1Root = 'timesheet';
+    this.tab2Root = 'account';
+    this.tab3Root = 'archive';
+    this.tab4Root = 'settings';
 
   }
 }

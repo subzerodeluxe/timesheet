@@ -1,8 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Slides, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Slides, ToastController, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 
-
+@IonicPage({
+  name: 'add-activity'
+})
 @Component({
   selector: 'page-add-activity',
   templateUrl: 'add-activity.html',

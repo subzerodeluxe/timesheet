@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides } from 'ionic-angular';
-import { TabsNavigationPage } from '../tabs/tabs';
+import { NavController, Slides, IonicPage } from 'ionic-angular';
 
+@IonicPage({
+  name: 'walkthrough'
+})
 @Component({
   selector: 'walkthrough-page',
   templateUrl: 'walkthrough.html'
@@ -32,10 +34,12 @@ export class WalkthroughPage {
 
   goToLogin() {
     // this.nav.push(LoginPage);
-    this.nav.setRoot(TabsNavigationPage);
+    //this.nav.setRoot(TabsNavigationPage);
+    this.nav.setRoot('login');
   }
 
   goToSignup() {
     // this.nav.push(SignupPage);
+    this.nav.setRoot('register'); 
   }
 }

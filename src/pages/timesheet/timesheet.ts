@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, SegmentButton, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, SegmentButton, LoadingController, IonicPage } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet';
-import { TimeSheet } from '../../models/timesheet.interface';
-import { AddActivityPage } from '../add-activity/add-activity';
-import { ActivityDetailPage } from '../activity-detail/activity-detail';
 
+@IonicPage({
+  name: 'timesheet'
+})
 @Component({
   selector: 'page-timesheet',
   templateUrl: 'timesheet.html',
@@ -48,11 +48,11 @@ export class TimesheetPage {
   }
 
   addNewActivity() {
-    this.navCtrl.push(AddActivityPage);
+    this.navCtrl.push('add-activity');
   }
 
   openActivity(activity) {
-    this.navCtrl.push(ActivityDetailPage, { activity: activity });
+    this.navCtrl.push('activity-detail', { activity: activity });
   }
 
 

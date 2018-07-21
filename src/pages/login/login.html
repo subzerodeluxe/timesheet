@@ -1,0 +1,32 @@
+<ion-header class="login-header auth-header">
+  <ion-navbar>
+    <ion-title>Inloggen</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="login-content auth-content">
+  <form class="login-form auth-form" [formGroup]="loginForm" (ngSubmit)="doLogin(loginForm.value)">
+    <ion-item>
+      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+    </ion-item>
+    <show-hide-container>
+      <ion-item>
+        <ion-input type="password" placeholder="Password" formControlName="password" show-hide-input></ion-input>
+      </ion-item>
+    </show-hide-container>
+    <button ion-button block class="auth-action-button login-button" type="submit" [disabled]="!loginForm.valid">Log in</button>
+  </form>
+  <ion-row class="alt-options">
+    <ion-col no-padding width-50>
+    </ion-col>
+    <ion-col no-padding width-50>
+      <button ion-button block clear class="signup-button" (click)="goToSignup()">Registreer</button>
+    </ion-col>
+  </ion-row>
+  <label class="error-message">{{errorMessage}}</label>
+  <p class="auth-divider">
+    Of
+  </p>
+  <button ion-button disabled block class="facebook-auth-button" (click)="doFacebookLogin()">Log in met Facebook</button>
+  <button ion-button block class="google-auth-button" (click)="doGoogleLogin()">Log in met Google</button>
+</ion-content>
