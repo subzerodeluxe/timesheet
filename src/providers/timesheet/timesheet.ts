@@ -17,7 +17,7 @@ export class TimesheetProvider {
     return weekNumber;
   }
 
- getData(): Observable<any> {
+  getData(): Observable<any> {
     return this.http.get('./assets/example-data/timesheet.json', {responseType: 'json'});
   }
 

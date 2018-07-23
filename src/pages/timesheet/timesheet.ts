@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, SegmentButton, LoadingController, IonicPage } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage({
   name: 'timesheet'
@@ -18,14 +19,14 @@ export class TimesheetPage {
   loading: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public loadingCtrl: LoadingController, public time: TimesheetProvider) {
+    public loadingCtrl: LoadingController, public authProvider: AuthProvider, public time: TimesheetProvider) {
     this.segment = "today";
     this.loading = this.loadingCtrl.create();
   }
   
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TimesheetsPage');
     this.weekNumber = this.time.getCurrentWeekNumber().toString();
+    console.log('Weeknummer: ', this.weekNumber);
     
     // this.timesheet = this.time.getData();
      this.time.getData()
@@ -37,6 +38,10 @@ export class TimesheetPage {
         console.log('Single: ', this.singleActivity);
         this.loading.dismiss();
       });
+  }
+
+  ionViewCanEnter() {
+    return this.authProvider.authenticated();
   }
 
   onSegmentChanged(segmentButton: SegmentButton) {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage } from 'ionic-angular';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage({
   name: 'activity-detail'
@@ -12,14 +13,13 @@ export class ActivityDetailPage {
 
   activityObject: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
 
     this.activityObject = this.navParams.get("activity");
     console.log('Activity object: ', this.activityObject);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ActivityDetailPage');
+  ionViewCanEnter() {
+    return this.authProvider.authenticated();
   }
-
 }

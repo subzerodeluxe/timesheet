@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Slides, ToastController, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
+import { AuthProvider } from '../../providers/auth/auth';
+import { LayoutProvider } from '../../providers/layout/layout';
 
 @IonicPage({
   name: 'add-activity'
@@ -17,7 +19,7 @@ export class AddActivityPage {
   @ViewChild('slider') slider: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public formBuilder: FormBuilder, public toastCtrl: ToastController) {
+    public formBuilder: FormBuilder, public authProvider: AuthProvider, public layoutProvider: LayoutProvider) {
 
     this.firstActivityForm = new FormGroup({
       clientName: new FormControl('', Validators.compose([
@@ -34,6 +36,11 @@ export class AddActivityPage {
       ])
    });
   }
+
+  ionViewCanEnter() {
+    return this.authProvider.authenticated();
+  }
+
 
   initActivityFields(): FormGroup {
    return this.formBuilder.group({
@@ -69,31 +76,18 @@ export class AddActivityPage {
     if(!this.firstActivityForm.valid){
       this.slider.slideTo(0);
       // boodschap: niet alle velden zijn (correct) ingevuld!
-      this.presentToast();
+      this.layoutProvider.presentBottomToast('Niet alle velden zijn (correct) ingevuld!')
     }
     else if(!this.secondActivityForm.valid){
         this.slider.slideTo(1);
-        this.presentToast();
-    }
+        this.layoutProvider.presentBottomToast('Niet alle velden zijn (correct) ingevuld!')
+      }
     else {
         console.log("success!")
         console.log(this.firstActivityForm.value);
         console.log(this.secondActivityForm.value);
+        this.layoutProvider.presentBottomToast('Success!')
     }
-  }
-
-  presentToast() {
-    let toast = this.toastCtrl.create({
-      message: 'Niet alle velden zijn (correct) ingevuld',
-      duration: 3000,
-      position: 'bottom'
-    });
-  
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-  
-    toast.present();
   }
 
   validation_messages = {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
+import { LayoutProvider } from '../../providers/layout/layout';
 
 @IonicPage({
   name: 'login'
@@ -17,7 +18,7 @@ export class LoginPage {
   errorMessage: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  public authProvider: AuthProvider) {
+  public authProvider: AuthProvider, public layout: LayoutProvider) {
     this.loginForm = new FormGroup({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
@@ -32,7 +33,7 @@ export class LoginPage {
     console.log(value);
     this.authProvider.regularLogin(value)
       .then(res => {
-        console.log('Success!')
+        this.layout.presentBottomToast('Welkom Willem!');
         this.navCtrl.setRoot('tabs');
       }, err => {
         console.log(err);

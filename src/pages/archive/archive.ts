@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {  NavController, IonicPage } from 'ionic-angular';
+import { NavController, IonicPage } from 'ionic-angular';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage({
   name: 'archive'
@@ -13,7 +14,7 @@ export class ArchivePage {
   archiveSeptember: any = [];
   itemExpandHeight: number = 100;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public authProvider: AuthProvider) {
 
       this.archiveAugust = [{
             month: 'Augustus 2018',
@@ -54,6 +55,11 @@ export class ArchivePage {
                 }]
               }];
   }
+
+  ionViewCanEnter() {
+    return this.authProvider.authenticated();
+  }
+
  
   expandItem(item, week){
       if (week.month === "Augustus 2018") {

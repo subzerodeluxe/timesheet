@@ -11,6 +11,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 // Providers
 import { AuthProvider } from '../providers/auth/auth';
 import { TimesheetProvider } from '../providers/timesheet/timesheet';
+import { LayoutProvider } from '../providers/layout/layout';
 
 // Angular Fire
 import { AngularFireModule } from 'angularfire2';
@@ -55,7 +56,8 @@ import { CommonModule } from '@angular/common';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TimesheetProvider,
     Keyboard,
-    AuthProvider
+    AuthProvider,
+    LayoutProvider
   ]
 })
 export class AppModule {}

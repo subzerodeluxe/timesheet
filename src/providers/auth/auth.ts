@@ -5,15 +5,16 @@ import { AngularFireAuth } from 'angularfire2/auth';
 @Injectable()
 export class AuthProvider {
 
-  constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
-    
-  }
+  private isLoggedIn = false;
+
+  constructor(public http: HttpClient, public afAuth: AngularFireAuth) { }
 
   regularLogin(value): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password)
         .then(res => {
           resolve(res);
+          this.isLoggedIn = true; 
         }, err => reject(err));
      });
   }
@@ -29,5 +30,21 @@ export class AuthProvider {
 
   googleLogin() {
 
+  }
+
+  logOut(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if(this.afAuth.auth.currentUser){
+        this.afAuth.auth.signOut();
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  }
+
+  authenticated(): boolean {
+    console.log('Auth status' , this.isLoggedIn);
+    return this.isLoggedIn;
   }
 }

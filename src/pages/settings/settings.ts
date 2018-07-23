@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, IonicPage } from 'ionic-angular';
+import { NavController, IonicPage } from 'ionic-angular';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage({
   name: 'settings'
@@ -10,11 +11,11 @@ import { NavController, NavParams, IonicPage } from 'ionic-angular';
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public authProvider: AuthProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+  ionViewCanEnter() {
+    return this.authProvider.authenticated();
   }
 
 }

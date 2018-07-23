@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage({
   name: 'tabs'
@@ -14,11 +15,14 @@ export class TabsNavigationPage {
   tab3Root = 'archive';
   tab4Root = 'settings';
 
-  constructor() {
+  constructor(public authProvider: AuthProvider) {
     this.tab1Root = 'timesheet';
     this.tab2Root = 'account';
     this.tab3Root = 'archive';
     this.tab4Root = 'settings';
+  }
 
+  ionViewCanEnter() {
+    return this.authProvider.authenticated();
   }
 }

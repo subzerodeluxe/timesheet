@@ -40,6 +40,6 @@ export class WalkthroughPage {
 
   goToSignup() {
     // this.nav.push(SignupPage);
-    this.nav.setRoot('register'); 
+    this.nav.push('register'); 
   }
 }
