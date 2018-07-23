@@ -21,6 +21,7 @@
     "@angular/platform-browser": "5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/core": "~4.9.2",
+    "@ionic-native/google-plus": "^4.10.0",
     "@ionic-native/keyboard": "^4.10.0",
     "@ionic-native/splash-screen": "~4.9.2",
     "@ionic-native/status-bar": "~4.9.2",
@@ -29,6 +30,7 @@
     "angular2-text-mask": "^9.0.0",
     "angularfire2": "5.0.0-rc.6",
     "bourbon": "5.0.0",
+    "cordova-plugin-googleplus": "^5.3.0",
     "firebase": "4.10.0",
     "firebase-admin": "^5.13.0",
     "firebase-functions": "^1.1.0",
@@ -46,5 +48,12 @@
   "config": {
     "ionic_sass": "./config/sass.config.js"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.42673166780-aae01gd0ah2tqk5qos0h789siicjtoh4"
+      }
+    }
+  }
 }

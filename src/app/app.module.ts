@@ -21,6 +21,7 @@ import { environment } from '../environment/environment';
 import { ComponentsModule } from '../components/components.module';
 import { DirectivesModule } from '../directives/directives.module';
 import { CommonModule } from '@angular/common';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { CommonModule } from '@angular/common';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TimesheetProvider,
     Keyboard,
+    GooglePlus,
     AuthProvider,
     LayoutProvider
   ]

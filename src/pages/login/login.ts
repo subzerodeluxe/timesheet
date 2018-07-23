@@ -40,4 +40,8 @@ export class LoginPage {
         this.errorMessage = err.message;
       });
   }
+
+  doGoogleLogin(value) {
+    this.authProvider.googleLogin();
+  } 
 }
