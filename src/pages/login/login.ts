@@ -33,8 +33,10 @@ export class LoginPage {
     this.authProvider.regularLogin(value)
       .then(res => {
         console.log('Success!')
+        this.navCtrl.setRoot('tabs');
       }, err => {
-        this.errorMessage = err.message
+        console.log(err);
+        this.errorMessage = err.message;
       });
   }
 }

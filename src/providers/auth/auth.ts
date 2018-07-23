@@ -6,15 +6,28 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class AuthProvider {
 
   constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
-    console.log('Hello AuthProvider Provider');
+    
   }
 
-  regularLogin(value) {
+  regularLogin(value): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password)
         .then(res => {
           resolve(res);
-        }, err => reject(err))
-     })
+        }, err => reject(err));
+     });
+  }
+
+  registerAccount(value): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password)
+        .then(res => {
+          resolve(res);
+        }, err => reject(err)); 
+    });
+  }
+
+  googleLogin() {
+
   }
 }
