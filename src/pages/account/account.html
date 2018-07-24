@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Profiel</ion-title>
-    <ion-buttons end [hidden]="!profileForm.dirty">
+    <ion-buttons end [hidden]="!profileForm.dirty" (click)="saveProfile(profileForm.value)">
       <button ion-button>
         Opslaan
       </button>

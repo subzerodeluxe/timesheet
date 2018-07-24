@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Slides, ToastController, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, Slides, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
-import { AuthProvider } from '../../providers/auth/auth';
-import { LayoutProvider } from '../../providers/layout/layout';
+import { AuthProvider } from '../../providers/auth/auth.service';
+import { LayoutProvider } from '../../providers/layout/layout.service';
 
 @IonicPage({
   name: 'add-activity'

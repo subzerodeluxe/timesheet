@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthProvider } from '../../providers/auth/auth';
-import { LayoutProvider } from '../../providers/layout/layout';
+import { AuthProvider } from '../../providers/auth/auth.service';
+import { LayoutProvider } from '../../providers/layout/layout.service';
 
 @IonicPage({
   name: 'login'
@@ -30,10 +30,10 @@ export class LoginPage {
   }
 
   regularLogin(value) {
-    console.log(value);
+    console.log('Login object: ', value);
     this.authProvider.regularLogin(value)
       .then(res => {
-        this.layout.presentBottomToast('Welkom Willem!');
+        this.layout.presentBottomToast(`Welkom ${value.email}`);
         this.navCtrl.setRoot('tabs');
       }, err => {
         console.log(err);

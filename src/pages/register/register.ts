@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AuthProvider } from '../../providers/auth/auth';
+import { AuthProvider } from '../../providers/auth/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LayoutProvider } from '../../providers/layout/layout';
+import { LayoutProvider } from '../../providers/layout/layout.service';
 
 @IonicPage({
   name: 'register'

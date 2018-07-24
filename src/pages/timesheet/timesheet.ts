@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, SegmentButton, LoadingController, IonicPage } from 'ionic-angular';
-import { TimesheetProvider } from '../../providers/timesheet/timesheet';
-import { AuthProvider } from '../../providers/auth/auth';
+import { NavController, NavParams, SegmentButton, IonicPage } from 'ionic-angular';
+import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
+import { AuthProvider } from '../../providers/auth/auth.service';
 
 @IonicPage({
   name: 'timesheet'
@@ -19,9 +19,9 @@ export class TimesheetPage {
   loading: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public loadingCtrl: LoadingController, public authProvider: AuthProvider, public time: TimesheetProvider) {
+     public authProvider: AuthProvider, public time: TimesheetProvider) {
     this.segment = "today";
-    this.loading = this.loadingCtrl.create();
+    // this.loading = this.loadingCtrl.create();
   }
   
   ionViewDidLoad() {
@@ -36,7 +36,7 @@ export class TimesheetPage {
         this.timesheet = res;
         this.singleActivity = res.dateLines[0];
         console.log('Single: ', this.singleActivity);
-        this.loading.dismiss();
+        // this.loading.dismiss();
       });
   }
 

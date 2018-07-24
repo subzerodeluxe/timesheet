@@ -7,8 +7,10 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from 'ionic-angular';
 
 @NgModule({
-	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer],
+	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer,
+    ],
 	imports: [IonicModule, CommonModule],
-	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer]
+	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer,
+    ]
 })
 export class ComponentsModule {}

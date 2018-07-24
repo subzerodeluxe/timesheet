@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 export class TimesheetProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello TimesheetProvider Provider');
+   
   }
 
   getCurrentWeekNumber(): number {

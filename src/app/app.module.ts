@@ -9,9 +9,11 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { Keyboard } from '@ionic-native/keyboard';
 
 // Providers
-import { AuthProvider } from '../providers/auth/auth';
-import { TimesheetProvider } from '../providers/timesheet/timesheet';
-import { LayoutProvider } from '../providers/layout/layout';
+import { TimesheetProvider } from '../providers/timesheet/timesheet.service';
+import { AuthProvider } from '../providers/auth/auth.service';
+import { LayoutProvider } from '../providers/layout/layout.service';
+import { UserProvider } from '../providers/user/user.service';
+
 
 // Angular Fire
 import { AngularFireModule } from 'angularfire2';
@@ -59,7 +61,8 @@ import { GooglePlus } from '@ionic-native/google-plus';
     Keyboard,
     GooglePlus,
     AuthProvider,
-    LayoutProvider
+    LayoutProvider,
+    UserProvider
   ]
 })
 export class AppModule {}

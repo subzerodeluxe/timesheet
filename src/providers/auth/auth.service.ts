@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { first } from 'rxjs/operators';
 import { Platform } from 'ionic-angular';
 import { GooglePlus } from '@ionic-native/google-plus';
 
@@ -11,9 +11,13 @@ export class AuthProvider {
 
   private isLoggedIn = false;
 
-  constructor(public http: HttpClient, public afAuth: AngularFireAuth, 
+  constructor(public afAuth: AngularFireAuth, 
     public platform: Platform, public gPlus: GooglePlus
   ) { }
+
+  getAuthenticatedUser() {
+    return this.afAuth.authState.pipe(first());
+  }
 
   regularLogin(value): Promise<any> {
     return new Promise<any>((resolve, reject) => {
