@@ -84,14 +84,14 @@
 
               <ion-item>
                   <ion-label floating>Hoe laat ben je begonnen?</ion-label>
-                  <ion-datetime displayFormat="HH:mm" formControlName="startTime"></ion-datetime>
+                  <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45"  formControlName="startTime" cancelText=Annuleer doneText=Klaar></ion-datetime>
 
                   <!-- <ion-input type="time" formControlName="startTime" class="form-controll" required></ion-input> -->
               </ion-item>
 
               <ion-item>
                   <ion-label floating>En hoe laat was je klaar?</ion-label>
-                  <ion-datetime displayFormat="HH:mm" formControlName="endTime"></ion-datetime>
+                  <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45" formControlName="endTime" cancelText=Annuleer doneText=Klaar></ion-datetime>
 
                   <!-- <ion-input type="time" formControlName="startTime" class="form-controll" required></ion-input> -->
               </ion-item>
