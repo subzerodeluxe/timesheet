@@ -1,8 +1,9 @@
 {
   "name": "timesheet",
-  "app_id": "b90833cf",
-  "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "ionic-angular",
+  "pro_id": "b90833cf",
+  "app_id": ""
 }

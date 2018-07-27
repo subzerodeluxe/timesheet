@@ -9,7 +9,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 @Injectable()
 export class AuthProvider {
 
-  private isLoggedIn = false;
+  // private isLoggedIn = false;
 
   constructor(public afAuth: AngularFireAuth, 
     public platform: Platform, public gPlus: GooglePlus
@@ -24,7 +24,7 @@ export class AuthProvider {
       this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password)
         .then(res => {
           resolve(res);
-          this.isLoggedIn = true; 
+          // this.isLoggedIn = true; 
         }, err => reject(err));
      });
   }
@@ -85,8 +85,8 @@ export class AuthProvider {
     });
   }
 
-  authenticated(): boolean {
-    console.log('Auth status' , this.isLoggedIn);
-    return this.isLoggedIn;
-  }
+  // authenticated(): boolean {
+  //   console.log('Auth status' , this.isLoggedIn);
+  //   return this.isLoggedIn;
+  // }
 }

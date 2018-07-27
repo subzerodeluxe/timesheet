@@ -56,9 +56,9 @@ export class ArchivePage {
               }];
   }
 
-  ionViewCanEnter() {
-    return this.authProvider.authenticated();
-  }
+  // ionViewCanEnter() {
+  //   return this.authProvider.authenticated();
+  // }
 
  
   expandItem(item, week){

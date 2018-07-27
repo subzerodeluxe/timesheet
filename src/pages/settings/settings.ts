@@ -14,8 +14,8 @@ export class SettingsPage {
   constructor(public navCtrl: NavController, public authProvider: AuthProvider) {
   }
 
-  ionViewCanEnter() {
-    return this.authProvider.authenticated();
-  }
+  // ionViewCanEnter() {
+  //   return this.authProvider.authenticated();
+  // }
 
 }

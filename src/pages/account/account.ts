@@ -50,9 +50,9 @@ export class AccountPage implements OnDestroy {
   }
 
 
-  ionViewCanEnter() {
-    return this.authProvider.authenticated();
-  }
+  // ionViewCanEnter() {
+  //   return this.authProvider.authenticated();
+  // }
 
   logOut(): void {
     this.authProvider.logOut()

@@ -37,9 +37,9 @@ export class AddActivityPage {
    });
   }
 
-  ionViewCanEnter() {
-    return this.authProvider.authenticated();
-  }
+  // ionViewCanEnter() {
+  //   return this.authProvider.authenticated();
+  // }
 
 
   initActivityFields(): FormGroup {

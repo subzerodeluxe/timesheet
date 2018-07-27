@@ -19,7 +19,7 @@ export class ActivityDetailPage {
     console.log('Activity object: ', this.activityObject);
   }
 
-  ionViewCanEnter() {
-    return this.authProvider.authenticated();
-  }
+  // ionViewCanEnter() {
+  //   return this.authProvider.authenticated();
+  // }
 }

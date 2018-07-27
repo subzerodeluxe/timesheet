@@ -22,7 +22,7 @@ export class TabsNavigationPage {
     this.tab4Root = 'settings';
   }
 
-  ionViewCanEnter() {
-    return this.authProvider.authenticated();
-  }
+  // ionViewCanEnter() {
+  //   return this.authProvider.authenticated();
+  // }
 }
