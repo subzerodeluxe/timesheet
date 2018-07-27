@@ -15,7 +15,7 @@ export class TimesheetPage {
   segment: string;
   timesheet: any;
   singleActivity: any; 
-  weekNumber: string;
+  convertedDates: any;
   loading: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
@@ -25,8 +25,10 @@ export class TimesheetPage {
   }
   
   ionViewDidLoad() {
-    this.weekNumber = this.time.getCurrentWeekNumber().toString();
-    console.log('Weeknummer: ', this.weekNumber);
+  
+    this.convertedDates = this.initDates();
+    console.log(this.convertedDates);
+    
     
     // this.timesheet = this.time.getData();
      this.time.getData()
@@ -38,6 +40,21 @@ export class TimesheetPage {
         console.log('Single: ', this.singleActivity);
         // this.loading.dismiss();
       });
+  }
+
+  initDates() {
+    const weekNumber = this.time.getCurrentWeekNumber();
+    const currentDayNumber = this.time.getCurrentDayNumber();
+    const currentMonth = this.time.getCurrentMonth();
+    const currentYear = this.time.getCurrentYear();
+    const isoString = this.time.getCurrentIsoString();
+    
+
+    let correctDates = {};
+    return correctDates = { weekNumber: weekNumber, currentMonth: currentMonth, 
+      currentDayNumber: currentDayNumber, currentYear: currentYear, isoString: isoString };
+    
+    // console.log('Weeknummer: ', this.weekNumber);
   }
 
   // ionViewCanEnter() {

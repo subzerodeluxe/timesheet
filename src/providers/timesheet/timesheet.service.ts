@@ -9,24 +9,37 @@ import { Observable } from 'rxjs/Observable';
 export class TimesheetProvider {
 
   constructor(public http: HttpClient) {
-   
+    
   }
 
   getCurrentWeekNumber(): number {
-    const weekNumber = moment().isoWeek(); // Number
+    const weekNumber = moment().week(); // Number
     return weekNumber;
+  }
+
+  getCurrentDayNumber(): number {
+    // const date = moment().isoWeekday().toString(); 
+    const dayNumber = moment().date();
+   
+    return dayNumber; 
+  }
+
+  getCurrentMonth(): string {
+    const month = moment().format('MMM'); 
+    return month;
+  }
+
+  getCurrentYear(): string {
+    const year = moment().format('YYYY');
+    return year; 
+  }
+
+  getCurrentIsoString(): string {
+    const isoString = moment().toISOString(true); 
+    return isoString; 
   }
 
   getData(): Observable<any> {
     return this.http.get('./assets/example-data/timesheet.json', {responseType: 'json'});
   }
-
-  
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
-  }
-
-  
 }

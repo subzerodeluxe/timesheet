@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Werkurenbriefje - week {{ weekNumber }}</ion-title>
+    <ion-title>Werkurenbriefje - week {{ convertedDates?.weekNumber }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -20,9 +20,9 @@
         <ion-item class="schedule-item">
           <ion-row>
             <ion-col width-20 class="schedule-date">
-              <h2 class="schedule-day">{{singleActivity?.dayNumber}}</h2>
-              <h3 class="schedule-month">{{singleActivity?.month}}</h3>
-              <h4 class="schedule-time">{{singleActivity?.year}}</h4>
+              <h2 class="schedule-day">{{ convertedDates?.currentDayNumber }}</h2>
+              <h3 class="schedule-month">{{ convertedDates?.currentMonth }}</h3>
+              <h4 class="schedule-time">{{ convertedDates?.currentYear }}</h4>
             </ion-col>
             <ion-col width-80 class="schedule-data" *ngFor="let activity of (singleActivity)?.activities">
               <div class="data-item" (click)="openActivity(activity)">
