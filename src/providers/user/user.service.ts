@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { User } from 'firebase/app';
 import { Profile } from '../../models/profile.interface';
+import { first } from 'rxjs/operators';
 
 @Injectable()
 export class UserProvider {
@@ -11,9 +12,10 @@ export class UserProvider {
   constructor(public afs: AngularFirestore) {
   }
 
+
   getCurrentUserInfo(user: User) {
     this.profileDoc = this.afs.collection('users').doc(user.uid);
-    return this.profileDoc.valueChanges();
+    return this.profileDoc.valueChanges().pipe(first());   // pak allleen de eerste value 
   }
 
   async saveProfile(user: User, incomingProfile: Profile) {
@@ -22,7 +24,8 @@ export class UserProvider {
     this.profileDoc = this.afs.collection('users').doc(user.uid);
 
     try {
-      await this.profileDoc.set(Object.assign({}, incomingProfile));
+      const uploadedProfile = { firstName: incomingProfile.firstName, lastName: incomingProfile.lastName, email: 'test@test.nl'};
+      await this.profileDoc.set({...uploadedProfile});
       return true;
     } 
     catch(e) {

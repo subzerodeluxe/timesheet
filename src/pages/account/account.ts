@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavController, NavParams, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth.service';
@@ -13,7 +13,7 @@ import { User } from '@firebase/auth-types';
   selector: 'page-account',
   templateUrl: 'account.html',
 })
-export class AccountPage {
+export class AccountPage implements OnDestroy {
 
   profileForm: FormGroup;
   profileImage: string;
@@ -44,8 +44,8 @@ export class AccountPage {
   }
 
   async saveProfile(profileObject) {
-    console.log(profileObject);
-    const result = this.userProvider.saveProfile(this.loggedInUser, profileObject.value);
+    console.log('Gesaved profiel: ', profileObject);
+    const result = this.userProvider.saveProfile(this.loggedInUser, profileObject);
     console.log(result);
   }
 
@@ -62,6 +62,10 @@ export class AccountPage {
       }, err => {
       console.log(err);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.authenticatedUser$.unsubscribe();
   }
 }
 
