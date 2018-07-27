@@ -15,6 +15,7 @@ export class AddActivityPage {
 
   firstActivityForm: FormGroup; 
   secondActivityForm: FormGroup;
+  thirdActivityForm: FormGroup;
   lastSlide = false;
   @ViewChild('slider') slider: Slides;
 
@@ -34,13 +35,13 @@ export class AddActivityPage {
       activities: this.formBuilder.array([
          this.initActivityFields()
       ])
-   });
+    });
+    
+    this.thirdActivityForm = new FormGroup({
+      startTime: new FormControl('07:00', Validators.required),
+      endTime: new FormControl('16:00', Validators.required)
+    });
   }
-
-  // ionViewCanEnter() {
-  //   return this.authProvider.authenticated();
-  // }
-
 
   initActivityFields(): FormGroup {
    return this.formBuilder.group({
@@ -86,6 +87,7 @@ export class AddActivityPage {
         console.log("success!")
         console.log(this.firstActivityForm.value);
         console.log(this.secondActivityForm.value);
+        console.log(this.thirdActivityForm.value);
         this.layoutProvider.presentBottomToast('Success!')
     }
   }

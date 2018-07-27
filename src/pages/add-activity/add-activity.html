@@ -37,7 +37,7 @@
           <ion-item>
               <ion-label floating>Locatie</ion-label>
               <ion-input type="text" formControlName="location" class="form-controll" required></ion-input>
-            </ion-item>
+          </ion-item>
         </section>
         <!-- <button ion-button icon-right (click)="nextSlide()">Volgende <ion-icon name="arrow-forward"></ion-icon></button> -->
         <ion-buttons end>
@@ -78,12 +78,27 @@
     </ion-slide>
 
     <ion-slide class="slide-3">
-        <form class="activity-form validations-form">
+        <form class="activity-form validations-form" [formGroup]="thirdActivityForm">
           <section class="form-section">
               <h2 class="section-title">Bijna klaar ...</h2>
-            
+
+              <ion-item>
+                  <ion-label floating>Hoe laat ben je begonnen?</ion-label>
+                  <ion-datetime displayFormat="HH:mm" formControlName="startTime"></ion-datetime>
+
+                  <!-- <ion-input type="time" formControlName="startTime" class="form-controll" required></ion-input> -->
+              </ion-item>
+
+              <ion-item>
+                  <ion-label floating>En hoe laat was je klaar?</ion-label>
+                  <ion-datetime displayFormat="HH:mm" formControlName="endTime"></ion-datetime>
+
+                  <!-- <ion-input type="time" formControlName="startTime" class="form-controll" required></ion-input> -->
+              </ion-item>
           </section>
-          <button ion-button icon-right (click)="save()">Creer activiteit</button>
+
+          
+          <button ion-button icon-right (click)="save()">Creëer activiteit</button>
           
         </form>
       </ion-slide>

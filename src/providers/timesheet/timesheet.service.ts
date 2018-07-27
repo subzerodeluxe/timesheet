@@ -5,15 +5,19 @@ import * as moment from 'moment';
 import { TimeSheet } from '../../models/timesheet.interface';
 import { Observable } from 'rxjs/Observable';
 
+
+
 @Injectable()
 export class TimesheetProvider {
 
+  
   constructor(public http: HttpClient) {
     
   }
 
   getCurrentWeekNumber(): number {
     const weekNumber = moment().week(); // Number
+    weekNumber.toLocaleString()
     return weekNumber;
   }
 
