@@ -1,11 +1,13 @@
-export interface DateLine {
-    date: string; // maandag 8 juli 2018 
-    totalActivities: Array<ActivityLine>; 
-    totalHours: number; // 7.5 
-}
+// export interface DateLine {
+//     date: string; // maandag 8 juli 2018 
+//     isoDateString: string;
+//     totalActivities: Array<ActivityLine>; 
+//     totalHours: string; // 7.5 
+// }
 
 export interface ActivityLine {
-    hours?: number // 3.5 
+    isoDateString: string;
+    hoursDifference: string; // 7:30 
     clientName: string;  // Needse molen 
     location: string; // Neede
     startTime: string; // 7:30

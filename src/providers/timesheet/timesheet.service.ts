@@ -1,22 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import * as moment from 'moment';
-import { TimeSheet } from '../../models/timesheet.interface';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { ActivityLine } from '../../models/activityLine.interface';
 import { Observable } from 'rxjs/Observable';
-
 
 
 @Injectable()
 export class TimesheetProvider {
 
   
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public afs: AngularFirestore) {
     
   }
 
-  calculateHoursDifference(startTime, endTime): string {
+  saveActivity(activityObject: ActivityLine) {
+    const ref = this.afs.collection('activities');
+    return ref.add(activityObject);
+  }
 
+  calculateHoursDifference(startTime, endTime): string {
     let start = moment.utc(startTime, "HH:mm");
     let end = moment.utc(endTime, "HH:mm");
 

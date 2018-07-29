@@ -41,7 +41,7 @@
         </section>
         <!-- <button ion-button icon-right (click)="nextSlide()">Volgende <ion-icon name="arrow-forward"></ion-icon></button> -->
         <ion-buttons end>
-            <button ion-button icon-right (click)="nextSlide()">Volgende<ion-icon name="arrow-forward"></ion-icon></button>
+            <button [disabled]="firstActivityForm.invalid" ion-button icon-right (click)="nextSlide()">Volgende<ion-icon name="arrow-forward"></ion-icon></button>
         </ion-buttons>
       </form>
     </ion-slide>
@@ -72,7 +72,7 @@
         </span>
 
         <ion-buttons end>
-            <button ion-button icon-right (click)="nextSlide()">Volgende<ion-icon name="arrow-forward"></ion-icon></button>
+            <button [disabled]="secondActivityForm.invalid" ion-button icon-right (click)="nextSlide()">Volgende<ion-icon name="arrow-forward"></ion-icon></button>
         </ion-buttons>
       </form>
     </ion-slide>
@@ -85,14 +85,27 @@
 
               <ion-item>
                   <ion-label floating>Hoe laat ben je begonnen?</ion-label>
-                  <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45"  formControlName="startTime" cancelText=Annuleer doneText=Klaar></ion-datetime>
+                  <ion-datetime 
+                    (ionChange)="calculateHours(thirdActivityForm.value.startTime, thirdActivityForm.value.endTime)"
+                    displayFormat="HH:mm" 
+                    minuteValues="0,15,30,45"
+                    formControlName="startTime" 
+                    cancelText=Annuleer 
+                    doneText=Klaar></ion-datetime>
 
                   <!-- <ion-input type="time" formControlName="startTime" class="form-controll" required></ion-input> -->
               </ion-item>
 
               <ion-item>
                   <ion-label floating>En hoe laat was je klaar?</ion-label>
-                  <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45" formControlName="endTime" cancelText=Annuleer doneText=Klaar></ion-datetime>
+                  <ion-datetime 
+                      (ionChange)="calculateHours(thirdActivityForm.value.startTime, thirdActivityForm.value.endTime)"
+                      displayFormat="HH:mm"
+                      minuteValues="0,15,30,45" 
+                      formControlName="endTime" 
+                      cancelText=Annuleer 
+                      doneText=Klaar>
+                  </ion-datetime>
 
                   <!-- <ion-input type="time" formControlName="startTime" class="form-controll" required></ion-input> -->
               </ion-item>

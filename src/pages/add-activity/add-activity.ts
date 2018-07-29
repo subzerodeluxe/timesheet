@@ -3,8 +3,8 @@ import { NavController, NavParams, Slides, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
-import { ActivityLine } from '../../models/dateLine.interface';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
+import { ActivityLine } from '../../models/activityLine.interface';
 
 @IonicPage({
   name: 'add-activity'
@@ -90,18 +90,37 @@ export class AddActivityPage {
         this.layoutProvider.presentBottomToast('Niet alle velden zijn (correct) ingevuld!')
       }
     else {
-        const activityObject: ActivityLine  = { 
-          clientName: this.firstActivityForm.value.clientName,
-          location: this.firstActivityForm.value.location,
-          startTime: this.thirdActivityForm.value.startTime,
-          endTime: this.thirdActivityForm.value.endTime,
-          activities: this.secondActivityForm.value.activities
-        };
-        console.log(activityObject);
-        
-        this.totalHours = this.time.calculateHoursDifference(activityObject.startTime, activityObject.endTime);
-        this.layoutProvider.presentBottomToast('Success!')
+
+      let loading = this.layoutProvider.showLoading();
+      loading.present();
+
+      this.totalHours = this.time.calculateHoursDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime,);
+
+      const activityObject: ActivityLine  = { 
+        isoDateString: this.time.getCurrentIsoString(),
+        clientName: this.firstActivityForm.value.clientName,
+        location: this.firstActivityForm.value.location,
+        startTime: this.thirdActivityForm.value.startTime,  
+        endTime: this.thirdActivityForm.value.endTime,
+        activities: this.secondActivityForm.value.activities,
+        hoursDifference: this.totalHours
+      };
+      console.log(activityObject);
+      this.time.saveActivity(activityObject)
+        .then(() => {
+          loading.dismiss();
+          console.log('Gelukt!');
+          this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
+          setTimeout(() => {
+            this.navCtrl.setRoot('timesheet');
+          }, 1000);
+        }).catch(err => console.log(err));
     }
+  }
+
+  calculateHours(startTime, endTime) {
+    console.log('We komen er wel');
+    this.totalHours = this.time.calculateHoursDifference(startTime, endTime);
   }
 
   validation_messages = {

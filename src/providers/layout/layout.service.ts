@@ -1,11 +1,22 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController } from 'ionic-angular';
-
+import { AlertController, ToastController, LoadingController } from 'ionic-angular';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AppConfig } from '../../app/app.config';
 @Injectable()
 export class LayoutProvider {
 
-  constructor(public alertCtrl: AlertController, public toastCtrl: ToastController) {
+  constructor(public alertCtrl: AlertController, 
+    public loadingCtrl: LoadingController, public toastCtrl: ToastController, public sanitizer: DomSanitizer) {
+  }
+
+  showLoading() {
+    const customSpinner: any = this.sanitizer.bypassSecurityTrustHtml(AppConfig.customSpinner);
    
+    let loading = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: customSpinner
+      });
+    return loading; 
   }
 
   showAlertMessage(title, message, buttonText) {
