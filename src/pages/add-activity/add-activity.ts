@@ -3,6 +3,8 @@ import { NavController, NavParams, Slides, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
+import { ActivityLine } from '../../models/dateLine.interface';
+import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 
 @IonicPage({
   name: 'add-activity'
@@ -16,10 +18,11 @@ export class AddActivityPage {
   firstActivityForm: FormGroup; 
   secondActivityForm: FormGroup;
   thirdActivityForm: FormGroup;
+  totalHours: string; 
   lastSlide = false;
   @ViewChild('slider') slider: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
+  constructor(public navCtrl: NavController, public navParams: NavParams, public time: TimesheetProvider,
     public formBuilder: FormBuilder, public authProvider: AuthProvider, public layoutProvider: LayoutProvider) {
 
     this.firstActivityForm = new FormGroup({
@@ -73,21 +76,30 @@ export class AddActivityPage {
     this.slider.slidePrev();
   }
 
-  save() {
+  saveActivity() {
     if(!this.firstActivityForm.valid){
       this.slider.slideTo(0);
       // boodschap: niet alle velden zijn (correct) ingevuld!
       this.layoutProvider.presentBottomToast('Niet alle velden zijn (correct) ingevuld!')
     }
-    else if(!this.secondActivityForm.valid){
+    else if(!this.secondActivityForm.valid) {
         this.slider.slideTo(1);
+        this.layoutProvider.presentBottomToast('Niet alle velden zijn (correct) ingevuld!')
+      } else if(!this.thirdActivityForm.valid) {
+        this.slider.slideTo(3);
         this.layoutProvider.presentBottomToast('Niet alle velden zijn (correct) ingevuld!')
       }
     else {
-        console.log("success!")
-        console.log(this.firstActivityForm.value);
-        console.log(this.secondActivityForm.value);
-        console.log(this.thirdActivityForm.value);
+        const activityObject: ActivityLine  = { 
+          clientName: this.firstActivityForm.value.clientName,
+          location: this.firstActivityForm.value.location,
+          startTime: this.thirdActivityForm.value.startTime,
+          endTime: this.thirdActivityForm.value.endTime,
+          activities: this.secondActivityForm.value.activities
+        };
+        console.log(activityObject);
+        
+        this.totalHours = this.time.calculateHoursDifference(activityObject.startTime, activityObject.endTime);
         this.layoutProvider.presentBottomToast('Success!')
     }
   }

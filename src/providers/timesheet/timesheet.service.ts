@@ -15,6 +15,23 @@ export class TimesheetProvider {
     
   }
 
+  calculateHoursDifference(startTime, endTime): string {
+
+    let start = moment.utc(startTime, "HH:mm");
+    let end = moment.utc(endTime, "HH:mm");
+
+    // account for crossing over to midnight the next day
+    if (end.isBefore(start)) end.add(1, 'day');
+
+    // calculate the duration
+    let d = moment.duration(end.diff(start));
+
+    // format a string result
+    const correctHours = moment.utc(+d).format('H:mm');  
+    console.log(correctHours);
+    return correctHours;
+  }
+
   getCurrentWeekNumber(): number {
     const weekNumber = moment().week(); // Number
     weekNumber.toLocaleString()

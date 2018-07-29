@@ -51,7 +51,7 @@
           <h2 class="section-title">Werkzaamheden</h2>
         <div formArrayName="activities">
           <section [formGroupName]="i" class="form-section"
-            *ngFor="let tech of secondActivityForm.controls.activities.controls; let i = index">
+            *ngFor="let a of secondActivityForm.controls.activities.controls; let i = index">
             <ion-item>
                 <ion-label floating>Taak</ion-label>
                 <ion-input type="text" class="form-controll" maxlength="50" formControlName="name"></ion-input>
@@ -80,7 +80,8 @@
     <ion-slide class="slide-3">
         <form class="activity-form validations-form" [formGroup]="thirdActivityForm">
           <section class="form-section">
-              <h2 class="section-title">Bijna klaar ...</h2>
+              <h2 *ngIf="!totalHours" class="section-title">Bijna klaar ...</h2>
+              <h2 class="section-title" *ngIf="totalHours">Totaal {{ totalHours }} uur gewerkt</h2>
 
               <ion-item>
                   <ion-label floating>Hoe laat ben je begonnen?</ion-label>
@@ -98,7 +99,7 @@
           </section>
 
           
-          <button ion-button icon-right (click)="save()">Creëer activiteit</button>
+          <button ion-button icon-right (click)="saveActivity()">Creëer activiteit</button>
           
         </form>
       </ion-slide>
