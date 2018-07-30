@@ -14,6 +14,10 @@ export class TimesheetProvider {
     
   }
 
+  getActivities() {
+    const activitiesRef = this.afs.collection('activities');
+  }
+
   saveActivity(activityObject: ActivityLine) {
     const ref = this.afs.collection('activities');
     return ref.add(activityObject);
@@ -63,7 +67,7 @@ export class TimesheetProvider {
     return isoString; 
   }
 
-  getData(): Observable<any> {
+  getFakeData(): Observable<any> {
     return this.http.get('./assets/example-data/timesheet.json', {responseType: 'json'});
   }
 }

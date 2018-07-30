@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IonicApp, IonicModule, IonicErrorHandler, Scroll } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -40,6 +41,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
       autoFocusAssist: false
     }),
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
     ComponentsModule,

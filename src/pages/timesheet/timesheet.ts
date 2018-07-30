@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, SegmentButton, IonicPage } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../../providers/auth/auth.service';
+import { LayoutProvider } from '../../providers/layout/layout.service';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @IonicPage({
   name: 'timesheet'
@@ -9,37 +11,53 @@ import { AuthProvider } from '../../providers/auth/auth.service';
 @Component({
   selector: 'page-timesheet',
   templateUrl: 'timesheet.html',
+  animations: [
+    trigger('shakeButton', [
+      state('small', style({
+        transform: 'scale(1)',
+      })),
+      state('large', style({
+          transform: 'scale(1.02)',
+      })),
+      transition('small => large', animate('100ms ease-in')),
+      transition('large => small', animate('100ms ease-in'))
+    ])
+  ]
 })
 export class TimesheetPage {
 
   segment: string;
+  state: string = 'small';
+  noActivities: boolean = true;
   timesheet: any;
   singleActivity: any; 
+  shakeButton: boolean = true; 
   convertedDates: any;
   loading: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-     public authProvider: AuthProvider, public time: TimesheetProvider) {
+     public authProvider: AuthProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
     this.segment = "today";
-    // this.loading = this.loadingCtrl.create();
+    this.loading = this.layout.showLoading();
+    this.state = (this.state === 'small' ? 'large' : 'small');
   }
   
   ionViewDidLoad() {
-  
+    this.loading.present();
     this.convertedDates = this.initDates();
-    console.log(this.convertedDates);
     
-    
-    // this.timesheet = this.time.getData();
-     this.time.getData()
-      .subscribe(
-        (res) => {
-        console.log('Binnengekomen data ', res);
-        this.timesheet = res;
-        this.singleActivity = res.dateLines[0];
-        console.log('Single: ', this.singleActivity);
-        // this.loading.dismiss();
-      });
+    this.time.getActivities();
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 4000);
+  
+    //  this.time.getFakeData()
+    //   .subscribe(
+    //     (res) => {
+    //       this.timesheet = res;
+    //       this.singleActivity = res.dateLines[0];
+    //       this.loading.dismiss();
+    // });
   }
 
   initDates() {
@@ -57,9 +75,6 @@ export class TimesheetPage {
     // console.log('Weeknummer: ', this.weekNumber);
   }
 
-  // ionViewCanEnter() {
-  //   return this.authProvider.authenticated();
-  // }
 
   onSegmentChanged(segmentButton: SegmentButton) {
     console.log('Segment changed to', segmentButton.value);
@@ -74,7 +89,11 @@ export class TimesheetPage {
   }
 
   openActivity(activity) {
-    this.navCtrl.push('activity-detail', { activity: activity });
+    this.loading.present();
+    this.navCtrl.push('activity-detail', { activity: activity })
+      .then(() => {
+        this.loading.dismiss();
+      }).catch(() => this.loading.dismiss());
   }
 
 

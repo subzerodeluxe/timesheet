@@ -3,42 +3,11 @@ page-timesheet {
 		@include header-styles(color($colors, header, base), color($colors, header, contrast));
 	}
 
-
-	.schedule-content
-	{
-		background-color: color($colors, background, base);
-
-		.footer {
-			padding-top: 45px;
-
-		}
-
-		.hour-section
+	.footer {
+		.total-hours-box
 			{
-				padding: 0px 25px;
-
-				.item:first-child
-				{
-					margin-top: 20px;
-				}
-			}
-		
-			.section-title
-			{
-				font-size: 1.2rem;
-				line-height: 1.2;
-				letter-spacing: 1.1px;
-				text-align: center;
-				color: $theme-color;
-				font-weight: 400;
-				margin: 0px;
-				padding-bottom: 15px;
-			}
-
-			.total-hours-box
-			{
-				// padding-bottom: 45px;
-				// margin-bottom: 20px;
+			
+				margin-top: 15px;
 				position: sticky;
 				bottom: 25px;
 				left: 0;
@@ -71,7 +40,62 @@ page-timesheet {
 
 					}
 				}
+
+				.section-title
+			{
+				font-size: 1.2rem;
+				line-height: 1.2;
+				letter-spacing: 1.1px;
+				text-align: center;
+				color: $theme-color;
+				font-weight: 400;
+				margin: 0px;
+				padding-bottom: 15px;
 			}
+		}
+	}
+
+
+	.schedule-content
+	{
+		background-color: color($colors, background, base);
+
+		.footer {
+			padding-top: 45px;
+
+		}
+
+		.slide-big {
+			animation-name: slideBig;
+			animation-duration: 2.1s; 
+			animation-iteration-count: infinite;
+		}
+		 
+	
+
+		.hour-section
+			{
+				padding: 0px 25px;
+
+				.item:first-child
+				{
+					margin-top: 20px;
+				}
+			}
+		
+			.section-title
+			{
+				font-size: 1.2rem;
+				line-height: 1.2;
+				letter-spacing: 1.1px;
+				text-align: center;
+				color: $theme-color;
+				font-weight: 400;
+				margin: 0px;
+				padding-bottom: 15px;
+			}
+
+			
 
 		.schedule-segment
 		{
@@ -161,6 +185,22 @@ page-timesheet {
 							.item-title
 							{
 								font-size: 1.6rem;
+								font-weight: 500;
+								letter-spacing: 0.2px;
+								color: $theme-color;
+								margin-bottom: 12px;
+
+								&.one-line
+								{
+									overflow: hidden;
+									text-overflow: ellipsis;
+									white-space: nowrap;
+								}
+							}
+
+							.item-title-no-activities
+							{
+								font-size: 1.2rem;
 								font-weight: 500;
 								letter-spacing: 0.2px;
 								color: $theme-color;

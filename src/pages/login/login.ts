@@ -23,6 +23,8 @@ export class LoginPage {
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
+
+    this.loading = this.layout.showLoading();
   }
 
   goToSignup() {
@@ -30,13 +32,15 @@ export class LoginPage {
   }
 
   regularLogin(value) {
-    console.log('Login object: ', value);
+    this.loading.present();
+
     this.authProvider.regularLogin(value)
       .then(res => {
+        this.loading.dismiss();
         this.layout.presentBottomToast(`Welkom ${value.email}`);
         this.navCtrl.setRoot('tabs');
       }, err => {
-        console.log(err);
+        this.loading.dismiss();
         this.errorMessage = err.message;
       });
   }

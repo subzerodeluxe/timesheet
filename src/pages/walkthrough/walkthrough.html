@@ -1,64 +1,34 @@
-<ion-header class="walkthrough-header">
-  <ion-toolbar>
-    <ion-buttons end>
-      <button ion-button color="primary" class="skip-button" (click)="skipIntro()" [hidden]="lastSlide">Overslaan</button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="walkthrough-content">
-  <ion-slides #slider (ionSlideDidChange)="onSlideChanged()" pager="true">
-    <ion-slide class="slide-1">
-
-      <ion-row class="intro-image-row">
-        <ion-col center width-64 no-padding>
-         <!-- <preload-image [ratio]="{w:1, h:1}" src="./assets/images/first-slide.png"></preload-image> -->
-         <!-- <img src="./assets/images/slide-2-img.png"/> -->
-        </ion-col>
-      </ion-row>
-
-      <h2 class="logo-title">Digitaal werkurenbriefje</h2>
-      <p class="intro-text">
-        Deze app ondersteunt je met het bijhouden van je werkuren. 
-      </p>
-    </ion-slide>
-
-    <ion-slide class="slide-2">
-      <ion-row class="intro-image-row">
-        <ion-col center width-64 no-padding>
-          <!-- <preload-image [ratio]="{w:1, h:1}" src="./assets/images/slide-3-img.png"></preload-image>
-          <img src="./assets/images/slide-3-img.png"/>  -->
-        </ion-col>
-      </ion-row>
-
-      <h2 class="main-title">Eenvoudig uren doorgeven</h2>
-      <p class="intro-text">
-          Aan het einde van elke werkdag vraagt deze app om door te geven hoeveel uur je hebt gedraaid.
-      </p>
-      <p class="sub-text">
-          Zodoende heb je op vrijdagmiddag een compleet ingevuld werkurenbriefje dat je rechtstreeks kunt doorsturen
-          naar je leidinggevende. 
-      </p>    
-    </ion-slide>
-
-    <ion-slide class="slide-3">
-      <ion-row class="intro-image-row">
-        <ion-col center width-64 no-padding>
-          <!-- <preload-image [ratio]="{w:1, h:1}" src="./assets/images/slide-4-img.png" alt="slide 4 img" title="ion2FullApp"></preload-image> 
-          <img src="./assets/images/slide-4-img.png"/> -->
-        </ion-col>
-      </ion-row>
-
-      <h2 class="main-title">Klaar voor?</h2>
-      <p class="intro-text">
-        Maak een account aan om te beginnen of log in met je emailadres. 
-      </p>
-
-      <div class="button-bar">
-        <button ion-button primary (click)="goToLogin()">Inloggen</button>
-        <button ion-button primary (click)="goToSignup()">Registreren</button>
-      </div>
-    </ion-slide>
-
-  </ion-slides>
-</ion-content>
+<ion-content>
+    <ion-slides pager (ionSlideDidChange)="slideChanged()" (ionSlideDrag)="slideMoved()">
+      <ion-slide>
+        <div class="diag" style="background: url('assets/images/whitebg.svg') no-repeat">
+          <ion-icon ios="ios-time" md="md-time" color="primary" [@bounce]='state' (@bounce.done)="animationDone()"></ion-icon>
+        </div>
+        <div [@bounce]='state'>
+          <h2>Digitaal werkurenbriefje</h2>
+          <p>Deze app ondersteunt je met het bijhouden van je werkuren.</p>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div class="diag" style="background: url('assets/images/whitebg.svg') no-repeat">
+          <ion-icon ios="ios-construct" md="md-construct" color="primary" [@bounce]='state'></ion-icon>
+        </div>
+        <div [@bounce]='state'>
+          <h2>Eenvoudig uren doorgeven</h2>
+          <p> Aan het einde van elke werkdag vraagt deze app om door te geven hoeveel uur je hebt gewerkt.</p>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div class="diag" style="background: url('assets/images/whitebg.svg') no-repeat">
+          <ion-icon ios="ios-copy" md="md-copy" color="primary" [@bounce]='state'></ion-icon>
+        </div>
+        <div [@bounce]='state'>
+          <h2>Handig overzicht</h2>
+          <p>Zodoende heb je op vrijdagmiddag een compleet ingevuld werkurenbriefje dat je rechtstreeks kunt doorsturen
+              naar je leidinggevende</p>
+        </div>
+      </ion-slide>
+    </ion-slides>
+    <button (click)="skip()" id="skip">{{ skipMsg }}</button>
+  </ion-content>
+  

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Nieuwe activiteit</ion-title>
+    <ion-title>Nieuwe werkzaamheid</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -48,7 +48,7 @@
 
     <ion-slide class="slide-2">
       <form class="activity-form validations-form" [formGroup]="secondActivityForm">
-          <h2 class="section-title">Werkzaamheden</h2>
+          <h2 class="section-title">Verrichtingen</h2>
         <div formArrayName="activities">
           <section [formGroupName]="i" class="form-section"
             *ngFor="let a of secondActivityForm.controls.activities.controls; let i = index">
@@ -112,7 +112,7 @@
           </section>
 
           
-          <button ion-button icon-right (click)="saveActivity()">Creëer activiteit</button>
+          <button ion-button icon-right (click)="saveActivity()">Werkzaamheid opslaan</button>
           
         </form>
       </ion-slide>

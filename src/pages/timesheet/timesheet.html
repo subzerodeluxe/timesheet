@@ -14,7 +14,7 @@
     </ion-segment-button>
   </ion-segment>
 
- <div [ngSwitch]="segment" blur-on-scroll>
+ <div [ngSwitch]="segment">
     <div *ngSwitchCase="'today'">
       <ion-list class="schedule-list">
         <ion-item class="schedule-item">
@@ -24,7 +24,19 @@
               <h3 class="schedule-month">{{ convertedDates?.currentMonth }}</h3>
               <h4 class="schedule-time">{{ convertedDates?.currentYear }}</h4>
             </ion-col>
-            <ion-col width-80 class="schedule-data" *ngFor="let activity of (singleActivity)?.activities">
+
+            <ion-col width-80 class="schedule-data" *ngIf="noActivities" [@shakeButton]="state">
+              <div class="data-item" (click)="addNewActivity()">
+                <div class="item-content">
+                  <h4 class="item-title-no-activities">Nog geen werkzaamheden vandaag</h4>
+                  <h4 class="item-title-no-activities">Wil je er een toevoegen?</h4>
+                </div>
+              </div>
+            </ion-col>
+
+            <ion-col width-80 class="schedule-data" *ngIf="!noActivities">
+                <!-- <ion-col width-80 class="schedule-data" *ngFor="let activity of (singleActivity)?.activities"> -->
+
               <div class="data-item" (click)="openActivity(activity)">
                 <div class="item-content">
                   <h2 class="item-title one-line">{{activity.customer}}</h2>
@@ -48,18 +60,6 @@
         </ion-item>
       </ion-list>
 
-
-      <div class="total-hours-box">
-          <ion-list>
-              <section class="hour-section">
-                <h3 class="section-title">Totaal aantal uren</h3>
-        
-                <ion-item>
-                  <ion-label>{{ singleActivity?.totalHours }}</ion-label>
-                </ion-item>
-              </section>
-            </ion-list>
-      </div>
      
       <ion-fab bottom right>
         <button ion-fab (click)="addNewActivity()">
@@ -71,6 +71,7 @@
 
     <div *ngSwitchCase="'overview'">
         <ion-list class="schedule-list" *ngFor="let date of (timesheet)?.dateLines">
+            <!-- <ion-list class="schedule-list" *ngFor="let date of (timesheet)?.dateLines"> -->
           <ion-item class="schedule-item">
           <ion-row>
             <ion-col width-20 class="schedule-date">
@@ -97,16 +98,22 @@
           </ion-row>
         </ion-item>
       </ion-list>
-
-      <ion-list class="total-hours-box">
-          <section class="hour-section">
-            <h3 class="section-title">Totaal aantal uren</h3>
-    
-            <ion-item>
-              <ion-label>{{ singleActivity?.totalHours }}</ion-label>
-            </ion-item>
-          </section>
-        </ion-list>
       </div>
   </div>
 </ion-content> 
+
+<ion-footer class="footer" no-border>
+    <div class="total-hours-box">
+        <ion-list>
+            <section class="hour-section">
+              <h3 *ngIf="noActivities" class="section-title">Vandaag geen uren geregistreerd</h3>
+              <h3 *ngIf="!noActivities" class="section-title">Totaal aantal uren</h3>
+
+              <ion-item>
+                <ion-label *ngIf="noActivities">-</ion-label>
+                <ion-label *ngIf="!noActivities">{{ singleActivity?.totalHours }}</ion-label>
+              </ion-item>
+            </section>
+          </ion-list>
+    </div>
+</ion-footer>

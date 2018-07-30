@@ -26,7 +26,7 @@ export class MyApp {
           this.layoutService.presentTopToast(`Welkom terug ${user.email}`);
           authObserver.unsubscribe();  
         } else {
-          this.rootPage = 'login';
+          this.rootPage = 'walkthrough';
           authObserver.unsubscribe();
         }
       });
