@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides, IonicPage } from 'ionic-angular';
 import { trigger, style, state, transition, animate, keyframes } from '@angular/animations';
+import { NativePageTransitions } from '@ionic-native/native-page-transitions';
+import { slideOptions } from '../../app/app.config';
 
 @IonicPage({
   name: 'walkthrough'
@@ -10,21 +12,21 @@ import { trigger, style, state, transition, animate, keyframes } from '@angular/
   templateUrl: 'walkthrough.html',
   animations: [
     trigger('bounce', [
-          state('*', style({
-              transform: 'translateX(0)'
-          })),
-          transition('* => rightSwipe', animate('700ms ease-out', keyframes([
-            style({transform: 'translateX(0)', offset: 0}),
-            style({transform: 'translateX(-65px)',  offset: 0.3}),
-            style({transform: 'translateX(0)',     offset: 1.0})
-          ]))),
-          transition('* => leftSwipe', animate('700ms ease-out', keyframes([
-            style({transform: 'translateX(0)', offset: 0}),
-            style({transform: 'translateX(65px)',  offset: 0.3}),
-            style({transform: 'translateX(0)',     offset: 1.0})
-          ])))
-      ])
-    ]
+      state('*', style({
+          transform: 'translateX(0)'
+      })),
+      transition('* => rightSwipe', animate('700ms ease-out', keyframes([
+        style({transform: 'translateX(0)', offset: 0}),
+        style({transform: 'translateX(-65px)',  offset: 0.3}),
+        style({transform: 'translateX(0)',     offset: 1.0})
+      ]))),
+      transition('* => leftSwipe', animate('700ms ease-out', keyframes([
+        style({transform: 'translateX(0)', offset: 0}),
+        style({transform: 'translateX(65px)',  offset: 0.3}),
+        style({transform: 'translateX(0)',     offset: 1.0})
+      ])))
+    ])
+  ]
 })
 export class WalkthroughPage {
 
@@ -33,11 +35,12 @@ export class WalkthroughPage {
   state: string = 'x';
   
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private pageTransition: NativePageTransitions) {
 
   }
 
   skip() {
+    this.pageTransition.slide(slideOptions);
     this.navCtrl.setRoot('login');
   }
  
@@ -56,16 +59,5 @@ export class WalkthroughPage {
 
   animationDone() {
     this.state = 'x';
-  }
-
-  goToLogin() {
-    // this.nav.push(LoginPage);
-    //this.nav.setRoot(TabsNavigationPage);
-    this.navCtrl.setRoot('login');
-  }
-
-  goToSignup() {
-    // this.nav.push(SignupPage);
-    this.navCtrl.push('register'); 
   }
 }

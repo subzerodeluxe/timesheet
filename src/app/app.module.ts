@@ -8,6 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpClientModule } from '@angular/common/http';
 import { TextMaskModule } from 'angular2-text-mask';
 import { Keyboard } from '@ionic-native/keyboard';
+import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 
 // Providers
 import { TimesheetProvider } from '../providers/timesheet/timesheet.service';
@@ -25,6 +26,7 @@ import { ComponentsModule } from '../components/components.module';
 import { DirectivesModule } from '../directives/directives.module';
 import { CommonModule } from '@angular/common';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TimesheetProvider,
     Keyboard,
+    NativePageTransitions,
     GooglePlus,
     AuthProvider,
     LayoutProvider,

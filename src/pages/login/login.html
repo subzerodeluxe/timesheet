@@ -3,17 +3,17 @@
     <ion-title>Inloggen</ion-title>
   </ion-navbar>
 </ion-header>
-
+  
 <ion-content class="login-content auth-content">
   <form class="login-form auth-form" [formGroup]="loginForm" (ngSubmit)="regularLogin(loginForm.value)">
-    <ion-item>
+    <ion-item> 
       <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
     </ion-item>
-    <show-hide-container>
+    <!-- <show-hide-container>
       <ion-item>
         <ion-input type="password" placeholder="Wachtwoord" formControlName="password" show-hide-input></ion-input>
       </ion-item>
-    </show-hide-container>
+    </show-hide-container> -->
     <button ion-button block class="auth-action-button login-button" 
     type="submit" [disabled]="!loginForm.valid">Log in</button>
   </form>
