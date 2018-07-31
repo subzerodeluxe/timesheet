@@ -25,7 +25,7 @@
               <h4 class="schedule-time">{{ convertedDates?.currentYear }}</h4>
             </ion-col>
 
-            <ion-col width-80 class="schedule-data" *ngIf="noActivities" [@shakeButton]="state">
+            <ion-col width-80 class="schedule-data" *ngIf="noActivities">
               <div class="data-item" (click)="addNewActivity()">
                 <div class="item-content">
                   <h4 class="item-title-no-activities">Nog geen werkzaamheden vandaag</h4>

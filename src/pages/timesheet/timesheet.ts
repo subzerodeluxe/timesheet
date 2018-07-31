@@ -39,25 +39,16 @@ export class TimesheetPage {
      public authProvider: AuthProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
     this.segment = "today";
     this.loading = this.layout.showLoading();
-    this.state = (this.state === 'small' ? 'large' : 'small');
   }
   
   ionViewDidLoad() {
     this.loading.present();
     this.convertedDates = this.initDates();
-    
-    this.time.getActivities();
-    setTimeout(() => {
-      this.loading.dismiss();
-    }, 4000);
-  
-    //  this.time.getFakeData()
-    //   .subscribe(
-    //     (res) => {
-    //       this.timesheet = res;
-    //       this.singleActivity = res.dateLines[0];
-    //       this.loading.dismiss();
-    // });
+    this.time.createTimesheet()
+      .then((result) => {
+        console.log('Gelukt!', result);
+        this.loading.dismiss();
+      }).catch(e => console.log(e)); 
   }
 
   initDates() {

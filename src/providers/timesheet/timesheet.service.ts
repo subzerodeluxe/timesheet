@@ -2,34 +2,50 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { ActivityLine, EnrichedActivity } from '../../models/activityLine.interface';
+import { EnrichedActivity, ActivityLine } from '../../models/activityLine.interface';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { Employee } from '../../models/employee.interface';
 import { User } from 'firebase/app';
-
-
+import { TimeSheet } from '../../models/timesheet.interface';
+import { DocumentReference } from '@firebase/firestore-types';
+import { first } from 'rxjs/operators';
 
 @Injectable()
 export class TimesheetProvider {
 
   enrichedActivity: EnrichedActivity;
   activitiesRef: AngularFirestoreCollection<any>;
+  timesheet: TimeSheet;
   user: User;
-  result: any;
- 
+  
   constructor(public afs: AngularFirestore, public userService: UserProvider,  
     public authService: AuthProvider) {
       this.activitiesRef = this.afs.collection('activities');
-    }
-      
-  getActivities() {
-   // 
+  }
+    
+  createTimesheet() {
+    const timesheetref = this.afs.collection('timesheets');
+    this.user = this.authService.getCurrentUser(); // gets firebase user 
+    return this.userService.getCurrentUserInfo(this.user).toPromise()
+      .then((userObject: Employee) => {
+        this.timesheet = {
+          employee: { uid: userObject.uid },
+          weekNumber: this.getCurrentWeekNumber(),
+          timesheetFinished: false,
+          isoStartDate: this.getCurrentIsoString()
+        };
+
+        return timesheetref.add(this.timesheet);
+      }).catch(err => console.log('Oh no ... ', err));
+  
+  }
+
+  updateTimesheet() {
+
   }
 
   saveActivity(activityObject: ActivityLine) {
-    this.user = this.authService.getCurrentUser(); // gets firebase user 
-
     return this.userService.getCurrentUserInfo(this.user).toPromise()
       .then((userObject: Employee) => {
         this.enrichedActivity = {
@@ -40,6 +56,8 @@ export class TimesheetProvider {
         return this.activitiesRef.add(this.enrichedActivity);
       }).catch(err => console.log('Oh no ... ', err));
   }
+
+
 
   calculateHoursDifference(startTime, endTime): string {
     let start = moment.utc(startTime, "HH:mm");

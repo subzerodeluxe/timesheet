@@ -1,12 +1,5 @@
 import { Employee } from "./employee.interface";
 
-// export interface DateLine {
-//     date: string; // maandag 8 juli 2018 
-//     isoDateString: string;
-//     totalActivities: Array<ActivityLine>; 
-//     totalHours: string; // 7.5 
-// }
-
 export interface EnrichedActivity {
     employee: Employee;
     activityLine: ActivityLine;
