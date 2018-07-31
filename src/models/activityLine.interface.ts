@@ -1,3 +1,5 @@
+import { Employee } from "./employee.interface";
+
 // export interface DateLine {
 //     date: string; // maandag 8 juli 2018 
 //     isoDateString: string;
@@ -5,9 +7,15 @@
 //     totalHours: string; // 7.5 
 // }
 
+export interface EnrichedActivity {
+    employee: Employee;
+    activityLine: ActivityLine;
+}
+
 export interface ActivityLine {
     isoDateString: string;
-    hoursDifference: string; // 7:30 
+    hoursDifference: string; // 9:30 
+    hoursDifferenceWithBreak?: string; // 7:45
     clientName: string;  // Needse molen 
     location: string; // Neede
     startTime: string; // 7:30

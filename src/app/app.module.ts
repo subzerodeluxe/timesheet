@@ -50,7 +50,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     DirectivesModule,
     TextMaskModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule
   ],
   bootstrap: [IonicApp],

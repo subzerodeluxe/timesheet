@@ -15,5 +15,5 @@ export function createUserProfile(userRecord) {
         creationTime: userRecord.metadata.creationTime
     }
     
-    return docRef.set({userObject}).catch(console.error);
+    return docRef.set({...userObject}).catch(console.error);
 }

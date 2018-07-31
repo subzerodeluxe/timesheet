@@ -105,18 +105,19 @@ export class AddActivityPage {
         activities: this.secondActivityForm.value.activities,
         hoursDifference: this.totalHours
       };
-      console.log(activityObject);
+
       this.time.saveActivity(activityObject)
         .then(() => {
-          loading.dismiss();
-          console.log('Gelukt!');
-          this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
-          setTimeout(() => {
-            this.navCtrl.setRoot('timesheet');
-          }, 1000);
-        }).catch(err => console.log(err));
+          loading.dismiss().then(() => {
+            console.log('Gelukt!');
+            this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
+            setTimeout(() => {
+              this.navCtrl.setRoot('timesheet');
+            }, 2000);
+          });
+      }).catch(err => console.log(err));
     }
-  }
+  }  
 
   calculateHours(startTime, endTime) {
     console.log('We komen er wel');

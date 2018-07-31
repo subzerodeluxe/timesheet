@@ -1,26 +1,44 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { ActivityLine } from '../../models/activityLine.interface';
-import { Observable } from 'rxjs/Observable';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { ActivityLine, EnrichedActivity } from '../../models/activityLine.interface';
+import { AuthProvider } from '../auth/auth.service';
+import { UserProvider } from '../user/user.service';
+import { Employee } from '../../models/employee.interface';
+import { User } from 'firebase/app';
+
 
 
 @Injectable()
 export class TimesheetProvider {
 
-  
-  constructor(public http: HttpClient, public afs: AngularFirestore) {
-    
-  }
-
+  enrichedActivity: EnrichedActivity;
+  activitiesRef: AngularFirestoreCollection<any>;
+  user: User;
+  result: any;
+ 
+  constructor(public afs: AngularFirestore, public userService: UserProvider,  
+    public authService: AuthProvider) {
+      this.activitiesRef = this.afs.collection('activities');
+    }
+      
   getActivities() {
-    const activitiesRef = this.afs.collection('activities');
+   // 
   }
 
   saveActivity(activityObject: ActivityLine) {
-    const ref = this.afs.collection('activities');
-    return ref.add(activityObject);
+    this.user = this.authService.getCurrentUser(); // gets firebase user 
+
+    return this.userService.getCurrentUserInfo(this.user).toPromise()
+      .then((userObject: Employee) => {
+        this.enrichedActivity = {
+          employee: {...userObject},
+          activityLine: activityObject
+        };
+
+        return this.activitiesRef.add(this.enrichedActivity);
+      }).catch(err => console.log('Oh no ... ', err));
   }
 
   calculateHoursDifference(startTime, endTime): string {
@@ -65,9 +83,5 @@ export class TimesheetProvider {
   getCurrentIsoString(): string {
     const isoString = moment().toISOString(true); 
     return isoString; 
-  }
-
-  getFakeData(): Observable<any> {
-    return this.http.get('./assets/example-data/timesheet.json', {responseType: 'json'});
   }
 }

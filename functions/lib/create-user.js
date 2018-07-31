@@ -11,7 +11,7 @@ function createUserProfile(userRecord) {
         email_verified: userRecord.emailVerified,
         creationTime: userRecord.metadata.creationTime
     };
-    return docRef.set({ userObject }).catch(console.error);
+    return docRef.set(Object.assign({}, userObject)).catch(console.error);
 }
 exports.createUserProfile = createUserProfile;
 //# sourceMappingURL=create-user.js.map
