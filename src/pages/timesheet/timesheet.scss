@@ -190,21 +190,7 @@ page-timesheet {
 								}
 							}
 
-							.item-title-no-activities
-							{
-								font-size: 1.2rem;
-								font-weight: 500;
-								letter-spacing: 0.2px;
-								color: $theme-color;
-								margin-bottom: 12px;
-
-								&.one-line
-								{
-									overflow: hidden;
-									text-overflow: ellipsis;
-									white-space: nowrap;
-								}
-							}
+							
 
 							.item-description
 							{

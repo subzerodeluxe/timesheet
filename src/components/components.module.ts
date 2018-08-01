@@ -7,12 +7,15 @@ import { ShowHideInput } from './show-hide-password/show-hide-input';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from 'ionic-angular';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NoActivitiesComponent } from './no-activities/no-activities';
 
 @NgModule({
-	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput
+	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
+    NoActivitiesComponent
     ],
 	imports: [IonicModule, CommonModule, ReactiveFormsModule],
-	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput
+	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
+    NoActivitiesComponent
     ]
 })
 export class ComponentsModule {}

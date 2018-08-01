@@ -3,7 +3,7 @@ import { Vehicle } from "./vehicle.interface";
 import { ActivityLine } from "./activityLine.interface";
 
 export interface TimeSheet {
-    employee?: Employee; // first and lastname  
+    employee: Employee; // first and lastname  
     weekNumber: number;  // 1 t/m 51
     timesheetFinished: boolean;
     isoStartDate: string;

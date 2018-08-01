@@ -41,10 +41,6 @@ export class TimesheetProvider {
   
   }
 
-  updateTimesheet() {
-
-  }
-
   saveActivity(activityObject: ActivityLine) {
     return this.userService.getCurrentUserInfo(this.user).toPromise()
       .then((userObject: Employee) => {

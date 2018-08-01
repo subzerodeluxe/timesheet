@@ -15,6 +15,7 @@
   </ion-segment>
 
  <div [ngSwitch]="segment">
+
     <div *ngSwitchCase="'today'">
       <ion-list class="schedule-list">
         <ion-item class="schedule-item">
@@ -25,15 +26,10 @@
               <h4 class="schedule-time">{{ convertedDates?.currentYear }}</h4>
             </ion-col>
 
-            <ion-col width-80 class="schedule-data" *ngIf="noActivities">
-              <div class="data-item" (click)="addNewActivity()">
-                <div class="item-content">
-                  <h4 class="item-title-no-activities">Nog geen werkzaamheden vandaag</h4>
-                  <h4 class="item-title-no-activities">Wil je er een toevoegen?</h4>
-                </div>
-              </div>
-            </ion-col>
+            <no-activities *ngIf="noActivities"></no-activities>
 
+
+            
             <ion-col width-80 class="schedule-data" *ngIf="!noActivities">
                 <!-- <ion-col width-80 class="schedule-data" *ngFor="let activity of (singleActivity)?.activities"> -->
 

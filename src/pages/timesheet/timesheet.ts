@@ -42,13 +42,12 @@ export class TimesheetPage {
   }
   
   ionViewDidLoad() {
-    this.loading.present();
+    // this.loading.present();
     this.convertedDates = this.initDates();
-    this.time.createTimesheet()
-      .then((result) => {
-        console.log('Gelukt!', result);
-        this.loading.dismiss();
-      }).catch(e => console.log(e)); 
+
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 2500);
   }
 
   initDates() {
@@ -57,13 +56,10 @@ export class TimesheetPage {
     const currentMonth = this.time.getCurrentMonth();
     const currentYear = this.time.getCurrentYear();
     const isoString = this.time.getCurrentIsoString();
-    
-
+  
     let correctDates = {};
     return correctDates = { weekNumber: weekNumber, currentMonth: currentMonth, 
       currentDayNumber: currentDayNumber, currentYear: currentYear, isoString: isoString };
-    
-    // console.log('Weeknummer: ', this.weekNumber);
   }
 
 
