@@ -49,9 +49,11 @@ export class AccountPage implements OnInit, OnDestroy {
   }
 
   async saveProfile(employeeObject) {
-    // lader gebeurt in de service ! 
+    this.loading.present();
     const result = await this.userProvider.saveProfile(this.loggedInEmployee, employeeObject);
-    console.log(result);
+    if (result) {
+      this.loading.dismiss();
+    }
   }
 
 
