@@ -3,6 +3,7 @@ import { Vehicle } from "./vehicle.interface";
 import { ActivityLine } from "./activityLine.interface";
 
 export interface TimeSheet {
+    id: string;
     employee: Employee; // first and lastname  
     weekNumber: number;  // 1 t/m 51
     timesheetFinished: boolean;

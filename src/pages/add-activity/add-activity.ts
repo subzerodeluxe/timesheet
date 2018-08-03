@@ -1,10 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { NavController, NavParams, Slides, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { ActivityLine } from '../../models/activityLine.interface';
+import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage({
   name: 'add-activity'
@@ -13,13 +14,14 @@ import { ActivityLine } from '../../models/activityLine.interface';
   selector: 'page-add-activity',
   templateUrl: 'add-activity.html',
 })
-export class AddActivityPage {
+export class AddActivityPage implements OnDestroy {
 
   firstActivityForm: FormGroup; 
   secondActivityForm: FormGroup;
   thirdActivityForm: FormGroup;
   totalHours: string; 
   lastSlide = false;
+  timesheetSub: Subscription;
   @ViewChild('slider') slider: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public time: TimesheetProvider,
@@ -44,6 +46,12 @@ export class AddActivityPage {
       startTime: new FormControl('07:00', Validators.required),
       endTime: new FormControl('16:00', Validators.required)
     });
+
+    this.time.createTimesheet()
+      .then(e => {
+        this.timesheetSub = e.subscribe();
+        console.log(this.timesheetSub);
+      }).catch(err => console.log(err));   
   }
 
   initActivityFields(): FormGroup {
@@ -160,5 +168,7 @@ export class AddActivityPage {
     ],
   };
 
-
+  ngOnDestroy() {
+    this.timesheetSub.unsubscribe();
+  }
 }

@@ -6,8 +6,9 @@ import { EnrichedActivity, ActivityLine } from '../../models/activityLine.interf
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { Employee } from '../../models/employee.interface';
-import { User } from 'firebase/app';
 import { TimeSheet } from '../../models/timesheet.interface';
+import { map, mergeMap, first } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
@@ -15,32 +16,44 @@ export class TimesheetProvider {
 
   enrichedActivity: EnrichedActivity;
   activitiesRef: AngularFirestoreCollection<any>;
+  timesheetRef: AngularFirestoreCollection<any>;
+  weekNumbersRef: AngularFirestoreCollection<any>;
   timesheet: TimeSheet;
-  user: User;
   
   constructor(public afs: AngularFirestore, public userService: UserProvider,  
     public authService: AuthProvider) {
       this.activitiesRef = this.afs.collection('activities');
+      this.timesheetRef = this.afs.collection('timesheets');
+      this.weekNumbersRef = this.afs.collection('weekNumbers');
   }
     
-  createTimesheet() {
-    const timesheetref = this.afs.collection('timesheets');
-    // this.user = this.authService.getAuthenticatedUser() // gets firebase user 
-    // return this.userService.getCurrentUserInfo(this.user).toPromise()
-    //   .then((userObject: Employee) => {
-    //     this.timesheet = {
-    //       employee: { uid: userObject.uid },
-    //       weekNumber: this.getCurrentWeekNumber(),
-    //       timesheetFinished: false,
-    //       isoStartDate: this.getCurrentIsoString()
-    //     };
+  async createTimesheet() {
+    
+    let weekNumber = this.getCurrentWeekNumber().toString();
+    const doc = await this.docExists(`week-${weekNumber}`);
 
-    //     return timesheetref.add(this.timesheet);
-    //   }).catch(err => console.log('Oh no ... ', err));
-
-    /* DIT MOET EEN SWITCH MAP WORDEN !!! */
-  
+    if (doc) {
+      return Observable.of(null);
+    } else {
+      return this.authService.getAuthenticatedUser().pipe(
+        map(user => {
+          this.timesheet = {
+            id: this.afs.createId(),
+            employee: { uid: user.uid },
+            weekNumber: this.getCurrentWeekNumber(),
+            timesheetFinished: false,
+            isoStartDate: this.getCurrentIsoString()
+          };
+        }),
+        mergeMap(() => this.timesheetRef.add(this.timesheet))
+      )
+    }
   }
+
+  docExists(path: string) {
+    return this.weekNumbersRef.doc(path).valueChanges().pipe(first()).toPromise();
+  }
+
 
   saveActivity(activityObject: ActivityLine) {
     // return this.userService.getCurrentUserInfo(this.user).toPromise()

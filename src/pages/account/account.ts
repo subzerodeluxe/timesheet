@@ -40,11 +40,11 @@ export class AccountPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loading.present();
+    // this.loading.present();
     this.profileImage = './assets/images/amerongen-schilderwerken.jpg';
     this.userProvider.getAuthenticatedUser().subscribe(employeeProfile => {
       this.employee = employeeProfile;
-      this.loading.dismiss();
+     // this.loading.dismiss();
     });
   }
 
@@ -52,6 +52,8 @@ export class AccountPage implements OnInit, OnDestroy {
     this.loading.present();
     const result = await this.userProvider.saveProfile(this.loggedInEmployee, employeeObject);
     if (result) {
+      this.loading.dismiss();
+    } else {
       this.loading.dismiss();
     }
   }
