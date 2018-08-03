@@ -10,7 +10,7 @@
 </ion-header>
 <ion-content class="profile-content">
 
-  <div class="user-image-content">
+  <div [formGroup]="profileForm" class="user-image-content">
     <ion-row no-padding class="user-image-row">
       <ion-col no-padding width-40>
         <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="profileImage" alt="this is the image" title="IMAGE!"></preload-image>
@@ -29,33 +29,20 @@
         <ion-list class="user-data-content">
           <ion-item>
             <ion-label stacked>Voornaam</ion-label>
-            <ion-input type="text" formControlName="firstName"></ion-input>
+            <ion-input type="text" name="firstName" [(ngModel)]="employee.firstName" formControlName="firstName"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Achternaam</ion-label>
-            <ion-input type="text" formControlName="lastName"></ion-input>
+            <ion-input type="text" name="lastName" [(ngModel)]="employee.lastName" formControlName="lastName"></ion-input>
           </ion-item>
-          <!-- <ion-item>
-            <ion-label stacked>{{ 'DESCRIPTION' | translate }}</ion-label>
-            <ion-textarea formControlName="description" rows="5" placeholder="Your description here..."></ion-textarea>
-          </ion-item> -->
         </ion-list>
 
         <section class="form-section">
-            <h2 class="section-title">Aanvullende informatie</h2>
-  
-                <ion-item>
-                  <ion-label stacked>Kenteken bedrijfsauto</ion-label>
-                  <ion-input type="text" formControlName="licensePlate"></ion-input>
-                </ion-item>
-           
-      
-              
-                  <ion-item>
-                    <ion-label stacked>Kilometerstand bedrijfsauto</ion-label>
-                    <ion-input type="text" formControlName="mileage"></ion-input>
-                  </ion-item>
-                
+          <h2 class="section-title">Aanvullende informatie</h2>
+            <ion-item>
+              <ion-label stacked>Kenteken bedrijfsauto</ion-label>
+              <ion-input type="text" name="licensePlate" [(ngModel)]="employee.licensePlate" formControlName="licensePlate"></ion-input>
+            </ion-item>
         </section>
       </form>
 

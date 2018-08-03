@@ -1,10 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavController, NavParams, IonicPage } from 'ionic-angular';
-import { FormGroup, FormControl } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { User } from '@firebase/auth-types';
+import { LayoutProvider } from '../../providers/layout/layout.service';
+import { Employee } from '../../models/employee.interface';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @IonicPage({
   name: 'account'
@@ -13,59 +15,63 @@ import { User } from '@firebase/auth-types';
   selector: 'page-account',
   templateUrl: 'account.html',
 })
-export class AccountPage implements OnDestroy {
-
-  profileForm: FormGroup;
+export class AccountPage implements OnInit, OnDestroy {
+  loading: any;
   profileImage: string;
-  private authenticatedUser$: Subscription;
-  private loggedInUser: User;
+  profileForm: FormGroup;
+  employee = {} as Employee;
+  private authenticatedEmployee$: Subscription;
+  private loggedInEmployee: User;
   
   constructor(public navCtrl: NavController, 
-    public userProvider: UserProvider, public navParams: NavParams, public authProvider: AuthProvider) {
-    
-    this.authenticatedUser$ = this.authProvider.getAuthenticatedUser().subscribe((user: User) => {
-      this.loggedInUser = user;
+    public userProvider: UserProvider, public navParams: NavParams, 
+    public layout: LayoutProvider, public authProvider: AuthProvider) {
+      this.loading = this.layout.showLoading();
+    this.authenticatedEmployee$ = this.authProvider.getAuthenticatedUser().subscribe((user: User) => {
+      this.loggedInEmployee = user;
     });
 
     this.profileForm = new FormGroup({
       firstName: new FormControl(),
       lastName: new FormControl(),
-      licensePlate: new FormControl(),
-      mileage: new FormControl()
+      licensePlate: new FormControl()
+    //  mileage: new FormControl()
     });
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
+    this.loading.present();
     this.profileImage = './assets/images/amerongen-schilderwerken.jpg';
-    this.userProvider.getCurrentUserInfo(this.loggedInUser)
-      .subscribe((userObject) => {
-        console.log('Ingeladen user: ', userObject);
-      })
+    this.userProvider.getAuthenticatedUser().subscribe(employeeProfile => {
+      this.employee = employeeProfile;
+      this.loading.dismiss();
+    });
   }
 
-  async saveProfile(profileObject) {
-    console.log('Gesaved profiel: ', profileObject);
-    const result = this.userProvider.saveProfile(this.loggedInUser, profileObject);
+  async saveProfile(employeeObject) {
+    // lader gebeurt in de service ! 
+    const result = await this.userProvider.saveProfile(this.loggedInEmployee, employeeObject);
     console.log(result);
   }
 
 
-  // ionViewCanEnter() {
-  //   return this.authProvider.authenticated();
-  // }
-
   logOut(): void {
+    this.loading.present();
     this.authProvider.logOut()
     .then(res => {
-      console.log('Success!');
-      this.navCtrl.setRoot('login');
+      this.navCtrl.setRoot('walkthrough');
+      this.loading.dismiss();
       }, err => {
-      console.log(err);
+      this.loading.dismiss()
+        .then(() => {
+          console.log(err);
+          this.layout.showAlertMessage('Oeps!', 'Er ging iets mis.', 'Ok');
+        });
     });
   }
 
   ngOnDestroy(): void {
-    this.authenticatedUser$.unsubscribe();
+    this.authenticatedEmployee$.unsubscribe();
   }
 }
 

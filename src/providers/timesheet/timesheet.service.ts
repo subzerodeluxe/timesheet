@@ -8,8 +8,7 @@ import { UserProvider } from '../user/user.service';
 import { Employee } from '../../models/employee.interface';
 import { User } from 'firebase/app';
 import { TimeSheet } from '../../models/timesheet.interface';
-import { DocumentReference } from '@firebase/firestore-types';
-import { first } from 'rxjs/operators';
+
 
 @Injectable()
 export class TimesheetProvider {
@@ -26,31 +25,33 @@ export class TimesheetProvider {
     
   createTimesheet() {
     const timesheetref = this.afs.collection('timesheets');
-    this.user = this.authService.getCurrentUser(); // gets firebase user 
-    return this.userService.getCurrentUserInfo(this.user).toPromise()
-      .then((userObject: Employee) => {
-        this.timesheet = {
-          employee: { uid: userObject.uid },
-          weekNumber: this.getCurrentWeekNumber(),
-          timesheetFinished: false,
-          isoStartDate: this.getCurrentIsoString()
-        };
+    // this.user = this.authService.getAuthenticatedUser() // gets firebase user 
+    // return this.userService.getCurrentUserInfo(this.user).toPromise()
+    //   .then((userObject: Employee) => {
+    //     this.timesheet = {
+    //       employee: { uid: userObject.uid },
+    //       weekNumber: this.getCurrentWeekNumber(),
+    //       timesheetFinished: false,
+    //       isoStartDate: this.getCurrentIsoString()
+    //     };
 
-        return timesheetref.add(this.timesheet);
-      }).catch(err => console.log('Oh no ... ', err));
+    //     return timesheetref.add(this.timesheet);
+    //   }).catch(err => console.log('Oh no ... ', err));
+
+    /* DIT MOET EEN SWITCH MAP WORDEN !!! */
   
   }
 
   saveActivity(activityObject: ActivityLine) {
-    return this.userService.getCurrentUserInfo(this.user).toPromise()
-      .then((userObject: Employee) => {
-        this.enrichedActivity = {
-          employee: {...userObject},
-          activityLine: activityObject
-        };
+    // return this.userService.getCurrentUserInfo(this.user).toPromise()
+    //   .then((userObject: Employee) => {
+    //     this.enrichedActivity = {
+    //       employee: {...userObject},
+    //       activityLine: activityObject
+    //     };
 
-        return this.activitiesRef.add(this.enrichedActivity);
-      }).catch(err => console.log('Oh no ... ', err));
+    //     return this.activitiesRef.add(this.enrichedActivity);
+    //   }).catch(err => console.log('Oh no ... ', err));
   }
 
 

@@ -8,18 +8,17 @@ import { Platform } from 'ionic-angular';
 @Injectable()
 export class AuthProvider {
 
-
   constructor(public afAuth: AngularFireAuth, 
     public platform: Platform
   ) { }
 
-  getCurrentUser(): firebase.User {
-    return this.afAuth.auth.currentUser;
-  }
+  // getCurrentUser(): firebase.User {
+  //   return this.afAuth.auth.currentUser;
+  // }
 
   getAuthenticatedUser() {
     return this.afAuth.authState.pipe(first());
-  }
+  }  
 
   regularLogin(value): Promise<any> {
     return new Promise<any>((resolve, reject) => {

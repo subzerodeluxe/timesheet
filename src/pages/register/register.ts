@@ -29,12 +29,12 @@ export class RegisterPage {
     this.authProvider.registerAccount(value)
       .then(res => {
         console.log('Success!');
-        this.layout.presentBottomToast('Profiel aangemaakt!');
-        this.navCtrl.setRoot('tabs');
+        this.layout.presentBottomToast(`Je kunt nu inloggen, ${value.email}`);
+        this.navCtrl.setRoot('login');
       }, err => {
         console.log(err);
         this.errorMessage = err.message; 
-      })
+    }); 
   }
-
 }
+

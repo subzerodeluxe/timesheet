@@ -106,16 +106,16 @@ export class AddActivityPage {
         hoursDifference: this.totalHours
       };
 
-      this.time.saveActivity(activityObject)
-        .then(() => {
-          loading.dismiss().then(() => {
-            console.log('Gelukt!');
-            this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
-            setTimeout(() => {
-              this.navCtrl.setRoot('timesheet');
-            }, 2000);
-          });
-      }).catch(err => console.log(err));
+      // this.time.saveActivity(activityObject)
+      //   .then(() => {
+      //     loading.dismiss().then(() => {
+      //       console.log('Gelukt!');
+      //       this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
+      //       setTimeout(() => {
+      //         this.navCtrl.setRoot('timesheet');
+      //       }, 2000);
+      //     });
+      // }).catch(err => console.log(err));
     }
   }  
 
