@@ -16,42 +16,46 @@ export class TimesheetProvider {
 
   enrichedActivity: EnrichedActivity;
   activitiesRef: AngularFirestoreCollection<any>;
-  timesheetRef: AngularFirestoreCollection<any>;
+  timesheetsRef: AngularFirestoreCollection<any>;
   weekNumbersRef: AngularFirestoreCollection<any>;
   timesheet: TimeSheet;
   
   constructor(public afs: AngularFirestore, public userService: UserProvider,  
     public authService: AuthProvider) {
       this.activitiesRef = this.afs.collection('activities');
-      this.timesheetRef = this.afs.collection('timesheets');
+      this.timesheetsRef = this.afs.collection('timesheets');
       this.weekNumbersRef = this.afs.collection('weekNumbers');
   }
     
-  async createTimesheet() {
+  createTimesheet(): Observable<any> {
     
     let weekNumber = this.getCurrentWeekNumber().toString();
-    const doc = await this.docExists(`week-${weekNumber}`);
-
-    if (doc) {
-      return Observable.of(null);
-    } else {
-      return this.authService.getAuthenticatedUser().pipe(
-        map(user => {
-          this.timesheet = {
-            id: this.afs.createId(),
-            employee: { uid: user.uid },
-            weekNumber: this.getCurrentWeekNumber(),
-            timesheetFinished: false,
-            isoStartDate: this.getCurrentIsoString()
-          };
-        }),
-        mergeMap(() => this.timesheetRef.add(this.timesheet))
-      )
-    }
+    return this.docExists(`week-${weekNumber}`).pipe(
+      map(doc => {
+        console.log('Doc in first map: ', doc);
+        if (doc === null) {
+          return Observable.of('Timesheet bestaat niet');
+        } else {
+          return this.authService.getAuthenticatedUser().pipe(
+            map(user => {
+              this.timesheet = {
+                id: this.afs.createId(),
+                employee: { uid: user.uid },
+                weekNumber: this.getCurrentWeekNumber(),
+                timesheetFinished: false,
+                isoStartDate: this.getCurrentIsoString()
+              };
+            }),
+            mergeMap(() => this.timesheetsRef.add(this.timesheet))
+          );
+        }
+      })
+    )
   }
 
   docExists(path: string) {
-    return this.weekNumbersRef.doc(path).valueChanges().pipe(first()).toPromise();
+    // return this.weekNumbersRef.doc(path).valueChanges().pipe(first()).toPromise();
+    return this.weekNumbersRef.doc(path).valueChanges().pipe(first());
   }
 
 
