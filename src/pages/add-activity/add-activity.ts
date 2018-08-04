@@ -47,9 +47,13 @@ export class AddActivityPage implements OnDestroy {
       endTime: new FormControl('16:00', Validators.required)
     });
 
-    this.timesheetSub = this.time.createTimesheet().subscribe((s) => {
-      console.log(s);
-    });
+    // this.timesheetSub = this.time.createTimesheet().subscribe((s) => {
+    //   console.log(s);
+    // });
+
+    const doc = this.time.createTimesheet();
+    console.log(doc);
+    
     
   }
 

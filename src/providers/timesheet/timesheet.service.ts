@@ -19,7 +19,7 @@ export class TimesheetProvider {
   timesheetsRef: AngularFirestoreCollection<any>;
   weekNumbersRef: AngularFirestoreCollection<any>;
   timesheet: TimeSheet;
-  
+
   constructor(public afs: AngularFirestore, public userService: UserProvider,  
     public authService: AuthProvider) {
       this.activitiesRef = this.afs.collection('activities');
@@ -27,35 +27,41 @@ export class TimesheetProvider {
       this.weekNumbersRef = this.afs.collection('weekNumbers');
   }
     
-  createTimesheet(): Observable<any> {
+  createTimesheet() {
     
     let weekNumber = this.getCurrentWeekNumber().toString();
-    return this.docExists(`week-${weekNumber}`).pipe(
-      map(doc => {
-        console.log('Doc in first map: ', doc);
-        if (doc === null) {
-          return Observable.of('Timesheet bestaat niet');
-        } else {
-          return this.authService.getAuthenticatedUser().pipe(
-            map(user => {
-              this.timesheet = {
-                id: this.afs.createId(),
-                employee: { uid: user.uid },
-                weekNumber: this.getCurrentWeekNumber(),
-                timesheetFinished: false,
-                isoStartDate: this.getCurrentIsoString()
-              };
-            }),
-            mergeMap(() => this.timesheetsRef.add(this.timesheet))
-          );
-        }
-      })
-    )
+    const doc = this.checkWeekNumber(weekNumber);
+    return doc; 
+      
+        
+      //   if (doc !== null) {
+      //     return this.authService.getAuthenticatedUser().pipe(
+      //       map(user => {
+      //         this.timesheet = {
+      //           id: this.afs.createId(),
+      //           employee: { uid: user.uid },
+      //           weekNumber: this.getCurrentWeekNumber(),
+      //           timesheetFinished: false,
+      //           isoStartDate: this.getCurrentIsoString()
+      //         };
+      //       }),
+      //       mergeMap(() => this.timesheetsRef.add(this.timesheet))
+      //     );
+      //   } else {
+      //     return Observable.of('Timesheet reeds aangemaakt');
+      //   }
+      // })
+    
   }
 
-  docExists(path: string) {
+  async checkWeekNumber(weekNumber) {
+    const doc = await this.docExists(`week-${weekNumber}`);
+    return doc;
+  }
+  
+  docExists(path: string): Promise<any> {
     // return this.weekNumbersRef.doc(path).valueChanges().pipe(first()).toPromise();
-    return this.weekNumbersRef.doc(path).valueChanges().pipe(first());
+    return this.weekNumbersRef.doc(path).valueChanges().pipe(first()).toPromise();
   }
 
 
