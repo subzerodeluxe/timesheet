@@ -51,8 +51,10 @@ export class AddActivityPage implements OnDestroy {
     //   console.log(s);
     // });
 
-    const doc = this.time.createTimesheet();
-    console.log(doc);
+    this.time.createTimesheet()
+      .then(doc => console.log('Is er een doc?', doc))
+      .catch(e => console.log('Error? ', e));
+    
     
     
   }

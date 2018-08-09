@@ -30,10 +30,10 @@ export class TimesheetProvider {
   createTimesheet() {
     
     let weekNumber = this.getCurrentWeekNumber().toString();
-    const doc = this.checkWeekNumber(weekNumber);
-    return doc; 
-      
-        
+    let year = this.getCurrentYear().toString();
+    const doc = this.checkWeekNumber(weekNumber, year);  // week-31
+
+    return doc;
       //   if (doc !== null) {
       //     return this.authService.getAuthenticatedUser().pipe(
       //       map(user => {
@@ -51,17 +51,17 @@ export class TimesheetProvider {
       //     return Observable.of('Timesheet reeds aangemaakt');
       //   }
       // })
-    
   }
 
-  async checkWeekNumber(weekNumber) {
-    const doc = await this.docExists(`week-${weekNumber}`);
+  async checkWeekNumber(weekNumber, year) {
+    console.log(year, weekNumber);
+    const doc = await this.docExists(`week-${weekNumber}-${year}`);
     return doc;
   }
   
   docExists(path: string): Promise<any> {
     // return this.weekNumbersRef.doc(path).valueChanges().pipe(first()).toPromise();
-    return this.weekNumbersRef.doc(path).valueChanges().pipe(first()).toPromise();
+    return this.weekNumbersRef.doc(path).valueChanges().toPromise();
   }
 
 
