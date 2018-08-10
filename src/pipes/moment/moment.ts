@@ -1,13 +1,18 @@
 import {  Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
+moment.locale('nl');
 
 @Pipe({
   name: 'moment',
 })
 export class MomentPipe implements PipeTransform {
   
-  transform(isoString: Date|moment.Moment, ...args: any[]): any {
-    let [format] = args;
-    return moment(isoString).format(format);
+  transform(value: Date | moment.Moment, dateFormat: string): any {
+    if (dateFormat == 'dd') {
+      const result = moment(value).format(dateFormat);
+      return result.toUpperCase();
+    } else {
+      return moment(value).format(dateFormat);
+    }
   }
 }
