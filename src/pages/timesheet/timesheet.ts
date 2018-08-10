@@ -1,53 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController, NavParams, SegmentButton, IonicPage } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { UserProvider } from '../../providers/user/user.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Employee } from '../../models/employee.interface';
 
 @IonicPage({
   name: 'timesheet'
 })
 @Component({
   selector: 'page-timesheet',
-  templateUrl: 'timesheet.html',
-  animations: [
-    trigger('shakeButton', [
-      state('small', style({
-        transform: 'scale(1)',
-      })),
-      state('large', style({
-          transform: 'scale(1.02)',
-      })),
-      transition('small => large', animate('100ms ease-in')),
-      transition('large => small', animate('100ms ease-in'))
-    ])
-  ]
+  templateUrl: 'timesheet.html'
 })
-export class TimesheetPage {
+export class TimesheetPage implements OnDestroy {
 
   segment: string;
-  state: string = 'small';
+  subscription: Subscription;
   noActivities: boolean = true;
   timesheet: any;
   singleActivity: any; 
-  shakeButton: boolean = true; 
   convertedDates: any;
-  loading: any;
-
+  userObject: Employee;
+ 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-     public authProvider: AuthProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
+     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
     this.segment = "today";
-    this.loading = this.layout.showLoading();
   }
   
   ionViewDidLoad() {
-    // this.loading.present();
+    this.layout.presentLoadingDefault();
     this.convertedDates = this.initDates();
-
-    setTimeout(() => {
-      this.loading.dismiss();
-    }, 2500);
+    this.subscription = this.userProvider.getAuthenticatedUser()
+      .subscribe(user => this.userObject = user);
   }
 
   initDates() {
@@ -64,7 +51,9 @@ export class TimesheetPage {
 
 
   onSegmentChanged(segmentButton: SegmentButton) {
-    console.log('Segment changed to', segmentButton.value);
+    this.layout.presentLoadingDefault();
+    this.convertedDates = this.initDates();
+    console.log('Segment changed', segmentButton.value);
   }
 
   onSegmentSelected(segmentButton: SegmentButton) {
@@ -76,12 +65,29 @@ export class TimesheetPage {
   }
 
   openActivity(activity) {
-    this.loading.present();
-    this.navCtrl.push('activity-detail', { activity: activity })
-      .then(() => {
-        this.loading.dismiss();
-      }).catch(() => this.loading.dismiss());
+    let loading = this.layout.showLoading();
+    loading.present();
+
+    setTimeout(() => {
+      this.navCtrl.push('activity-detail', { activity: activity })
+    }, 1000);
+
+    setTimeout(() => {
+      loading.dismiss();
+    }, 4000);
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
+  // presentLoadingDefault() {
+  //   let loading = this.layout.showLoading();
+  
+  //   loading.present();
+  
+  //   setTimeout(() => {
+  //     loading.dismiss();
+  //   }, 1500);
+  // }
 }

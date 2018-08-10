@@ -7,8 +7,10 @@ import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { Employee } from '../../models/employee.interface';
 import { TimeSheet } from '../../models/timesheet.interface';
-import { map, mergeMap, first } from 'rxjs/operators';
+import { map, mergeMap} from 'rxjs/operators';
+import { fromPromise } from 'rxjs/observable/fromPromise';
 import { Observable } from 'rxjs/Observable';
+
 
 
 @Injectable()
@@ -19,6 +21,7 @@ export class TimesheetProvider {
   timesheetsRef: AngularFirestoreCollection<any>;
   weekNumbersRef: AngularFirestoreCollection<any>;
   timesheet: TimeSheet;
+  docPresent: boolean;
 
   constructor(public afs: AngularFirestore, public userService: UserProvider,  
     public authService: AuthProvider) {
@@ -27,41 +30,69 @@ export class TimesheetProvider {
       this.weekNumbersRef = this.afs.collection('weekNumbers');
   }
     
-  createTimesheet() {
-    
+  createTimesheet(): Observable<any> {
     let weekNumber = this.getCurrentWeekNumber().toString();
     let year = this.getCurrentYear().toString();
-    const doc = this.checkWeekNumber(weekNumber, year);  // week-31
+    this.checkWeekNumber(weekNumber, year)
+      .then(doc => {
+        if (doc.exists) {
+          console.log('Show doc data: ', doc.data());
+          this.docPresent = true;
+        } else {
+          console.log('Doc not present');
+          this.docPresent = false; 
+        }
+      });
 
-    return doc;
-      //   if (doc !== null) {
-      //     return this.authService.getAuthenticatedUser().pipe(
-      //       map(user => {
-      //         this.timesheet = {
-      //           id: this.afs.createId(),
-      //           employee: { uid: user.uid },
-      //           weekNumber: this.getCurrentWeekNumber(),
-      //           timesheetFinished: false,
-      //           isoStartDate: this.getCurrentIsoString()
-      //         };
-      //       }),
-      //       mergeMap(() => this.timesheetsRef.add(this.timesheet))
-      //     );
-      //   } else {
-      //     return Observable.of('Timesheet reeds aangemaakt');
-      //   }
-      // })
+    
+      if (this.docPresent === false) {
+        return this.authService.getAuthenticatedUser().pipe(
+          map(user => {
+            this.timesheet = {
+              id: this.afs.createId(),
+              employee: { uid: user.uid },
+              weekNumber: this.getCurrentWeekNumber(),
+              timesheetFinished: false,
+              isoStartDate: this.getCurrentIsoString()
+            };
+          }),
+          mergeMap(() => this.timesheetsRef.doc(`week-${weekNumber}-${year}`).set(this.timesheet))
+          );
+      } else {
+        return Observable.of('Timesheet reeds aangemaakt');
+      } 
   }
 
-  async checkWeekNumber(weekNumber, year) {
-    console.log(year, weekNumber);
+  // async createTimesheet() {
+  //   let weekNumber = this.getCurrentWeekNumber().toString();
+  //   let year = this.getCurrentYear().toString();
+  //   const doc = await this.docExists(`week-${weekNumber}-${year}`);
+    
+  //   if (doc.exists === false) {
+  //    return this.authService.getAuthenticatedUser().pipe(
+  //       map(user => {
+  //         this.timesheet = {
+  //           id: this.afs.createId(),
+  //           employee: { uid: user.uid },
+  //           weekNumber: this.getCurrentWeekNumber(),
+  //           timesheetFinished: false,
+  //           isoStartDate: this.getCurrentIsoString()
+  //         };
+  //       }),
+  //       mergeMap(() => this.timesheetsRef.doc(`week-${weekNumber}-${year}`).set(this.timesheet))
+  //     )
+  //   } else {
+  //     return 'timesheet already exists';
+  //   }
+  // }
+
+  async checkWeekNumber(weekNumber: string, year: string) {
     const doc = await this.docExists(`week-${weekNumber}-${year}`);
     return doc;
   }
-  
+
   docExists(path: string): Promise<any> {
-    // return this.weekNumbersRef.doc(path).valueChanges().pipe(first()).toPromise();
-    return this.weekNumbersRef.doc(path).valueChanges().toPromise();
+    return this.timesheetsRef.doc(path).ref.get();
   }
 
 

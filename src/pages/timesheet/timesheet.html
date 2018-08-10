@@ -17,7 +17,10 @@
  <div [ngSwitch]="segment">
 
     <div *ngSwitchCase="'today'">
-      <ion-list class="schedule-list">
+
+      <no-activities [authenticatedUser]="userObject" *ngIf="noActivities"></no-activities>
+
+      <ion-list class="schedule-list"  *ngIf="!noActivities">
         <ion-item class="schedule-item">
           <ion-row>
             <ion-col width-20 class="schedule-date">
@@ -25,12 +28,7 @@
               <h3 class="schedule-month">{{ convertedDates?.currentMonth }}</h3>
               <h4 class="schedule-time">{{ convertedDates?.currentYear }}</h4>
             </ion-col>
-
-            <no-activities *ngIf="noActivities"></no-activities>
-
-
-            
-            <ion-col width-80 class="schedule-data" *ngIf="!noActivities">
+            <ion-col width-80 class="schedule-data">
                 <!-- <ion-col width-80 class="schedule-data" *ngFor="let activity of (singleActivity)?.activities"> -->
 
               <div class="data-item" (click)="openActivity(activity)">

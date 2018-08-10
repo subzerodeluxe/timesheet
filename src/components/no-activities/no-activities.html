@@ -1,8 +1,12 @@
-<ion-col width-80 class="schedule-data">
-  <div class="data-item" (click)="addNewActivity()">
-    <div class="item-content">
-      <h4 class="item-title-no-activities">Welkom terug, Maarten.</h4>
-      <h4 class="item-title-no-activities">Je hebt nog geen werkzaamheden toegevoegd.</h4>
-    </div>
-  </div>
-</ion-col>
+<div class="schedule-date">
+  <h2 class="schedule-day">{{ isoTring | moment:'D'}}</h2>
+  <h3 class="schedule-month">{{ isoTring | moment:'ddd'}}</h3>
+  <h4 class="schedule-time">{{ isoTring | moment:'YYYY'}}</h4>
+</div>
+
+
+
+<h4 text-center class="item-title-no-activities">Welkom terug, {{ authenticatedUser?.firstName }}</h4>
+<h4 text-center class="item-title-no-activities">Je hebt nog geen werkzaamheden toegevoegd.</h4>
+
+

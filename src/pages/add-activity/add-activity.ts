@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
   selector: 'page-add-activity',
   templateUrl: 'add-activity.html',
 })
-export class AddActivityPage implements OnDestroy {
+export class AddActivityPage {
 
   firstActivityForm: FormGroup; 
   secondActivityForm: FormGroup;
@@ -47,16 +47,10 @@ export class AddActivityPage implements OnDestroy {
       endTime: new FormControl('16:00', Validators.required)
     });
 
-    // this.timesheetSub = this.time.createTimesheet().subscribe((s) => {
-    //   console.log(s);
-    // });
-
-    this.time.createTimesheet()
-      .then(doc => console.log('Is er een doc?', doc))
-      .catch(e => console.log('Error? ', e));
-    
-    
-    
+    this.timesheetSub = this.time.createTimesheet().subscribe((s) => {
+      console.log(s);
+    });
+   
   }
 
   initActivityFields(): FormGroup {
@@ -173,7 +167,7 @@ export class AddActivityPage implements OnDestroy {
     ],
   };
 
-  ngOnDestroy() {
-    this.timesheetSub.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.timesheetSub.unsubscribe();
+  // }
 }

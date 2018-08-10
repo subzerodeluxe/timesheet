@@ -19,6 +19,21 @@ export class LayoutProvider {
     return loading; 
   }
 
+  presentLoadingDefault() {
+    const customSpinner: any = this.sanitizer.bypassSecurityTrustHtml(AppConfig.customSpinner);
+  
+    let loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: customSpinner
+    });
+
+    loading.present();
+  
+    setTimeout(() => {
+      loading.dismiss();
+    }, 1500);
+  }
+
   showAlertMessage(title, message, buttonText) {
     console.log(message);
     let alert = this.alertCtrl.create({

@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
+import { Employee } from '../../models/employee.interface';
+
 
 @Component({
   selector: 'no-activities',
@@ -6,10 +9,12 @@ import { Component } from '@angular/core';
 })
 export class NoActivitiesComponent {
 
- 
+  isoString: string;
+  @Input() authenticatedUser: Employee;
 
-  constructor() {
-    
+  constructor(public time: TimesheetProvider) {
+    this.isoString = this.time.getCurrentIsoString();
   }
 
+  
 }
