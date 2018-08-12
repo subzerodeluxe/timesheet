@@ -141,6 +141,13 @@ page-timesheet {
 						font-weight: 400;
 					}
 
+					.schedule-day-new
+					{
+						font-size: 1.9rem;
+						letter-spacing: 0.8px;
+						font-weight: 500;
+					}
+
 					.schedule-month
 					{
 						font-size: 1.2rem;
@@ -148,7 +155,21 @@ page-timesheet {
 						text-transform: uppercase;
 					}
 
+					.schedule-month-new
+					{
+						font-size: 3.2rem;
+						font-weight: 500;
+						letter-spacing: 1.2px;
+						text-transform: uppercase;
+					}
+
 					.schedule-time
+					{
+						font-size: 1.2rem;
+						font-weight: 500;
+					}
+
+					.schedule-time-new
 					{
 						font-size: 1.2rem;
 						font-weight: 500;

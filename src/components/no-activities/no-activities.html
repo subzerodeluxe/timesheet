@@ -1,12 +1,16 @@
 <div class="schedule-date">
-  <h2 class="schedule-day">{{ isoTring | formatDate:'dd'}}</h2>
+  <h2 class="schedule-day">{{ isoTring | formatDate:'dddd'}}</h2>
   <h3 class="schedule-month">{{ isoTring | formatDate:'D'}} {{ isoTring | formatDate:'MMMM'}}</h3>
   <h4 class="schedule-time">{{ isoTring | formatDate:'YYYY'}}</h4>
 </div>
 
 
+<div class="schedule-data">
 
-<h4 text-center class="item-title-no-activities">Welkom terug, {{ authenticatedUser?.firstName }}</h4>
-<h4 text-center class="item-title-no-activities">Je hebt nog geen werkzaamheden toegevoegd.</h4>
+  <h4 text-center>Welkom terug, {{ authenticatedUser?.firstName }}</h4>
+  <h4 text-center>Je hebt nog geen werkzaamheden toegevoegd.</h4>
 
+</div>
 
+<!-- <h4 text-center class="item-title-no-activities">Welkom terug, {{ authenticatedUser?.firstName }}</h4>
+<h4 text-center class="item-title-no-activities">Je hebt nog geen werkzaamheden toegevoegd.</h4> -->
