@@ -3,7 +3,7 @@ import * as moment from 'moment';
 moment.locale('nl');
 
 @Pipe({
-  name: 'moment',
+  name: 'formatDate',
 })
 export class MomentPipe implements PipeTransform {
   

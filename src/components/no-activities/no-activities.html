@@ -1,7 +1,7 @@
 <div class="schedule-date">
-  <h2 class="schedule-day">{{ isoTring | moment:'dd'}}</h2>
-  <h3 class="schedule-month">{{ isoTring | moment:'D'}} {{ isoTring | moment:'MMMM'}}</h3>
-  <h4 class="schedule-time">{{ isoTring | moment:'YYYY'}}</h4>
+  <h2 class="schedule-day">{{ isoTring | formatDate:'dd'}}</h2>
+  <h3 class="schedule-month">{{ isoTring | formatDate:'D'}} {{ isoTring | formatDate:'MMMM'}}</h3>
+  <h4 class="schedule-time">{{ isoTring | formatDate:'YYYY'}}</h4>
 </div>
 
 
