@@ -65,7 +65,7 @@
       </ion-list>
 
      
-      <ion-fab bottom right>
+      <ion-fab bottom right [@shake]="state" (@shake.done)="onEnd($event)">
         <button ion-fab (click)="addNewActivity()">
           <ion-icon name="add"></ion-icon>
         </button>
