@@ -1,16 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { EnrichedActivity, ActivityLine } from '../../models/activityLine.interface';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
-import { Employee } from '../../models/employee.interface';
 import { TimeSheet } from '../../models/timesheet.interface';
 import { map, mergeMap} from 'rxjs/operators';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { Observable } from 'rxjs/Observable';
-
+import * as firebase from 'firebase/app';
 
 
 @Injectable()
@@ -22,77 +18,47 @@ export class TimesheetProvider {
   weekNumbersRef: AngularFirestoreCollection<any>;
   timesheet: TimeSheet;
   docPresent: boolean;
+  currentUser: firebase.User;
 
   constructor(public afs: AngularFirestore, public userService: UserProvider,  
     public authService: AuthProvider) {
+      this.currentUser = firebase.auth().currentUser;
       this.activitiesRef = this.afs.collection('activities');
       this.timesheetsRef = this.afs.collection('timesheets');
       this.weekNumbersRef = this.afs.collection('weekNumbers');
   }
     
-  createTimesheet(): Observable<any> {
+
+  createTimesheet(): Promise<any> {
     let weekNumber = this.getCurrentWeekNumber().toString();
     let year = this.getCurrentYear().toString();
-    this.checkWeekNumber(weekNumber, year)
-      .then(doc => {
-        if (doc.exists) {
-          console.log('Show doc data: ', doc.data());
-          this.docPresent = true;
-        } else {
-          console.log('Doc not present');
-          this.docPresent = false; 
-        }
-      });
-
-    
-      if (this.docPresent === false) {
-        return this.authService.getAuthenticatedUser().pipe(
-          map(user => {
+    console.log('Checking timesheet');
+    return this.docExists(`week-${weekNumber}-${year}`)
+        .then(doc => {
+          return new Promise<any>((resolve, reject) => {
+          if (doc.exists === false) {
             this.timesheet = {
               id: this.afs.createId(),
-              employee: { uid: user.uid },
+              employee: { uid: this.currentUser.uid },
               weekNumber: this.getCurrentWeekNumber(),
               timesheetFinished: false,
               isoStartDate: this.getCurrentIsoString()
             };
-          }),
-          mergeMap(() => this.timesheetsRef.doc(`week-${weekNumber}-${year}`).set(this.timesheet))
-          );
-      } else {
-        return Observable.of('Timesheet reeds aangemaakt');
-      } 
-  }
-
-  // async createTimesheet() {
-  //   let weekNumber = this.getCurrentWeekNumber().toString();
-  //   let year = this.getCurrentYear().toString();
-  //   const doc = await this.docExists(`week-${weekNumber}-${year}`);
-    
-  //   if (doc.exists === false) {
-  //    return this.authService.getAuthenticatedUser().pipe(
-  //       map(user => {
-  //         this.timesheet = {
-  //           id: this.afs.createId(),
-  //           employee: { uid: user.uid },
-  //           weekNumber: this.getCurrentWeekNumber(),
-  //           timesheetFinished: false,
-  //           isoStartDate: this.getCurrentIsoString()
-  //         };
-  //       }),
-  //       mergeMap(() => this.timesheetsRef.doc(`week-${weekNumber}-${year}`).set(this.timesheet))
-  //     )
-  //   } else {
-  //     return 'timesheet already exists';
-  //   }
-  // }
-
-  async checkWeekNumber(weekNumber: string, year: string) {
-    const doc = await this.docExists(`week-${weekNumber}-${year}`);
-    return doc;
-  }
-
+            this.weekNumbersRef.doc(`week-${weekNumber}-${year}`).set(this.timesheet)
+            .then(
+              res => resolve('Timesheet successfully created!'),
+              err => reject(err)
+            )
+          } else {
+            _ => reject('Timesheet already exists')
+          }
+        })
+      })
+    }
+  
+  
   docExists(path: string): Promise<any> {
-    return this.timesheetsRef.doc(path).ref.get();
+    return this.weekNumbersRef.doc(path).ref.get();
   }
 
 

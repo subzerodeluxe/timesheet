@@ -5,13 +5,16 @@ import { first, map, mergeMap, take } from 'rxjs/operators';
 import { Employee } from '../../models/employee.interface';
 import { Observable } from 'rxjs/Observable';
 import { AuthProvider } from '../auth/auth.service';
+import * as firebase from 'firebase/app';
 
 @Injectable()
 export class UserProvider {
 
   private profileDoc: AngularFirestoreDocument<Employee>;
+  private currentUser: User;
 
   constructor(public afs: AngularFirestore, public authProvider: AuthProvider) {
+    this.currentUser = firebase.auth().currentUser;
   }
 
   getAuthenticatedUser(): Observable<Employee> {
@@ -22,14 +25,9 @@ export class UserProvider {
     );
   }
 
-
-  // getCurrentUserInfo(user: User): Observable<Employee> {
-  //   this.profileDoc = this.afs.collection('users').doc(user.uid);
-  //   return this.profileDoc.valueChanges().pipe(first());   // pak allleen de eerste value 
-  // }
-
-  async saveProfile(user: User, incomingProfile: Employee) { 
-    this.profileDoc = this.afs.collection('users').doc(user.uid);
+  async saveProfile(incomingProfile: Employee) { 
+    console.log('Current user: ', this.currentUser.uid);
+    this.profileDoc = this.afs.collection('users').doc(this.currentUser.uid);
     try {
       const uploadedProfile = incomingProfile;
       await this.profileDoc.update({...uploadedProfile});

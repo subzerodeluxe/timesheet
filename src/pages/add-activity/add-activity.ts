@@ -47,9 +47,15 @@ export class AddActivityPage {
       endTime: new FormControl('16:00', Validators.required)
     });
 
-    this.timesheetSub = this.time.createTimesheet().subscribe((s) => {
-      console.log(s);
-    });
+    this.time.createTimesheet()
+      .then(res => console.log('De resp: ', res))
+      .catch(err => console.log('Errors: ', err));
+
+    // this.timesheetSub = this.time.createTimesheet().subscribe((s) => {
+      // console.log(s);
+    // });
+
+  
    
   }
 

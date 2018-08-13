@@ -1,4 +1,4 @@
-export interface User {
+export interface Employee {
     uid: string;
     email: string;
     email_verified: boolean;

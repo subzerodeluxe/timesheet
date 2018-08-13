@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides, IonicPage } from 'ionic-angular';
-import { trigger, style, state, transition, animate, keyframes } from '@angular/animations';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { slideOptions } from '../../app/app.config';
+import { walkthrough } from '../../app/animations';
 
 @IonicPage({
   name: 'walkthrough'
@@ -11,21 +11,7 @@ import { slideOptions } from '../../app/app.config';
   selector: 'walkthrough-page',
   templateUrl: 'walkthrough.html',
   animations: [
-    trigger('bounce', [
-      state('*', style({
-          transform: 'translateX(0)'
-      })),
-      transition('* => rightSwipe', animate('700ms ease-out', keyframes([
-        style({transform: 'translateX(0)', offset: 0}),
-        style({transform: 'translateX(-65px)',  offset: 0.3}),
-        style({transform: 'translateX(0)',     offset: 1.0})
-      ]))),
-      transition('* => leftSwipe', animate('700ms ease-out', keyframes([
-        style({transform: 'translateX(0)', offset: 0}),
-        style({transform: 'translateX(65px)',  offset: 0.3}),
-        style({transform: 'translateX(0)',     offset: 1.0})
-      ])))
-    ])
+    walkthrough
   ]
 })
 export class WalkthroughPage {

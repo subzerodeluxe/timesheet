@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavController, NavParams, SegmentButton, IonicPage } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../../providers/auth/auth.service';
@@ -6,7 +6,7 @@ import { LayoutProvider } from '../../providers/layout/layout.service';
 import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Employee } from '../../models/employee.interface';
-import { trigger, keyframes, transition, state, style, animate } from '@angular/animations';
+import { infinitePulse } from '../../app/animations';
 
 // Gebruik animaties voor het laden van de activities in timesheet: https://www.youtube.com/watch?v=ra5qNKNc95U
 @IonicPage({
@@ -16,18 +16,13 @@ import { trigger, keyframes, transition, state, style, animate } from '@angular/
   selector: 'page-timesheet',
   templateUrl: 'timesheet.html',
   animations: [
-    trigger('shake', [
-      state('small',style({ transform: 'scale(1)', offset: 0 })),
-      state('big', style({ transform: 'scale(1.2)', offset: 0.5 })),
-      transition('small => big', animate('750ms 500ms ease')),
-      transition('big => small', animate('750ms 500ms ease'))
-    ]),
+    infinitePulse
   ]
 })
 export class TimesheetPage implements OnDestroy {
   segment: string;
   subscription: Subscription;
-  noActivities: boolean = false;
+  noActivities: boolean = true;
   timesheet: any;
   singleActivity: any; 
   isoString: string;
@@ -41,7 +36,7 @@ export class TimesheetPage implements OnDestroy {
   }
   
   ionViewDidLoad() {
-    this.noActivities = false;
+    this.noActivities = true;
     this.layout.presentLoadingDefault();
     setTimeout(() => {
       this.state = 'big';
@@ -88,14 +83,4 @@ export class TimesheetPage implements OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
-  // presentLoadingDefault() {
-  //   let loading = this.layout.showLoading();
-  
-  //   loading.present();
-  
-  //   setTimeout(() => {
-  //     loading.dismiss();
-  //   }, 1500);
-  // }
 }

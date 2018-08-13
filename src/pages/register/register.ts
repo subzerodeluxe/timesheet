@@ -27,12 +27,10 @@ export class RegisterPage {
 
   registerAccount(value) {
     this.authProvider.registerAccount(value)
-      .then(res => {
-        console.log('Success!');
-        this.layout.presentBottomToast(`Je kunt nu inloggen, ${value.email}`);
+      .then(_ => {
+        this.layout.presentBottomToast(`Je kunt nu inloggen met ${value.email}`);
         this.navCtrl.setRoot('login');
       }, err => {
-        console.log(err);
         this.errorMessage = err.message; 
     }); 
   }
