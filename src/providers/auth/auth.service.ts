@@ -1,21 +1,27 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
-import { first } from 'rxjs/operators';
 import { Platform } from 'ionic-angular';
-
+import { first } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { User } from 'firebase/app';
 
 @Injectable()
 export class AuthProvider {
 
-  constructor(public afAuth: AngularFireAuth, 
-    public platform: Platform
-  ) { }
+  user: BehaviorSubject<User>;
 
-  // getCurrentUser(): firebase.User {
-  //   return this.afAuth.auth.currentUser;
-  // }
+  constructor(public afAuth: AngularFireAuth, public platform: Platform) {
+      this.user = new BehaviorSubject<User>(null);
+      this.afAuth.authState.subscribe(user => {
+        if (user) { 
+          this.user.next(user);
+        } else {
+          this.user.next(null);
+        }
+      });
+    }
 
+  
   getAuthenticatedUser() {
     return this.afAuth.authState.pipe(first());
   }  

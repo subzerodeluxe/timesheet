@@ -5,9 +5,7 @@ import { EnrichedActivity, ActivityLine } from '../../models/activityLine.interf
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { TimeSheet } from '../../models/timesheet.interface';
-import { map, mergeMap} from 'rxjs/operators';
-import * as firebase from 'firebase/app';
-
+// import { User } from 'firebase/app';
 
 @Injectable()
 export class TimesheetProvider {
@@ -18,11 +16,14 @@ export class TimesheetProvider {
   weekNumbersRef: AngularFirestoreCollection<any>;
   timesheet: TimeSheet;
   docPresent: boolean;
-  currentUser: firebase.User;
+  currentUser: any;
 
   constructor(public afs: AngularFirestore, public userService: UserProvider,  
     public authService: AuthProvider) {
-      this.currentUser = firebase.auth().currentUser;
+     
+      this.authService.user.subscribe(user => {
+        this.currentUser = user;
+      })
       this.activitiesRef = this.afs.collection('activities');
       this.timesheetsRef = this.afs.collection('timesheets');
       this.weekNumbersRef = this.afs.collection('weekNumbers');

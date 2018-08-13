@@ -41,7 +41,7 @@ export class TimesheetPage implements OnDestroy {
     setTimeout(() => {
       this.state = 'big';
     }, 0);
-    this.subscription = this.userProvider.getAuthenticatedUser()
+    this.subscription = this.userProvider.getAuthenticatedUserProfile()
       .subscribe(user => this.userObject = user);
   }
 

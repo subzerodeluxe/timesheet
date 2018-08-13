@@ -5,6 +5,7 @@ export interface Employee {
     firstName?: string;
     lastName?: string;
     email?: string;
-    emailVerified?: string;
+    creationTime?: string;
+    emailVerified?: boolean;
     vehicleInformation?: Vehicle;
 }

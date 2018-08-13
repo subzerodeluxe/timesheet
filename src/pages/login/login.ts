@@ -38,7 +38,7 @@ export class LoginPage {
 
     this.authProvider.regularLogin(value)
       .then(() => {
-        this.userProvder.getAuthenticatedUser()
+        this.userProvder.getAuthenticatedUserProfile()
           .subscribe(profile => {
             if (profile.firstName != null) {
               this.loading.dismiss();

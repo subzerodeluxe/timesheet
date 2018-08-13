@@ -35,7 +35,7 @@ export class AccountPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.layout.presentLoadingDefault();
     this.profileImage = './assets/images/amerongen-schilderwerken.jpg';
-    this.authenticatedEmployee$ = this.userProvider.getAuthenticatedUser().subscribe(employeeProfile => {
+    this.authenticatedEmployee$ = this.userProvider.getAuthenticatedUserProfile().subscribe(employeeProfile => {
       this.employee = employeeProfile;
       console.log(this.employee);
     });
