@@ -4,6 +4,7 @@ import { AuthProvider } from '../../providers/auth/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { UserProvider } from '../../providers/user/user.service';
+import { Employee } from '../../models/employee.interface';
 
 @IonicPage({
   name: 'register'
@@ -26,17 +27,18 @@ export class RegisterPage {
       });
   }
 
-  registerAccount(value) {
-    this.authProvider.registerAccount(value)
-      .then(_ => {
-        this.userService.createUserProfile()
-          .then(_ => {
-            this.layout.presentBottomToast(`Je kunt nu inloggen met ${value.email}`);
-            this.navCtrl.setRoot('login');
-          }).catch(e => this.errorMessage = e.message);     
-      }, err => {
-        this.errorMessage = err.message; 
-    }); 
+  async registerAccount(value: Employee) {
+    this.layout.presentLoadingDefault(); 
+    this.errorMessage = '';
+    const result = await this.authProvider.registerAccount(value);
+    console.log('Het resultaat: ', result);
+    if (result === 'success') {
+      this.layout.presentBottomToast(`Gelukt! Je kunt nu inloggen met ${value.email}`);
+      this.navCtrl.setRoot('login');  
+    } else {
+      this.errorMessage = result;
+      this.layout.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.');
+    }
   }
 }
 

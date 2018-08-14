@@ -11,15 +11,11 @@ export class UserProvider {
 
   private profileDoc: AngularFirestoreDocument<Employee>;
   private profileCollection: AngularFirestoreCollection<any>;
-  private currentUser: User;
+  currentUser: User;
 
   constructor(public afs: AngularFirestore, public authProvider: AuthProvider) {
-    
+    this.currentUser = this.authProvider.afAuth.auth.currentUser;
     this.profileCollection = this.afs.collection('users');
-    this.authProvider.user.subscribe(user => {
-      this.currentUser = user;
-      this.profileDoc = this.profileCollection.doc(this.currentUser.uid);
-    })
   }
 
   getAuthenticatedUserProfile(): Observable<Employee> {
@@ -30,24 +26,7 @@ export class UserProvider {
     );
   }
 
-  createUserProfile() {
-    return new Promise<any>((resolve, reject) => {
-      let basicUser: Employee = {
-        uid: this.currentUser.uid,
-        email: this.currentUser.email,
-        creationTime: this.currentUser.metadata.creationTime,
-        emailVerified: this.currentUser.emailVerified
-      };
-     
-      this.profileDoc.set({...basicUser})
-      .then(
-        res => resolve(res),
-        err => reject(err)
-      )
-    })
-  }
-
-  async saveProfile(incomingProfile: Employee) { 
+  async saveProfile(incomingProfile: Employee): Promise<boolean> { 
     // console.log('Current user: ', this.currentUser.uid);
     try {
       const uploadedProfile = incomingProfile;

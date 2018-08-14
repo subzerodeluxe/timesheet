@@ -21,9 +21,7 @@ export class TimesheetProvider {
   constructor(public afs: AngularFirestore, public userService: UserProvider,  
     public authService: AuthProvider) {
      
-      this.authService.user.subscribe(user => {
-        this.currentUser = user;
-      })
+      
       this.activitiesRef = this.afs.collection('activities');
       this.timesheetsRef = this.afs.collection('timesheets');
       this.weekNumbersRef = this.afs.collection('weekNumbers');
