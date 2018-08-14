@@ -38,6 +38,8 @@ export class AccountPage implements OnInit, OnDestroy {
     this.authenticatedEmployee$ = this.userProvider.getAuthenticatedUserProfile().subscribe(employeeProfile => {
       this.employee = employeeProfile;
       console.log(this.employee);
+    }, err => {
+      console.error('Oops:', err.message);
     });
   }
 
@@ -61,7 +63,9 @@ export class AccountPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.authenticatedEmployee$.unsubscribe();
+    if (this.authenticatedEmployee$ != null) {
+      this.authenticatedEmployee$.unsubscribe();
+    }
   }
 }
 

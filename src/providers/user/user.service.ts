@@ -21,9 +21,9 @@ export class UserProvider {
   getAuthenticatedUserProfile(): Observable<Employee> {
     return this.authProvider.getAuthenticatedUser().pipe(
       map(user => user.uid),
-      mergeMap(authId => this.profileCollection.doc(authId).valueChanges()),
+      mergeMap(authId => this.profileCollection.doc('dsdfdf').valueChanges()),  // BEWUSTE ERROR!!!
       first()
-    );
+    )
   }
 
   async saveProfile(incomingProfile: Employee): Promise<boolean> { 

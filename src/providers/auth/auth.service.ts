@@ -4,26 +4,27 @@ import { Platform } from 'ionic-angular';
 import { first, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../models/employee.interface';
-import { of } from 'rxjs/observable/of';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+
 
 
 @Injectable()
 export class AuthProvider {
 
   user: Observable<Employee>;
+  errorMessage: string;
 
-  constructor(public afAuth: AngularFireAuth, public platform: Platform, private afs: AngularFirestore,) {
+  constructor(public afAuth: AngularFireAuth, public platform: Platform, private afs: AngularFirestore) {
     //// Get auth data, then get firestore user document || null
-    this.user = this.afAuth.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.afs.doc<Employee>(`users/${user.uid}`).valueChanges()
-        } else {
-          return of(null)
-        }
-      })
-    )
+    // this.user = this.afAuth.authState.pipe(
+    //   switchMap(user => {
+    //     if (user) {
+    //       return this.afs.doc<Employee>(`users/${user.uid}`).valueChanges()
+    //     } else {
+    //       return of(null)
+    //     }
+    //   })
+    // )
 
   }
 
@@ -45,17 +46,40 @@ export class AuthProvider {
   async registerAccount(value: any): Promise<string> {
     try {
       const user = await this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password);
-      await this.updateUserData(user);
+      await this.createUserProfileOnRegister(user);
       return 'success';
     } catch(err) {
       console.log(err);
-      const errorMessage = this.handleFirebaseError(err.code);
-      return errorMessage;
+      const authError = err.code.startsWith('auth');
+      if (authError == true) {
+        console.log('Error vanuit authenticatie method');
+        this.errorMessage = this.handleFirebaseError(err.code);
+      } else {
+        console.log('Error creating user profile');
+        this.deleteAuthenticatedUserAccount()
+          .then(_ => console.log('AUTHENTICATED USER DELETED!'))
+          .catch(_ => this.errorMessage = this.handleFirebaseError(err));
+        this.errorMessage = this.handleFirebaseError(err);
+      }
+      return this.errorMessage;
+    }
+  }
+
+  async register(value: any) {
+    try {
+      const user = await this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password);
+      await this.createUserProfileOnRegister(user);
+    } catch(err) {
+
     }
   }
 
   resetPassword(email: string): Promise<any> {
     return this.afAuth.auth.sendPasswordResetEmail(email);
+  }
+
+  private deleteAuthenticatedUserAccount() {
+    return this.afAuth.auth.currentUser.delete();
   }
 
   logOut(): Promise<any> {
@@ -69,23 +93,17 @@ export class AuthProvider {
     });
   }
 
-  private updateUserData(user) {
-    
-    return new Promise((resolve, reject) => {
-      reject('Er ging iets niet goed bij het updaten van de user data')
-    });
-   
-    // const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+  createUserProfileOnRegister(user) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+  
+    const data: Employee = {
+      uid: user.uid,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      creationTime: user.metadata.creationTime 
+    };
 
-    // const data: Employee = {
-    //   uid: user.uid,
-    //   email: user.email,
-    //   emailVerified: user.emailVerified,
-    //   creationTime: user.metadata.creationTime 
-    // };
-
-    // return userRef.set(data, { merge: true })
-
+    return userRef.set(data, { merge: true }); 
   }
 
   private handleFirebaseError(errorCode: string): string {
@@ -108,16 +126,16 @@ export class AuthProvider {
         errorMessage = 'Het wachtwoord is niet geldig.';
       break; 
       case ('auth/user-not-found'):
-        errorMessage = 'De gebruiker bestaat niet. Wellicht is het profiel verwijderd.';
+        errorMessage = 'De gebruiker bestaat (nog) niet.';
       break;  
       case ('auth/user-disabled'):
-        errorMessage = 'Het gebruikersaccount is uitgeschakeld.';
+        errorMessage = 'Het gebruikersaccount is (tijdelijk) uitgeschakeld.';
       break;    
       case ('auth/weak-password'):
         errorMessage = 'Het wachtwoord moet minimaal 6 tekens bevatten.';
       break;    
       default:
-        errorMessage = 'Er ging iets niet goed. Probeer het opnieuw.';
+        errorMessage = 'Kon gebruiker niet registreren. Probeer het nog een keer.';
       break;
     }
 

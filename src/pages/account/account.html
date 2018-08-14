@@ -29,11 +29,11 @@
         <ion-list class="user-data-content">
           <ion-item>
             <ion-label stacked>Voornaam</ion-label>
-            <ion-input type="text" name="firstName" [(ngModel)]="employee.firstName" formControlName="firstName"></ion-input>
+            <ion-input type="text" name="firstName" [(ngModel)]="employee?.firstName" formControlName="firstName"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Achternaam</ion-label>
-            <ion-input type="text" name="lastName" [(ngModel)]="employee.lastName" formControlName="lastName"></ion-input>
+            <ion-input type="text" name="lastName" [(ngModel)]="employee?.lastName" formControlName="lastName"></ion-input>
           </ion-item>
         </ion-list>
 
@@ -41,7 +41,7 @@
           <h2 class="section-title">Aanvullende informatie</h2>
             <ion-item>
               <ion-label stacked>Kenteken bedrijfsauto</ion-label>
-              <ion-input type="text" name="licensePlate" [(ngModel)]="employee.licensePlate" formControlName="licensePlate"></ion-input>
+              <ion-input type="text" name="licensePlate" [(ngModel)]="employee?.licensePlate" formControlName="licensePlate"></ion-input>
             </ion-item>
         </section>
       </form>
