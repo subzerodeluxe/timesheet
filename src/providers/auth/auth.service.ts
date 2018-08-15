@@ -28,6 +28,8 @@ export class AuthProvider {
 
   }
 
+  /* CURRENT USER MOET EENMALIG WORDEN OPGEHAALD: DAARNA DOORGESTUURD VIA SUBJECT */
+
   
   getAuthenticatedUser() {
     return this.afAuth.authState.pipe(first());
@@ -62,15 +64,6 @@ export class AuthProvider {
         this.errorMessage = this.handleFirebaseError(err);
       }
       return this.errorMessage;
-    }
-  }
-
-  async register(value: any) {
-    try {
-      const user = await this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password);
-      await this.createUserProfileOnRegister(user);
-    } catch(err) {
-
     }
   }
 
@@ -126,7 +119,7 @@ export class AuthProvider {
         errorMessage = 'Het wachtwoord is niet geldig.';
       break; 
       case ('auth/user-not-found'):
-        errorMessage = 'De gebruiker bestaat (nog) niet.';
+        errorMessage = 'De gebruiker bestaat (nog) niet. Maak een nieuw account aan.';
       break;  
       case ('auth/user-disabled'):
         errorMessage = 'Het gebruikersaccount is (tijdelijk) uitgeschakeld.';

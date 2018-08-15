@@ -42,7 +42,10 @@ export class TimesheetPage implements OnDestroy {
       this.state = 'big';
     }, 0);
     this.subscription = this.userProvider.getAuthenticatedUserProfile()
-      .subscribe(user => this.userObject = user);
+      .subscribe(user => {
+        console.log(user); 
+        this.userObject = user
+      });   /// VERPLAATSEN NAAR SERVICE?
   }
 
   onEnd(event) {
@@ -81,6 +84,8 @@ export class TimesheetPage implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription != null) {
+      this.subscription.unsubscribe();
+    }
   }
 }

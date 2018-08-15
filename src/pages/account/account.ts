@@ -48,9 +48,9 @@ export class AccountPage implements OnInit, OnDestroy {
     this.layout.presentLoadingDefault(); 
     const result = await this.userProvider.saveProfile(emObject);
     if (result) {
-      this.layout.presentBottomToast('Profiel succesvol bijgewerkt');
+      this.layout.presentBottomToast('Profiel succesvol bijgewerkt.');
     } else {
-      this.layout.presentBottomToast('Profiel niet bijgwerkt. Probeer het opnieuw');
+      this.layout.presentBottomToast('Profiel niet bijgwerkt. Probeer het opnieuw.');
     }
   }
 

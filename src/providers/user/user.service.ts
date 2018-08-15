@@ -21,13 +21,14 @@ export class UserProvider {
   getAuthenticatedUserProfile(): Observable<Employee> {
     return this.authProvider.getAuthenticatedUser().pipe(
       map(user => user.uid),
-      mergeMap(authId => this.profileCollection.doc('dsdfdf').valueChanges()),  // BEWUSTE ERROR!!!
+      mergeMap(authId => this.profileCollection.doc(authId).valueChanges()), 
       first()
     )
   }
 
   async saveProfile(incomingProfile: Employee): Promise<boolean> { 
-    // console.log('Current user: ', this.currentUser.uid);
+    console.log('Current user: ', this.currentUser.uid);
+    this.profileDoc = this.profileCollection.doc(this.currentUser.uid);
     try {
       const uploadedProfile = incomingProfile;
       await this.profileDoc.update({...uploadedProfile});
