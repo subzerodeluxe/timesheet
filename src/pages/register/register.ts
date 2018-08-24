@@ -4,7 +4,6 @@ import { AuthProvider } from '../../providers/auth/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { UserProvider } from '../../providers/user/user.service';
-import { Employee } from '../../models/employee.interface';
 import { PasswordValidator } from '../../components/validators/password.validator';
 import { validation_messages } from '../../app/app.config';
 
@@ -31,7 +30,7 @@ export class RegisterPage {
   ionViewWillLoad() {
     this.matching_passwords_group = new FormGroup({
       password: new FormControl('', Validators.compose([
-        Validators.minLength(5),
+        Validators.minLength(6),
         Validators.required,
         Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
       ])),
@@ -49,7 +48,7 @@ export class RegisterPage {
     });
   }
 
-  async registerAccount(value: Employee) {
+  async registerAccount(value: any) {
     this.layout.presentLoadingDefault(); 
     this.errorMessage = '';
     const result = await this.authProvider.registerAccount(value);

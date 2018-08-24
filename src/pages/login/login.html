@@ -29,7 +29,14 @@
       <button ion-button block clear class="signup-button" (click)="goToSignup()">Registreer</button>
     </ion-col>
   </ion-row>
-  <label class="error-message">{{errorMessage}}</label>
+
+  <div class="validation-errors">
+    <ng-container >
+      <div class="error-message" *ngIf="errorMessage">
+             {{ errorMessage }}
+      </div>
+    </ng-container>
+  </div>
   <p class="auth-divider">
     Of
   </p>

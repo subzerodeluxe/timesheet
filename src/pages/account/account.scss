@@ -11,6 +11,20 @@ page-account {
 				{
 					margin-top: 20px;
 				}
+
+				.terms-item
+				{
+					.item-inner
+					{
+					border-bottom: none;
+
+					ion-label {
+						white-space: normal;
+						color: $white-d;
+						font-size: 14px;
+					}
+					}
+				}
 			}
 
 			.section-title

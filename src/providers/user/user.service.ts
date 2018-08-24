@@ -14,12 +14,6 @@ export class UserProvider {
   currentUser: User;
 
   constructor(public afs: AngularFirestore, public authProvider: AuthProvider) {
-    this.authProvider.getAuthenticatedUser().subscribe(user => {
-      if (user) {
-        this.currentUser = user;
-        return;
-      }
-    });
     this.profileCollection = this.afs.collection('users');
   }
 
@@ -31,9 +25,8 @@ export class UserProvider {
     )
   }
 
-  async saveProfile(incomingProfile: Employee): Promise<boolean> { 
-    console.log('Current user: ', this.currentUser.uid);
-    this.profileDoc = this.profileCollection.doc(this.currentUser.uid);
+  async saveProfile(incomingProfile: Employee, uid: string): Promise<boolean> { 
+    this.profileDoc = this.profileCollection.doc(uid);
     try {
       const uploadedProfile = incomingProfile;
       await this.profileDoc.update({...uploadedProfile});

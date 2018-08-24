@@ -38,12 +38,19 @@
         </ion-list>
 
         <section class="form-section">
-          <h2 class="section-title">Aanvullende informatie</h2>
-            <ion-item>
+          <h2 class="section-title">Aanvullende informatie</h2> 
+            <ion-item *ngIf="!checked">
               <ion-label stacked>Kenteken bedrijfsauto</ion-label>
-              <ion-input type="text" name="licensePlate" [(ngModel)]="employee.licensePlate" formControlName="licensePlate"></ion-input>
+              <ion-input type="text" name="licensePlate" [(ngModel)]="licensePlate" formControlName="licensePlate"></ion-input>
+            </ion-item> 
+
+            <ion-item class="terms-item">
+              <ion-label>Geen bedrijfsauto</ion-label>
+              <ion-checkbox [(ngModel)]="isToggled" formControlName="vehicleNotPresent" (click)="vehicleIsToggled($event)"></ion-checkbox>
             </ion-item>
         </section>
+
+        
       </form>
 
       <button ion-button block class="auth-action-button login-button" (click)="logOut()">Uitloggen</button>

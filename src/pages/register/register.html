@@ -58,7 +58,14 @@
     <button ion-button block class="auth-action-button login-button" type="submit" [disabled]="!registerForm.valid">Registreer</button>
   </form>
 
-  <label *ngIf="errorMessage" class="error-message">{{errorMessage}}</label>
+  <div class="validation-errors">
+    <ng-container >
+      <div class="error-message" *ngIf="errorMessage">
+             {{ errorMessage }}
+      </div>
+    </ng-container>
+  </div>
+  
   <ion-row class="alt-options">
     <ion-col no-padding width-50></ion-col>
   </ion-row>

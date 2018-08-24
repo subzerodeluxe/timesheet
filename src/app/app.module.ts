@@ -26,7 +26,6 @@ import { ComponentsModule } from '../components/components.module';
 import { DirectivesModule } from '../directives/directives.module';
 import { CommonModule } from '@angular/common';
 import { GooglePlus } from '@ionic-native/google-plus';
-import { ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({

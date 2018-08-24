@@ -19,17 +19,33 @@ export class AccountPage implements OnInit, OnDestroy {
   profileImage: string;
   profileForm: FormGroup;
   employee = {} as Employee;
+  licensePlate: string;
+  public isToggled: boolean;
+  checked: boolean;
   private authenticatedEmployee$: Subscription;
  
   constructor(public navCtrl: NavController, 
     public userProvider: UserProvider, public navParams: NavParams, 
     public layout: LayoutProvider, public authProvider: AuthProvider) {
-     
-    this.profileForm = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      licensePlate: new FormControl()
-    });
+    
+      this.isToggled = false;
+      this.checked = false;
+      this.profileForm = new FormGroup({
+        firstName: new FormControl(),
+        lastName: new FormControl(),
+        licensePlate: new FormControl(),
+        vehicleNotPresent: new FormControl()
+      });
+  }
+
+  vehicleIsToggled() {
+    console.log("Toggled: "+ this.isToggled); 
+    if (this.isToggled === true) {
+      this.checked = true;  // No vehicle
+      this.profileForm.get('licensePlate').setValue('');
+    } else {
+      this.checked = false;
+    }
   }
 
   ngOnInit() {
@@ -37,16 +53,22 @@ export class AccountPage implements OnInit, OnDestroy {
     this.profileImage = './assets/images/amerongen-schilderwerken.jpg';
     this.authenticatedEmployee$ = this.userProvider.getAuthenticatedUserProfile().subscribe(employeeProfile => {
       this.employee = employeeProfile;
-      console.log(this.employee);
+      if (employeeProfile.vehicleInformation.licensePlate === null) {
+        this.licensePlate = '';
+      } else {
+        this.licensePlate = employeeProfile.vehicleInformation.licensePlate;
+      }
+      console.log('Opgehaalde account: ', this.employee);
     }, err => {
       console.error('Oops:', err.message);
     });
   }
 
   async saveProfile(employeeObject: any) {
-    let emObject: Employee = { firstName: employeeObject.firstName, lastName: employeeObject.lastName, vehicleInformation: { licensePlate: employeeObject.licensePlate }};
+    let emObject: Employee = { firstName: employeeObject.firstName, lastName: employeeObject.lastName, 
+        vehicleInformation: { licensePlate: employeeObject.licensePlate, vehicleNotPresent: employeeObject.vehicleNotPresent }};
     this.layout.presentLoadingDefault(); 
-    const result = await this.userProvider.saveProfile(emObject);
+    const result = await this.userProvider.saveProfile(emObject, this.employee.uid);
     if (result) {
       this.layout.presentBottomToast('Profiel succesvol bijgewerkt.');
     } else {

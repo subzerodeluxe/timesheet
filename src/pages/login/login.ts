@@ -43,6 +43,8 @@ export class LoginPage implements OnDestroy {
             this.layout.presentTopToast(`Welkom terug, ${profile.firstName}`);
             this.navCtrl.setRoot('tabs');
           } else {
+            const welcomeAlert = this.layout.showAlertMessage('Vul je gegevens aan', 'Je profiel is nog niet compleet.', 'Ik snap het');
+            welcomeAlert.present();
             this.navCtrl.setRoot('account');
           }
         }, err => {

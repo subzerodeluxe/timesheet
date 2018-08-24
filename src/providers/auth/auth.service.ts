@@ -50,7 +50,8 @@ export class AuthProvider {
 
   async registerAccount(value: any): Promise<string> {
     try {
-      const user = await this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password);
+      console.log('Valid string? ', value.matching_passwords.password);
+      const user = await this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.matching_passwords.password);
       await this.createUserProfileOnRegister(user);
       return 'success';
     } catch(err) {
@@ -95,7 +96,11 @@ export class AuthProvider {
     const data: Employee = {
       uid: user.uid,
       email: user.email,
-      creationTime: user.metadata.creationTime 
+      creationTime: user.metadata.creationTime,
+      vehicleInformation: {
+        licensePlate: '',
+        vehiclePresent: true
+      }
     };
 
     return userRef.set(data); 
