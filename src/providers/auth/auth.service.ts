@@ -99,7 +99,7 @@ export class AuthProvider {
       creationTime: user.metadata.creationTime,
       vehicleInformation: {
         licensePlate: '',
-        vehiclePresent: true
+        vehicleNotPresent: true
       }
     };
 
@@ -123,7 +123,7 @@ export class AuthProvider {
       errorMessage = 'Er bestaat al een account met dit emailadres.';
     break; 
       case ('auth/wrong-password'):
-        errorMessage = 'Het wachtwoord is niet geldig.';
+        errorMessage = 'Het wachtwoord is correct.';
       break; 
       case ('auth/user-not-found'):
         errorMessage = 'De gebruiker bestaat (nog) niet. Maak een nieuw account aan.';

@@ -5,7 +5,7 @@ import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { Employee } from '../../models/employee.interface';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @IonicPage({
   name: 'account'
@@ -31,8 +31,8 @@ export class AccountPage implements OnInit, OnDestroy {
       this.isToggled = false;
       this.checked = false;
       this.profileForm = new FormGroup({
-        firstName: new FormControl(),
-        lastName: new FormControl(),
+        firstName: new FormControl('', Validators.required),
+        lastName: new FormControl('', Validators.required),
         licensePlate: new FormControl(),
         vehicleNotPresent: new FormControl()
       });
