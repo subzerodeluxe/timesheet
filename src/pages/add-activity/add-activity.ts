@@ -6,6 +6,7 @@ import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { ActivityLine } from '../../models/activityLine.interface';
 import { Subscription } from 'rxjs/Subscription';
+import { validation_messages } from '../../app/app.config';
 
 @IonicPage({
   name: 'add-activity'
@@ -22,6 +23,7 @@ export class AddActivityPage {
   totalHours: string; 
   lastSlide = false;
   timesheetSub: Subscription;
+  validation_messages = validation_messages;
   @ViewChild('slider') slider: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public time: TimesheetProvider,
@@ -137,41 +139,7 @@ export class AddActivityPage {
     this.totalHours = this.time.calculateHoursDifference(startTime, endTime);
   }
 
-  validation_messages = {
-    'clientName': [
-      { type: 'required', message: 'Dit is een verplicht veld.' },
-      { type: 'minlength', message: 'Veld moet minimaal 4 tekens bevatten.' },
-      { type: 'maxlength', message: 'Veld mag niet langer zijn dan 25 tekens.' }
-    ],
-    'name': [
-      { type: 'required', message: 'Name is required.' }
-    ],
-    'lastname': [
-      { type: 'required', message: 'Last name is required.' }
-    ],
-    'email': [
-      { type: 'required', message: 'Email is required.' },
-      { type: 'pattern', message: 'Enter a valid email.' }
-    ],
-    'phone': [
-      { type: 'required', message: 'Phone is required.' },
-      { type: 'validCountryPhone', message: 'Phone incorrect for the country selected' }
-    ],
-    'password': [
-      { type: 'required', message: 'Password is required.' },
-      { type: 'minlength', message: 'Password must be at least 5 characters long.' },
-      { type: 'pattern', message: 'Your password must contain at least one uppercase, one lowercase, and one number.' }
-    ],
-    'confirm_password': [
-      { type: 'required', message: 'Confirm password is required' }
-    ],
-    'matching_passwords': [
-      { type: 'areEqual', message: 'Password mismatch' }
-    ],
-    'terms': [
-      { type: 'pattern', message: 'You must accept terms and conditions.' }
-    ],
-  };
+ 
 
   // ngOnDestroy() {
   //   this.timesheetSub.unsubscribe();

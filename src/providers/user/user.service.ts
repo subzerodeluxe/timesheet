@@ -3,8 +3,8 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import { first, map, mergeMap } from 'rxjs/operators';
 import { Employee } from '../../models/employee.interface';
 import { Observable } from 'rxjs/Observable';
-import { User } from 'firebase/app';
 import { AuthProvider } from '../auth/auth.service';
+import { User } from '@firebase/auth-types';
 
 @Injectable()
 export class UserProvider {
@@ -14,7 +14,12 @@ export class UserProvider {
   currentUser: User;
 
   constructor(public afs: AngularFirestore, public authProvider: AuthProvider) {
-    this.currentUser = this.authProvider.afAuth.auth.currentUser;
+    this.authProvider.getAuthenticatedUser().subscribe(user => {
+      if (user) {
+        this.currentUser = user;
+        return;
+      }
+    });
     this.profileCollection = this.afs.collection('users');
   }
 
@@ -35,7 +40,7 @@ export class UserProvider {
       return true;
     } 
     catch(e) {
-      console.log(e);
+      console.log('Er gaat iets niet goed. ', e);
       return false;
     } 
   }

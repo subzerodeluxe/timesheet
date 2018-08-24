@@ -5,13 +5,14 @@ import { first, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../models/employee.interface';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { User } from '@firebase/auth-types';
 
 
 
 @Injectable()
 export class AuthProvider {
 
-  user: Observable<Employee>;
+ //  user: Observable<Employee>;
   errorMessage: string;
 
   constructor(public afAuth: AngularFireAuth, public platform: Platform, private afs: AngularFirestore) {
@@ -26,12 +27,14 @@ export class AuthProvider {
     //   })
     // )
 
+
+
   }
 
   /* CURRENT USER MOET EENMALIG WORDEN OPGEHAALD: DAARNA DOORGESTUURD VIA SUBJECT */
 
   
-  getAuthenticatedUser() {
+  getAuthenticatedUser(): Observable<User> {
     return this.afAuth.authState.pipe(first());
   }  
 
@@ -92,11 +95,10 @@ export class AuthProvider {
     const data: Employee = {
       uid: user.uid,
       email: user.email,
-      emailVerified: user.emailVerified,
       creationTime: user.metadata.creationTime 
     };
 
-    return userRef.set(data, { merge: true }); 
+    return userRef.set(data); 
   }
 
   private handleFirebaseError(errorCode: string): string {

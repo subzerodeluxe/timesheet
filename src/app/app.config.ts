@@ -53,3 +53,26 @@ export const slideOptions: NativeTransitionOptions = {
   androiddelay: 50,
   iosdelay: 50
  }
+
+ export const validation_messages = { 
+  'email': [
+    { type: 'required', message: 'Email is verplicht.' },
+    { type: 'pattern', message: 'Emailadres is niet geldig.' }
+  ],
+  'password': [
+    { type: 'required', message: 'Wachtwoord is verplicht.' },
+    { type: 'minlength', message: 'Het wachtwoord moet minimaal 6 tekens bevatten.' },
+    { type: 'pattern', message: 'Het wachtwoord moet minimaal een hoofdletter, een kleine letter en een cijfer bevatten.' }
+  ],
+  'confirm_password': [
+    { type: 'required', message: 'Het is verplicht het wachtwoord te herhalen.' }
+  ],
+  'matching_passwords': [
+    { type: 'areEqual', message: 'Wachtwoord komt niet overeen.' }
+  ],
+  'clientName': [
+    { type: 'required', message: 'Dit is een verplicht veld.' },
+    { type: 'minlength', message: 'Veld moet minimaal 4 tekens bevatten.' },
+    { type: 'maxlength', message: 'Veld mag niet langer zijn dan 25 tekens.' }
+  ]
+};
