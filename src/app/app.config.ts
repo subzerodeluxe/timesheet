@@ -70,6 +70,12 @@ export const slideOptions: NativeTransitionOptions = {
   'matching_passwords': [
     { type: 'areEqual', message: 'Wachtwoord komt niet overeen.' }
   ],
+  'firstName': [
+    { type: 'required', message: 'Vul je voornaam in.' }
+  ],
+  'lastName': [
+    { type: 'required', message: 'Vergeet niet je achternaam in te vullen.' }
+  ],
   'clientName': [
     { type: 'required', message: 'Dit is een verplicht veld.' },
     { type: 'minlength', message: 'Veld moet minimaal 4 tekens bevatten.' },

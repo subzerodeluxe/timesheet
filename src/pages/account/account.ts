@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { Employee } from '../../models/employee.interface';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { validation_messages } from '../../app/app.config';
 
 @IonicPage({
   name: 'account'
@@ -23,6 +24,7 @@ export class AccountPage implements OnInit, OnDestroy {
   public isToggled: boolean;
   checked: boolean;
   private authenticatedEmployee$: Subscription;
+  public validation_messages = validation_messages;
  
   constructor(public navCtrl: NavController, 
     public userProvider: UserProvider, public navParams: NavParams, 
@@ -31,8 +33,12 @@ export class AccountPage implements OnInit, OnDestroy {
       this.isToggled = false;
       this.checked = false;
       this.profileForm = new FormGroup({
-        firstName: new FormControl('', Validators.required),
-        lastName: new FormControl('', Validators.required),
+        firstName: new FormControl('', Validators.compose([
+          Validators.required
+        ])),
+        lastName: new FormControl('', Validators.compose([
+          Validators.required
+        ])),
         licensePlate: new FormControl(),
         vehicleNotPresent: new FormControl()
       });
