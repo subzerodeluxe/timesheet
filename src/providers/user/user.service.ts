@@ -22,7 +22,7 @@ export class UserProvider {
       map(user => user.uid),
       mergeMap(authId => this.profileCollection.doc(authId).valueChanges()), 
       first()
-    )
+    );
   }
 
   async saveProfile(incomingProfile: Employee, uid: string): Promise<boolean> { 

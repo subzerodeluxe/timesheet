@@ -123,7 +123,7 @@ export class AuthProvider {
       errorMessage = 'Er bestaat al een account met dit emailadres.';
     break; 
       case ('auth/wrong-password'):
-        errorMessage = 'Het wachtwoord is correct.';
+        errorMessage = 'Het wachtwoord is niet juist.';
       break; 
       case ('auth/user-not-found'):
         errorMessage = 'De gebruiker bestaat (nog) niet. Maak een nieuw account aan.';

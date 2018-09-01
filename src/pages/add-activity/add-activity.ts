@@ -22,6 +22,7 @@ export class AddActivityPage {
   thirdActivityForm: FormGroup;
   totalHours: string; 
   lastSlide = false;
+  timesheetExists: boolean;
   timesheetSub: Subscription;
   validation_messages = validation_messages;
   @ViewChild('slider') slider: Slides;
@@ -47,18 +48,34 @@ export class AddActivityPage {
     this.thirdActivityForm = new FormGroup({
       startTime: new FormControl('07:00', Validators.required),
       endTime: new FormControl('16:00', Validators.required)
-    });
-
-    this.time.createTimesheet()
-      .then(res => console.log('De resp: ', res))
-      .catch(err => console.log('Errors: ', err));
+    }); 
+    this.timesheetExists = false; 
+    if (this.timesheetExists === false) {
+      console.log('Controleren of timesheet bestaat...');
+      this.time.createTimesheet()
+        .then(res => {
+          if (res === undefined) {
+            console.log('Timesheet succesvol aangemaakt.');
+            this.timesheetExists = true;
+          }
+        })
+        .catch(err => console.log('Errors: ', err));
+    } else {
+      console.log('Timesheet bestaat al.');
+    }
+    
 
     // this.timesheetSub = this.time.createTimesheet().subscribe((s) => {
-      // console.log(s);
+    //   if (s === undefined) {
+    //     const alert = this.layoutProvider.showAlertMessage('Werkbriefje is aangemaakt', 'Goedzo', 'Ok');
+    //     alert.present();
+    //   } else {
+    //     const alert = this.layoutProvider.showAlertMessage(s, 'Goedzo', 'Ok');
+    //     alert.present();
+    //   }
     // });
 
-  
-   
+
   }
 
   initActivityFields(): FormGroup {
@@ -106,7 +123,7 @@ export class AddActivityPage {
       }
     else {
 
-      let loading = this.layoutProvider.showLoading();
+      const loading = this.layoutProvider.showLoading();
       loading.present();
 
       this.totalHours = this.time.calculateHoursDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime,);
@@ -121,16 +138,18 @@ export class AddActivityPage {
         hoursDifference: this.totalHours
       };
 
-      // this.time.saveActivity(activityObject)
-      //   .then(() => {
-      //     loading.dismiss().then(() => {
-      //       console.log('Gelukt!');
-      //       this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
-      //       setTimeout(() => {
-      //         this.navCtrl.setRoot('timesheet');
-      //       }, 2000);
-      //     });
-      // }).catch(err => console.log(err));
+      console.log(activityObject);
+
+      this.time.saveActivity(activityObject)
+        .then(() => {
+          loading.dismiss().then(() => {
+            console.log('Gelukt!');
+            this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
+            setTimeout(() => {
+              this.navCtrl.setRoot('timesheet');
+            }, 2000);
+          });
+      }).catch(err => console.log(err));
     }
   }  
 
@@ -141,7 +160,9 @@ export class AddActivityPage {
 
  
 
-  // ngOnDestroy() {
-  //   this.timesheetSub.unsubscribe();
-  // }
+  ngOnDestroy() {
+    if (this.timesheetSub) {
+      this.timesheetSub.unsubscribe();
+    }
+  }
 }
