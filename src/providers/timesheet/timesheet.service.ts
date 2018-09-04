@@ -64,7 +64,7 @@ export class TimesheetProvider {
     let weekNumber = this.getCurrentWeekNumber().toString();
     let year = this.getCurrentYear().toString();
     const doc = await this.docExists(`week-${weekNumber}-${year}`);
-    
+    console.log('Controleren of timesheet bestaat...');
     if (doc.exists === false) {
      return this.authService.getAuthenticatedUser().pipe(
         map(user => {

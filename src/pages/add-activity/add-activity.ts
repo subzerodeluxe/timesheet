@@ -49,33 +49,26 @@ export class AddActivityPage {
       startTime: new FormControl('07:00', Validators.required),
       endTime: new FormControl('16:00', Validators.required)
     }); 
+
     this.timesheetExists = false; 
     if (this.timesheetExists === false) {
-      console.log('Controleren of timesheet bestaat...');
       this.time.createTimesheet()
         .then(res => {
+          console.log('De response: ', res);
           if (res === undefined) {
             console.log('Timesheet succesvol aangemaakt.');
             this.timesheetExists = true;
+          } else {
+            const alert = this.layoutProvider.showAlertMessage('TEST: werkbriefje bestaat al.', 'Geen nieuwe aangemaakt', 'Ok');
+            alert.present();
           }
         })
-        .catch(err => console.log('Errors: ', err));
-    } else {
-      console.log('Timesheet bestaat al.');
+        .catch(err => {
+          console.log('Errors: ', err);
+          const alert = this.layoutProvider.showAlertMessage('ERROR', err, 'Ok');
+          alert.present();
+        });
     }
-    
-
-    // this.timesheetSub = this.time.createTimesheet().subscribe((s) => {
-    //   if (s === undefined) {
-    //     const alert = this.layoutProvider.showAlertMessage('Werkbriefje is aangemaakt', 'Goedzo', 'Ok');
-    //     alert.present();
-    //   } else {
-    //     const alert = this.layoutProvider.showAlertMessage(s, 'Goedzo', 'Ok');
-    //     alert.present();
-    //   }
-    // });
-
-
   }
 
   initActivityFields(): FormGroup {
@@ -147,7 +140,7 @@ export class AddActivityPage {
             this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
             setTimeout(() => {
               this.navCtrl.setRoot('timesheet');
-            }, 2000);
+            }, 1500);
           });
       }).catch(err => console.log(err));
     }
