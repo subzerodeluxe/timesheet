@@ -14,7 +14,7 @@ export class UserProvider {
   currentUser: User;
 
   constructor(public afs: AngularFirestore, public authProvider: AuthProvider) {
-    this.profileCollection = this.afs.collection('users');
+    this.profileCollection = this.afs.collection('employees');
   }
 
   getAuthenticatedUserProfile(): Observable<Employee> {
