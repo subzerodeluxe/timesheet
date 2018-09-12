@@ -91,7 +91,7 @@ export class AuthProvider {
   }
 
   createUserProfileOnRegister(user) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`employees/${user.uid}`);
   
     const data: Employee = {
       uid: user.uid,
