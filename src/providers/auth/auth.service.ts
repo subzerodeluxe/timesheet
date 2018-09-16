@@ -3,9 +3,9 @@ import { Platform } from 'ionic-angular';
 import { first } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../models/employee.interface';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { User } from 'firebase';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { User } from '@firebase/auth-types';
 
 
 @Injectable()

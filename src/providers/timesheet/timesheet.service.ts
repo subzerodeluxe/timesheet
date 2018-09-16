@@ -6,7 +6,8 @@ import { UserProvider } from '../user/user.service';
 import { Employee } from '../../models/employee.interface';
 import { TimeSheet } from '../../models/timesheet.interface';
 import { map, mergeMap} from 'rxjs/operators';
-import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+
 
 @Injectable()
 export class TimesheetProvider {

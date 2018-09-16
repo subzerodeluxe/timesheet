@@ -16,17 +16,17 @@ import { AuthProvider } from '../providers/auth/auth.service';
 import { LayoutProvider } from '../providers/layout/layout.service';
 import { UserProvider } from '../providers/user/user.service';
 
-// Angular Fire
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireStorageModule } from '@angular/fire/storage';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-
+// Angular Fire imports 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { environment } from '../environment/environment';
+
+// Other modules
 import { ComponentsModule } from '../components/components.module';
 import { DirectivesModule } from '../directives/directives.module';
 import { CommonModule } from '@angular/common';
-import { GooglePlus } from '@ionic-native/google-plus';
 import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
@@ -67,7 +67,6 @@ import { PipesModule } from '../pipes/pipes.module';
     TimesheetProvider,
     Keyboard,
     NativePageTransitions,
-    GooglePlus,
     AuthProvider,
     LayoutProvider,
     UserProvider

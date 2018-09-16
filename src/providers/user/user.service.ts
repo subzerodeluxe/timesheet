@@ -3,8 +3,8 @@ import { first, map, mergeMap } from 'rxjs/operators';
 import { Employee } from '../../models/employee.interface';
 import { Observable } from 'rxjs/Observable';
 import { AuthProvider } from '../auth/auth.service';
-import { User } from 'firebase';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { User } from '@firebase/auth-types';
+import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable()
 export class UserProvider {

@@ -3,7 +3,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Platform } from 'ionic-angular';
 import { LayoutProvider } from '../providers/layout/layout.service';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,7 +20,7 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      const authObserver = afAuth.authState.subscribe( user => {
+      const authObserver = afAuth.authState.subscribe(user => {
         if (user) {
           this.rootPage = 'tabs';
           this.layoutService.presentTopToast(`Welkom terug ${user.email}`);
