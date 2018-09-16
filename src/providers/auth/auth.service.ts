@@ -1,34 +1,20 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { Platform } from 'ionic-angular';
-import { first, switchMap } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Employee } from '../../models/employee.interface';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { User } from '@firebase/auth-types';
-
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { User } from 'firebase';
 
 
 @Injectable()
 export class AuthProvider {
 
- //  user: Observable<Employee>;
   errorMessage: string;
 
   constructor(public afAuth: AngularFireAuth, public platform: Platform, private afs: AngularFirestore) {
-    //// Get auth data, then get firestore user document || null
-    // this.user = this.afAuth.authState.pipe(
-    //   switchMap(user => {
-    //     if (user) {
-    //       return this.afs.doc<Employee>(`users/${user.uid}`).valueChanges()
-    //     } else {
-    //       return of(null)
-    //     }
-    //   })
-    // )
-
-
-
+  
   }
 
   /* CURRENT USER MOET EENMALIG WORDEN OPGEHAALD: DAARNA DOORGESTUURD VIA SUBJECT */

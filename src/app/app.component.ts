@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Platform } from 'ionic-angular';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { LayoutProvider } from '../providers/layout/layout.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   templateUrl: 'app.html'

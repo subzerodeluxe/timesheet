@@ -16,11 +16,12 @@ import { AuthProvider } from '../providers/auth/auth.service';
 import { LayoutProvider } from '../providers/layout/layout.service';
 import { UserProvider } from '../providers/user/user.service';
 
-
 // Angular Fire
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
 import { environment } from '../environment/environment';
 import { ComponentsModule } from '../components/components.module';
 import { DirectivesModule } from '../directives/directives.module';
@@ -52,7 +53,8 @@ import { PipesModule } from '../pipes/pipes.module';
     TextMaskModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { EnrichedActivity, ActivityLine } from '../../models/activityLine.interface';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { Employee } from '../../models/employee.interface';
 import { TimeSheet } from '../../models/timesheet.interface';
 import { map, mergeMap} from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-
-
+import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable()
 export class TimesheetProvider {
