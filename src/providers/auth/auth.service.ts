@@ -13,13 +13,9 @@ export class AuthProvider {
 
   errorMessage: string;
 
-  constructor(public afAuth: AngularFireAuth, public platform: Platform, private afs: AngularFirestore) {
-  
-  }
+  constructor(public afAuth: AngularFireAuth, public platform: Platform, private afs: AngularFirestore) {}
 
-  /* CURRENT USER MOET EENMALIG WORDEN OPGEHAALD: DAARNA DOORGESTUURD VIA SUBJECT */
 
-  
   getAuthenticatedUser(): Observable<User> {
     return this.afAuth.authState.pipe(first());
   }  

@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TextMaskModule } from 'angular2-text-mask';
 import { Keyboard } from '@ionic-native/keyboard';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
+import { IonicStorageModule } from '@ionic/storage';
 
 // Providers
 import { TimesheetProvider } from '../providers/timesheet/timesheet.service';
@@ -51,6 +52,7 @@ import { PipesModule } from '../pipes/pipes.module';
     PipesModule,
     DirectivesModule,
     TextMaskModule,
+    IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,

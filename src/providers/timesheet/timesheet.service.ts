@@ -7,8 +7,9 @@ import { Employee } from '../../models/employee.interface';
 import { TimeSheet } from '../../models/timesheet.interface';
 import { map, mergeMap} from 'rxjs/operators';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { Storage } from '@ionic/storage';
 
-
+const STORAGE_KEY = 'timesheetPresent'; 
 @Injectable()
 export class TimesheetProvider {
 
@@ -18,49 +19,28 @@ export class TimesheetProvider {
   weekNumbersRef: AngularFirestoreCollection<any>;
   timesheet: TimeSheet;
   docPresent: boolean;
+  timesheetPresent = false;
 
-  constructor(public afs: AngularFirestore, public userService: UserProvider,  
+  constructor(public afs: AngularFirestore, public userService: UserProvider, public storage: Storage,
     public authService: AuthProvider) {
       this.activitiesRef = this.afs.collection('activities');
       this.timesheetsRef = this.afs.collection('timesheets');
       this.weekNumbersRef = this.afs.collection('weekNumbers');
-  }
-    
-  // createTimesheet(): Observable<any> {
-  //   let weekNumber = this.getCurrentWeekNumber().toString();
-  //   let year = this.getCurrentYear().toString();
-  //   this.checkWeekNumber(weekNumber, year)
-  //     .then(doc => {
-  //       if (doc.exists) {
-  //         console.log('Show doc data: ', doc.data());
-  //         this.docPresent = true;
-  //       } else {
-  //         console.log('Doc not present');
-  //         this.docPresent = false; 
-  //       }
-  //     });
 
-  //     if (this.docPresent === false) {
-  //       return this.authService.getAuthenticatedUser().pipe(
-  //         map(user => {
-  //           this.timesheet = {
-  //             id: this.afs.createId(),
-  //             employee: { uid: user.uid },
-  //             weekNumber: this.getCurrentWeekNumber(),
-  //             timesheetFinished: false,
-  //             isoStartDate: this.getCurrentIsoString()
-  //           };
-  //         }),
-  //         mergeMap(() => this.timesheetsRef.doc(`week-${weekNumber}-${year}`).set(this.timesheet))
-  //         );
-  //     } else {
-  //       return Observable.of('Timesheet reeds aangemaakt');
-  //     } 
-  // }
+      this.getLocalTimesheet()
+        .then(timesheet => {
+          console.log(timesheet);
+        })
+
+        // MOET DIT NIET IN DE APP.COMPONENT? 
+    
+  }
 
   async createTimesheet(): Promise<any> {
     let weekNumber = this.getCurrentWeekNumber().toString();
     let year = this.getCurrentYear().toString();
+    
+    
     const doc = await this.docExists(`week-${weekNumber}-${year}`);
     console.log('Controleren of timesheet bestaat...');
     if (doc.exists === false) {
@@ -79,6 +59,10 @@ export class TimesheetProvider {
     } else {
       return 'timesheet already exists';
     }
+  }
+
+  getLocalTimesheet() {
+    return this.storage.get(STORAGE_KEY);
   }
 
   async checkWeekNumber(weekNumber: string, year: string) {
