@@ -25,7 +25,7 @@ export class TimesheetProvider {
     public authService: AuthProvider) {
       this.activitiesRef = this.afs.collection('activities');
       this.timesheetsRef = this.afs.collection('timesheets');
-      this.weekNumbersRef = this.afs.collection('weekNumbers');
+      // this.weekNumbersRef = this.afs.collection('weekNumbers');
 
       this.getLocalTimesheet()
         .then(timesheet => {
@@ -36,12 +36,12 @@ export class TimesheetProvider {
     
   }
 
-  async createTimesheet(): Promise<any> {
-    let weekNumber = this.getCurrentWeekNumber().toString();
-    let year = this.getCurrentYear().toString();
+  async createTimesheet(user): Promise<any> {
+    const weekNumber = this.getCurrentWeekNumber().toString();
+    const year = this.getCurrentYear().toString();
+    const uid = user.uid;
     
-    
-    const doc = await this.docExists(`week-${weekNumber}-${year}`);
+    const doc = await this.docExists(`week-${weekNumber}-${year}-${uid}`);
     console.log('Controleren of timesheet bestaat...');
     if (doc.exists === false) {
      return this.authService.getAuthenticatedUser().pipe(
@@ -54,7 +54,7 @@ export class TimesheetProvider {
             isoStartDate: this.getCurrentIsoString()
           };
         }),
-        mergeMap(() => this.timesheetsRef.doc(`week-${weekNumber}-${year}`).set(this.timesheet))
+        mergeMap(() => this.timesheetsRef.doc(`week-${weekNumber}-${year}-${uid}`).set(this.timesheet))
       ).toPromise();
     } else {
       return 'timesheet already exists';
@@ -63,11 +63,6 @@ export class TimesheetProvider {
 
   getLocalTimesheet() {
     return this.storage.get(STORAGE_KEY);
-  }
-
-  async checkWeekNumber(weekNumber: string, year: string) {
-    const doc = await this.docExists(`week-${weekNumber}-${year}`);
-    return doc;
   }
 
   async docExists(path: string): Promise<any> {
