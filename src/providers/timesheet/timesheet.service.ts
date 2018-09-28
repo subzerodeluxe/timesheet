@@ -20,6 +20,9 @@ export class TimesheetProvider {
   timesheet: TimeSheet;
   docPresent: boolean;
   timesheetPresent = false;
+  weekNumber: string;
+  year: string;
+  uid: string;
 
   constructor(public afs: AngularFirestore, public userService: UserProvider, public storage: Storage,
     public authService: AuthProvider) {
@@ -37,29 +40,31 @@ export class TimesheetProvider {
   }
 
   async createTimesheet(user): Promise<any> {
-    const weekNumber = this.getCurrentWeekNumber().toString();
-    const year = this.getCurrentYear().toString();
-    const uid = user.uid;
+    this.weekNumber = this.getCurrentWeekNumber().toString();
+    this.year = this.getCurrentYear().toString();
+    this.uid = user.uid;
     
-    const doc = await this.docExists(`week-${weekNumber}-${year}-${uid}`);
+    const doc = await this.docExists(`week-${this.weekNumber}-${this.year}-${this.uid}`);
     console.log('Controleren of timesheet bestaat...');
     if (doc.exists === false) {
      return this.authService.getAuthenticatedUser().pipe(
         map(user => {
           this.timesheet = {
-            id: this.afs.createId(),
+            id: `week-${this.weekNumber}-${this.year}-${this.uid}`,
             employee: { uid: user.uid },
             weekNumber: this.getCurrentWeekNumber(),
             timesheetFinished: false,
-            isoStartDate: this.getCurrentIsoString()
+            isoCreated: this.getCurrentIsoString(),
+            isoLastUpdated: this.getCurrentIsoString(),
+            totalHours: 0
           };
         }),
-        mergeMap(() => this.timesheetsRef.doc(`week-${weekNumber}-${year}-${uid}`).set(this.timesheet))
+        mergeMap(() => this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).set(this.timesheet))
       ).toPromise();
     } else {
       return 'timesheet already exists';
     }
-  }
+  } 
 
   getLocalTimesheet() {
     return this.storage.get(STORAGE_KEY);
@@ -70,16 +75,33 @@ export class TimesheetProvider {
   }
 
 
-  saveActivity(activityObject: ActivityLine) {
-    return this.userService.getAuthenticatedUserProfile().toPromise()
-      .then((userObject: Employee) => {
-        this.enrichedActivity = {
-          employee: {...userObject},
-          activityLine: activityObject
-        };
+  async saveActivityToTimesheet(activityObject: ActivityLine) {
 
-        return this.activitiesRef.add(this.enrichedActivity);
-      }).catch(err => console.log('Oh no ... ', err));
+    try {
+      await this.saveActivity(activityObject);
+      return 'success';
+    } catch (err) {
+      return 'error';
+      console.log(err);
+    }
+    // return this.authService.getAuthenticatedUser().pipe(
+    //   map(user => {
+    //     this.enrichedActivity = {
+    //       // employee: { uid: userObject.uid },
+    //       activityLine: activityObject
+    //     };
+    //   }),
+    //   mergeMap(() => this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).set(this.timesheet))
+    // ).toPromise();
+  } 
+
+  async saveActivity(activityObject: ActivityLine) {
+      this.enrichedActivity = {
+        // employee: { uid: userObject.uid },
+        activityLine: activityObject
+      };
+
+      return this.activitiesRef.add(this.enrichedActivity);
   }
 
 

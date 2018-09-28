@@ -22,8 +22,6 @@ export class AddActivityPage {
   thirdActivityForm: FormGroup;
   totalHours: string; 
   lastSlide = false;
-  timesheetExists: boolean;
-  timesheetSub: Subscription;
   validation_messages = validation_messages;
   @ViewChild('slider') slider: Slides;
 
@@ -49,26 +47,6 @@ export class AddActivityPage {
       startTime: new FormControl('07:00', Validators.required),
       endTime: new FormControl('16:00', Validators.required)
     }); 
-
-    this.timesheetExists = false; 
-    if (this.timesheetExists === false) {
-      this.time.createTimesheet()
-        .then(res => {
-          console.log('De response: ', res);
-          if (res === undefined) {
-            console.log('Timesheet succesvol aangemaakt.');
-            this.timesheetExists = true;
-          } else {
-            const alert = this.layoutProvider.showAlertMessage('TEST: werkbriefje bestaat al.', 'Geen nieuwe aangemaakt', 'Ok');
-            alert.present();
-          }
-        })
-        .catch(err => {
-          console.log('Errors: ', err);
-          const alert = this.layoutProvider.showAlertMessage('ERROR', err, 'Ok');
-          alert.present();
-        });
-    }
   }
 
   initActivityFields(): FormGroup {
@@ -101,7 +79,7 @@ export class AddActivityPage {
     this.slider.slidePrev();
   }
 
-  saveActivity() {
+ async saveActivity() {
     if(!this.firstActivityForm.valid){
       this.slider.slideTo(0);
       // boodschap: niet alle velden zijn (correct) ingevuld!
@@ -133,16 +111,31 @@ export class AddActivityPage {
 
       console.log(activityObject);
 
-      this.time.saveActivity(activityObject)
-        .then(() => {
-          loading.dismiss().then(() => {
-            console.log('Gelukt!');
-            this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
-            setTimeout(() => {
-              this.navCtrl.setRoot('timesheet');
-            }, 1500);
-          });
-      }).catch(err => console.log(err));
+      // this.time.saveActivityToTimesheet(activityObject)
+      //   .then(() => {
+      //     loading.dismiss().then(() => {
+      //       console.log('Gelukt!');
+      //       this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
+      //       setTimeout(() => {
+      //         this.navCtrl.setRoot('timesheet');
+      //       }, 1500);
+      //     });
+      // }).catch(err => console.log(err));
+
+      const result = await this.time.saveActivityToTimesheet(activityObject);
+      console.log('Het resultaat: ', result);
+      if (result === 'success') {
+        loading.dismiss().then(() => {
+          console.log('Gelukt!');
+          this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
+          setTimeout(() => {
+            this.navCtrl.setRoot('timesheet');
+          }, 1500);
+        });
+      } else {
+        this.layoutProvider.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.');
+      }
+      
     }
   }  
 
@@ -153,9 +146,9 @@ export class AddActivityPage {
 
  
 
-  ngOnDestroy() {
-    if (this.timesheetSub) {
-      this.timesheetSub.unsubscribe();
-    }
-  }
+  // ngOnDestroy() {
+  //   if (this.timesheetSub) {
+  //     this.timesheetSub.unsubscribe();
+  //   }
+  // }
 }
