@@ -127,13 +127,15 @@ export class AddActivityPage {
       if (result === 'success') {
         loading.dismiss().then(() => {
           console.log('Gelukt!');
-          this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
+          this.layoutProvider.presentBottomToast('Activiteit toegevoegd aan werkbriefje.');
           setTimeout(() => {
             this.navCtrl.setRoot('timesheet');
           }, 1500);
         });
       } else {
-        this.layoutProvider.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.');
+        loading.dismiss().then(_ => {
+          this.layoutProvider.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.');
+        });
       }
       
     }

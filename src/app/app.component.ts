@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class MyApp {
   
   rootPage: any;
-  timesheetExists: boolean;
+  // timesheetExists: boolean;
   timesheetSub: Subscription;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, 
@@ -40,26 +40,21 @@ export class MyApp {
 
   initTimesheetListener(user):  void {
     console.log('Timesheet listener started.');
-    this.timesheetExists = false; 
-    if (this.timesheetExists === false) {
-      this.timesheetProvider.createTimesheet(user)
-        .then(res => {
-          console.log('De response: ', res);
-          if (res === undefined) {
-            console.log('Timesheet succesvol aangemaakt.');
-            this.timesheetExists = true;
-          } else {
-            const alert = this.layoutProvider.showAlertMessage('TEST: werkbriefje bestaat al.', 'Geen nieuwe aangemaakt', 'Ok');
-            alert.present();
-          }
-        })
-        .catch(err => {
-          console.log('Errors: ', err);
-          const alert = this.layoutProvider.showAlertMessage('ERROR', err, 'Ok');
+    this.timesheetProvider.createTimesheet(user)
+      .then(res => {
+        console.log('De response: ', res);
+        if (res === undefined) {
+          console.log('Timesheet succesvol aangemaakt.');
+          //this.timesheetExists = true;
+        } else {
+          const alert = this.layoutProvider.showAlertMessage('TEST: werkbriefje bestaat al.', 'Geen nieuwe aangemaakt', 'Ok');
           alert.present();
-        });
-    } else {
-      console.log('Timesheet boolean staat op true');
-    }
+        }
+      })
+      .catch(err => {
+        console.log('Errors: ', err);
+        const alert = this.layoutProvider.showAlertMessage('ERROR', err, 'Ok');
+        alert.present();
+      });
   }
 }

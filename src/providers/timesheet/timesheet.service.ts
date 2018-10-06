@@ -3,13 +3,10 @@ import * as moment from 'moment';
 import { EnrichedActivity, ActivityLine } from '../../models/activityLine.interface';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
-import { Employee } from '../../models/employee.interface';
 import { TimeSheet } from '../../models/timesheet.interface';
 import { map, mergeMap} from 'rxjs/operators';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
-import { Storage } from '@ionic/storage';
 
-const STORAGE_KEY = 'timesheetPresent'; 
 @Injectable()
 export class TimesheetProvider {
 
@@ -24,19 +21,10 @@ export class TimesheetProvider {
   year: string;
   uid: string;
 
-  constructor(public afs: AngularFirestore, public userService: UserProvider, public storage: Storage,
+  constructor(public afs: AngularFirestore, public userService: UserProvider,
     public authService: AuthProvider) {
       this.activitiesRef = this.afs.collection('activities');
       this.timesheetsRef = this.afs.collection('timesheets');
-      // this.weekNumbersRef = this.afs.collection('weekNumbers');
-
-      this.getLocalTimesheet()
-        .then(timesheet => {
-          console.log(timesheet);
-        })
-
-        // MOET DIT NIET IN DE APP.COMPONENT? 
-    
   }
 
   async createTimesheet(user): Promise<any> {
@@ -66,10 +54,6 @@ export class TimesheetProvider {
     }
   } 
 
-  getLocalTimesheet() {
-    return this.storage.get(STORAGE_KEY);
-  }
-
   async docExists(path: string): Promise<any> {
     return this.timesheetsRef.doc(path).ref.get();
   }
@@ -77,31 +61,42 @@ export class TimesheetProvider {
 
   async saveActivityToTimesheet(activityObject: ActivityLine) {
 
-    try {
-      await this.saveActivity(activityObject);
-      return 'success';
-    } catch (err) {
-      console.log(err);
-      return 'error';
-    }
-    // return this.authService.getAuthenticatedUser().pipe(
-    //   map(user => {
-    //     this.enrichedActivity = {
-    //       // employee: { uid: userObject.uid },
-    //       activityLine: activityObject
-    //     };
-    //   }),
-    //   mergeMap(() => this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).set(this.timesheet))
-    // ).toPromise();
+
+    return this.saveActivity(activityObject)
+      .then(answer=> {
+        if (answer.success === true) {
+          const docRef = this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`);
+            docRef.update({
+    
+            });
+          return 'success';
+        } else {
+          console.log('Error BIG TIME');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        return 'error';
+      });
   } 
 
   async saveActivity(activityObject: ActivityLine) {
+    const id = this.afs.createId();
+    const ref = this.afs.doc(`activities/${id}`);
+
       this.enrichedActivity = {
-        // employee: { uid: userObject.uid },
+        id: id,
         activityLine: activityObject
       };
 
-      return this.activitiesRef.add(this.enrichedActivity);
+    try {
+      await ref.set(this.enrichedActivity);
+      const answer = { success: true, payload: id };
+      return answer;
+    } catch(e) {
+      const answer = { success: false, payload: null};
+      return answer; 
+    }
   }
 
 

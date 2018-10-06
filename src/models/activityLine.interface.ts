@@ -1,7 +1,7 @@
 import { Employee } from "./employee.interface";
 
 export interface EnrichedActivity {
-    employee?: Employee;
+    id: string;
     activityLine: ActivityLine;
 }
 
