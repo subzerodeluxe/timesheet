@@ -53,9 +53,9 @@ export class TimesheetProvider {
             id: `week-${this.weekNumber}-${this.year}-${this.uid}`,
             employee: { uid: user.uid },
             weekNumber: this.getCurrentWeekNumber(),
-            timesheetFinished: false,
-            isoCreated: this.getCurrentIsoString(),
-            isoLastUpdated: this.getCurrentIsoString(),
+            finished: false,
+            created: this.getCurrentIsoString(),
+            lastUpdated: this.getCurrentIsoString(),
             totalHours: 0
           };
         }),
@@ -81,8 +81,8 @@ export class TimesheetProvider {
       await this.saveActivity(activityObject);
       return 'success';
     } catch (err) {
-      return 'error';
       console.log(err);
+      return 'error';
     }
     // return this.authService.getAuthenticatedUser().pipe(
     //   map(user => {

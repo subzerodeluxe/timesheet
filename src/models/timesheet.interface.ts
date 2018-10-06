@@ -6,10 +6,10 @@ export interface TimeSheet {
     id: string;
     employee: Employee; // uid, first and lastname  
     weekNumber: number;  // 1 t/m 51
-    timesheetFinished: boolean;
+    finished: boolean;
     // isoStartDate: string;
-    isoLastUpdated: string; 
-    isoCreated: string;
+    lastUpdated: string; 
+    created: string;
     isoEndDate?: string;
     activityLines?: Array<ActivityLine>;   // activity contains all activies (activityLines) on a single date (maandag 6 juli)
     allDates?: string; // maandag 6 juli t/m vrijdag 10 juli 
