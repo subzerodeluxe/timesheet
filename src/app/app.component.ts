@@ -28,7 +28,7 @@ export class MyApp {
         if (user) {
           this.rootPage = 'tabs';
           this.layoutProvider.presentTopToast(`Welkom terug ${user.email}`);
-          this.initTimesheetListener(user);   // Wordt enkel getriggerd wanneer gebruiker is ingelogt
+          // this.initTimesheetListener(user);   // Wordt enkel getriggerd wanneer gebruiker is ingelogt
           authObserver.unsubscribe();  
         } else {
           this.rootPage = 'walkthrough';

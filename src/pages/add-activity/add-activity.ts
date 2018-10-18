@@ -109,22 +109,8 @@ export class AddActivityPage {
         hoursDifference: this.totalHours
       };
 
-      console.log(activityObject);
-
-      // this.time.saveActivityToTimesheet(activityObject)
-      //   .then(() => {
-      //     loading.dismiss().then(() => {
-      //       console.log('Gelukt!');
-      //       this.layoutProvider.presentBottomToast('Activiteit toegevoegd');
-      //       setTimeout(() => {
-      //         this.navCtrl.setRoot('timesheet');
-      //       }, 1500);
-      //     });
-      // }).catch(err => console.log(err));
-
-      const result = await this.time.saveActivityToTimesheet(activityObject);
-      console.log('Het resultaat: ', result);
-      if (result === 'success') {
+      try {
+        await this.time.saveActivity(activityObject);
         loading.dismiss().then(() => {
           console.log('Gelukt!');
           this.layoutProvider.presentBottomToast('Activiteit toegevoegd aan werkbriefje.');
@@ -132,25 +118,16 @@ export class AddActivityPage {
             this.navCtrl.setRoot('timesheet');
           }, 1500);
         });
-      } else {
+      } catch (e) {
+        console.log(e);
         loading.dismiss().then(_ => {
           this.layoutProvider.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.');
         });
       }
-      
     }
   }  
 
   calculateHours(startTime, endTime) {
-    console.log('We komen er wel');
     this.totalHours = this.time.calculateHoursDifference(startTime, endTime);
   }
-
- 
-
-  // ngOnDestroy() {
-  //   if (this.timesheetSub) {
-  //     this.timesheetSub.unsubscribe();
-  //   }
-  // }
 }

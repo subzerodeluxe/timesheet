@@ -7,6 +7,7 @@ import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Employee } from '../../models/employee.interface';
 import { infinitePulse } from '../../app/animations';
+import { Observable } from 'rxjs/Observable';
 
 // Gebruik animaties voor het laden van de activities in timesheet: https://www.youtube.com/watch?v=ra5qNKNc95U
 @IonicPage({
@@ -20,32 +21,50 @@ import { infinitePulse } from '../../app/animations';
   ]
 })
 export class TimesheetPage implements OnDestroy {
+  
   segment: string;
   subscription: Subscription;
   noActivities: boolean = true;
-  timesheet: any;
-  singleActivity: any; 
   isoString: string;
   userObject: Employee;
   state = 'small';
+  activities: any;
+  weekActivities$: Observable<any>;
+  totalHours: string;
  
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
+  constructor(public navCtrl: NavController, public navParams: NavParams,
      public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
     this.segment = "today";
     this.isoString = this.time.getCurrentIsoString();
+
+    this.weekActivities$ = this.time.findAllWeekActivitiesByUser();
+    this.time.findAllDailyActivitiesByUser().subscribe(activities => {
+      if (activities.length === 0) {
+        this.noActivities = true;
+        console.log('Week activities: ', activities.length);
+      } else {
+        this.noActivities = false;
+        this.activities = activities;
+        console.log('Week activities: ', activities.length);
+      }
+    })
+
+    this.time.totalHoursCounter.subscribe((hours) => {
+      this.totalHours = hours;
+      console.log('Counter: ', hours);
+    });
+    
   }
   
   ionViewDidLoad() {
-    this.noActivities = true;
     this.layout.presentLoadingDefault();
     setTimeout(() => {
       this.state = 'big';
     }, 0);
     this.subscription = this.userProvider.getAuthenticatedUserProfile()
       .subscribe(user => {
-        console.log(user); 
         this.userObject = user
-      });   /// VERPLAATSEN NAAR SERVICE?
+      });   
   }
 
   onEnd(event) {
@@ -59,11 +78,10 @@ export class TimesheetPage implements OnDestroy {
 
   onSegmentChanged(segmentButton: SegmentButton) {
     this.layout.presentLoadingDefault();
-    console.log('Segment changed', segmentButton.value);
   }
 
   onSegmentSelected(segmentButton: SegmentButton) {
-    console.log('Segment selected', segmentButton.value);
+    // LATEN STAAN
   }
 
   addNewActivity() {

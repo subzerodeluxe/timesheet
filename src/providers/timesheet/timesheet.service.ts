@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { EnrichedActivity, ActivityLine } from '../../models/activityLine.interface';
+import { ActivityLine } from '../../models/activityLine.interface';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { TimeSheet } from '../../models/timesheet.interface';
-import { map, mergeMap} from 'rxjs/operators';
-import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { map, mergeMap, switchMap, combineLatest, filter} from 'rxjs/operators';
+import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { BehaviorSubject } from 'rxjs';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class TimesheetProvider {
 
-  enrichedActivity: EnrichedActivity;
+  enrichedActivity: any;
   activitiesRef: AngularFirestoreCollection<any>;
   timesheetsRef: AngularFirestoreCollection<any>;
   weekNumbersRef: AngularFirestoreCollection<any>;
@@ -20,11 +22,24 @@ export class TimesheetProvider {
   weekNumber: string;
   year: string;
   uid: string;
+  public totalHoursCounter: BehaviorSubject<string> = new BehaviorSubject<string>('0');
 
   constructor(public afs: AngularFirestore, public userService: UserProvider,
-    public authService: AuthProvider) {
+    public authService: AuthProvider, public storage: Storage) {
       this.activitiesRef = this.afs.collection('activities');
-      this.timesheetsRef = this.afs.collection('timesheets');
+      
+      this.authService.getAuthenticatedUser()
+        .subscribe(user => this.uid = user.uid);
+
+      this.storage.get('totalHours').then(hours => {
+        if (hours != null) {
+          this.storage.set('totalHours', '0');
+        }
+      })
+  }
+
+  getTimesheet() {
+    return this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).valueChanges();
   }
 
   async createTimesheet(user): Promise<any> {
@@ -58,48 +73,40 @@ export class TimesheetProvider {
     return this.timesheetsRef.doc(path).ref.get();
   }
 
-
-  async saveActivityToTimesheet(activityObject: ActivityLine) {
-
-
-    return this.saveActivity(activityObject)
-      .then(answer=> {
-        if (answer.success === true) {
-          const docRef = this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`);
-            docRef.update({
+  findAllDailyActivitiesByUser() {
+    const currentDate = this.getCurrentDayNumber().toString(); 
+    console.log('CurrentDate ', currentDate);
     
-            });
-          return 'success';
-        } else {
-          console.log('Error BIG TIME');
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        return 'error';
-      });
-  } 
-
-  async saveActivity(activityObject: ActivityLine) {
-    const id = this.afs.createId();
-    const ref = this.afs.doc(`activities/${id}`);
-
-      this.enrichedActivity = {
-        id: id,
-        activityLine: activityObject
-      };
-
-    try {
-      await ref.set(this.enrichedActivity);
-      const answer = { success: true, payload: id };
-      return answer;
-    } catch(e) {
-      const answer = { success: false, payload: null};
-      return answer; 
-    }
+    return this.afs.collection('activities', ref => {
+      return ref
+        .where('userDateString', '==', `${currentDate}-week-${this.weekNumber}-${this.year}-${this.uid}`);
+    }).valueChanges();
   }
 
+  findAllWeekActivitiesByUser() {
+    return this.afs.collection('activities', ref => 
+      ref.where('timesheetId', '==', `week-${this.weekNumber}-${this.year}-${this.uid}`)).valueChanges();
+  }
 
+  async saveActivity(activityObject: any) {
+    this.enrichedActivity = {
+      timesheetId: `week-${this.weekNumber}-${this.year}-${this.uid}`,
+      uid: this.uid,
+      userDateString: `${this.getCurrentDayNumber().toString()}-week-${this.weekNumber}-${this.year}-${this.uid}`,
+      ...activityObject
+    };
+    this.calculateTotalHours(activityObject.hoursDifference);
+    this.activitiesRef.add(this.enrichedActivity);
+  }
+
+  calculateTotalHours(incomingHours: number) {
+    this.storage.get('totalHours').then((currentHours: number) => {
+      const x = Number.parseInt(currentHours.toString()) + Number.parseInt(incomingHours.toString());
+      console.log(x);
+      this.storage.set('totalHours', x.toString())
+        .then(_ => this.totalHoursCounter.next(x.toString()))
+    });
+  }
 
   calculateHoursDifference(startTime, endTime): string {
     let start = moment.utc(startTime, "HH:mm");
@@ -113,7 +120,6 @@ export class TimesheetProvider {
 
     // format a string result
     const correctHours = moment.utc(+d).format('H:mm');  
-    console.log(correctHours);
     return correctHours;
   }
 

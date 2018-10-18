@@ -18,41 +18,31 @@
 
     <div *ngSwitchCase="'today'">
 
-      <no-activities [authenticatedUser]="userObject" *ngIf="noActivities"></no-activities>
+      <no-activities [authenticatedUser]="userObject" *ngIf="noActivities === true"></no-activities>
 
       <ion-list class="schedule-list"  *ngIf="!noActivities">
-        <ion-item class="schedule-item">
+        <ion-item class="schedule-item" *ngFor="let activity of activities">
           <ion-row>
             <ion-col width-20 class="schedule-date">
-              <h2 class="schedule-day">{{ isoTring | formatDate:'D' }}</h2>
-              <h3 class="schedule-month">{{ isoTring | formatDate:'MMM' | slice:0:-1 | uppercase }}</h3>
-              <h4 class="schedule-time">{{ isoTring | formatDate:'YYYY' }}</h4>
+              <h2 class="schedule-day">{{ activity?.isoDateString | formatDate:'D' }}</h2>
+              <h3 class="schedule-month">{{ activity?.isoDateString | formatDate:'MMM' | slice:0:-1 | uppercase }}</h3>
+              <h4 class="schedule-time">{{ activity?.isoDateString | formatDate:'YYYY' }}</h4>
             </ion-col>
 
-            <!-- <ion-col width-20 class="schedule-date">
-              <h2 class="schedule-day-new">{{ isoTring | formatDate:'MMM' | slice:0:-1 | uppercase}}</h2>
-              <h3 class="schedule-month-new">{{ isoTring | formatDate:'D'}}</h3>
-              <h4 class="schedule-time-new">{{ isoTring | formatDate:'dddd'}}</h4>
-            </ion-col> -->
             <ion-col width-80 class="schedule-data">
-                <!-- <ion-col width-80 class="schedule-data" *ngFor="let activity of (singleActivity)?.activities"> -->
-
               <div class="data-item" (click)="openActivity(activity)">
                 <div class="item-content">
                   <!-- <h2 class="item-title one-line">{{activity.customer}}</h2> -->
-                    <h2 class="item-title one-line">Needse molen</h2>
+                    <h2 class="item-title one-line">{{ activity?.clientName }}</h2>
                   <div class="item-description">
                     <ion-icon class="description-icon" name="time"></ion-icon>
                     <!-- <p class="description-text">{{activity.startTime}} - {{activity.endTime}} uur</p> -->
-                    <p class="description-text">8:00 - 12:45 uur</p>
+                    <p class="description-text">{{ activity?.startTime }} - {{ activity?.endTime }}</p>
                   </div>
                   <div class="item-description">
                     <ion-icon class="description-icon" name="map"></ion-icon>
-                    <!-- <p class="description-text one-line">{{ singleActivity.fullDate }}</p> -->
-                    <p class="description-text one-line">Neede</p>
-
-                    <!-- <h3 class="sub-hours">{{ activity.hours }}</h3> -->
-                    <h3 class="sub-hours">4:45</h3>
+                    <p class="description-text one-line">{{ activity?.location }}</p>
+                    <h3 class="sub-hours">{{ activity?.hoursDifference }}</h3>
                   </div>
 
                 </div>
@@ -74,26 +64,25 @@
     </div>
 
     <div *ngSwitchCase="'overview'">
-        <ion-list class="schedule-list" *ngFor="let date of (timesheet)?.dateLines">
-            <!-- <ion-list class="schedule-list" *ngFor="let date of (timesheet)?.dateLines"> -->
-          <ion-item class="schedule-item">
+        <ion-list class="schedule-list">
+          <ion-item class="schedule-item" *ngFor="let activity of weekActivities$ | async">
           <ion-row>
             <ion-col width-20 class="schedule-date">
-                <h2 class="schedule-day">{{date.dayNumber}}</h2>
-                <h3 class="schedule-month">{{date.month}}</h3>
-                <h4 class="schedule-time">{{date.year}}</h4>
+                <h2 class="schedule-day">{{ activity.isoDateString | formatDate:'D' }}</h2>
+                <h3 class="schedule-month">{{ activity.isoDateString | formatDate:'MMM' | slice:0:-1 | uppercase }}</h3>
+                <h4 class="schedule-time">{{ activity.isoDateString | formatDate:'YYYY' }}</h4>
             </ion-col>
-            <ion-col width-80 class="schedule-data" *ngFor="let activity of (date)?.activities">
+            <ion-col width-80 class="schedule-data">
                 <div class="data-item">
                     <div class="item-content">
-                      <h2 class="item-title one-line">{{activity.customer}}</h2>
+                      <h2 class="item-title one-line">{{activity.clientName}}</h2>
                       <div class="item-description">
                         <ion-icon class="description-icon" name="time"></ion-icon>
                         <p class="description-text">{{activity.startTime}} - {{activity.endTime}} uur</p>
                       </div>
                       <div class="item-description">
-                        <ion-icon class="description-icon" name="calendar"></ion-icon>
-                        <p class="description-text one-line">{{ date.fullDate }}</p>
+                        <ion-icon class="description-icon" name="map"></ion-icon>
+                        <p class="description-text one-line">{{ activity.location }}</p>
                       </div>
                     </div>
                     <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
@@ -115,7 +104,7 @@
 
               <ion-item>
                 <ion-label *ngIf="noActivities">-</ion-label>
-                <ion-label *ngIf="!noActivities">{{ singleActivity?.totalHours }}</ion-label>
+                <ion-label *ngIf="!noActivities">{{ totalHours }}</ion-label>
               </ion-item>
             </section>
           </ion-list>
