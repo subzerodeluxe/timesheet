@@ -32,8 +32,9 @@ export class TimesheetProvider {
         .subscribe(user => this.uid = user.uid);
 
       this.storage.get('totalHours').then(hours => {
-        if (hours != null) {
-          this.storage.set('totalHours', '0');
+        console.log('Storage hours: ', hours);
+        if (hours !== '0') {
+          this.totalHoursCounter.next(hours);
         }
       })
   }
