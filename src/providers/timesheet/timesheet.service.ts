@@ -22,7 +22,7 @@ export class TimesheetProvider {
   weekNumber: string;
   year: string;
   uid: string;
-  public totalHoursCounter: BehaviorSubject<number> = new BehaviorSubject<string>(0);
+  public totalHoursCounter: BehaviorSubject<string> = new BehaviorSubject<string>('0');
 
   constructor(public afs: AngularFirestore, public userService: UserProvider,
     public authService: AuthProvider, public storage: Storage) {
@@ -106,7 +106,7 @@ export class TimesheetProvider {
       const x = +currentHours + +incomingHours;
       console.log('The sum ', x);
      this.storage.set('totalHours', x)
-       .then(_ => this.totalHoursCounter.next(x));
+       .then(_ => this.totalHoursCounter.next(x.toString()));
     });
   }
 

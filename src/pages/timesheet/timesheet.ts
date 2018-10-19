@@ -50,7 +50,7 @@ export class TimesheetPage implements OnDestroy {
     })
 
     this.time.totalHoursCounter.subscribe((hours) => {
-      this.totalHours = hours.toString();
+      this.totalHours = hours;
       console.log('Counter: ', this.totalHours);
     });
     
