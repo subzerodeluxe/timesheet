@@ -191,8 +191,8 @@ page-timesheet {
 
 						.item-content
 						{
-							flex: 0 0 90%;
-					        max-width: 90%;
+							flex: 0 0 65%;
+					        max-width: 65%;
 							padding-right: 5px;
 
 							.item-title
@@ -223,6 +223,7 @@ page-timesheet {
 								.sub-hours {
 									font-weight: bold;
 									color: $black-a;
+									font-size: 1.3rem
 								}
 
 								&:last-child

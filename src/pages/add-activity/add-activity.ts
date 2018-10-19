@@ -97,7 +97,7 @@ export class AddActivityPage {
       const loading = this.layoutProvider.showLoading();
       loading.present();
 
-      this.totalHours = this.time.calculateHoursDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime,);
+      this.totalHours = this.time.calculateHoursDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime).toString();
 
       const activityObject: ActivityLine  = { 
         isoDateString: this.time.getCurrentIsoString(),
@@ -128,6 +128,6 @@ export class AddActivityPage {
   }  
 
   calculateHours(startTime, endTime) {
-    this.totalHours = this.time.calculateHoursDifference(startTime, endTime);
+    this.totalHours = this.time.calculateHoursDifference(startTime, endTime).toString();
   }
 }

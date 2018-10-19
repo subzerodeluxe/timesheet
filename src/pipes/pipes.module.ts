@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { MomentPipe } from './moment/moment';
+import { WorkingHoursPipe } from './working-hours/working-hours';
 @NgModule({
-	declarations: [MomentPipe],
+	declarations: [MomentPipe,
+    WorkingHoursPipe],
 	imports: [],
-	exports: [MomentPipe]
+	exports: [MomentPipe,
+    WorkingHoursPipe]
 })
 export class PipesModule {}

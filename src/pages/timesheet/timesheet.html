@@ -14,8 +14,7 @@
     </ion-segment-button>
   </ion-segment>
 
- <div [ngSwitch]="segment">
-
+  <div [ngSwitch]="segment">
     <div *ngSwitchCase="'today'">
 
       <no-activities [authenticatedUser]="userObject" *ngIf="noActivities === true"></no-activities>
@@ -32,17 +31,15 @@
             <ion-col width-80 class="schedule-data">
               <div class="data-item" (click)="openActivity(activity)">
                 <div class="item-content">
-                  <!-- <h2 class="item-title one-line">{{activity.customer}}</h2> -->
                     <h2 class="item-title one-line">{{ activity?.clientName }}</h2>
                   <div class="item-description">
                     <ion-icon class="description-icon" name="time"></ion-icon>
-                    <!-- <p class="description-text">{{activity.startTime}} - {{activity.endTime}} uur</p> -->
                     <p class="description-text">{{ activity?.startTime }} - {{ activity?.endTime }}</p>
                   </div>
                   <div class="item-description">
                     <ion-icon class="description-icon" name="map"></ion-icon>
                     <p class="description-text one-line">{{ activity?.location }}</p>
-                    <h3 class="sub-hours">{{ activity?.hoursDifference }}</h3>
+                    <h3 class="sub-hours">{{ activity?.hoursDifference | formatHours }}</h3>
                   </div>
 
                 </div>
@@ -60,8 +57,7 @@
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-fab>
-    
-    </div>
+    </div> <!-- today switch -->
 
     <div *ngSwitchCase="'overview'">
         <ion-list class="schedule-list">
@@ -96,17 +92,17 @@
 </ion-content> 
 
 <ion-footer class="footer" no-border>
-    <div class="total-hours-box">
-        <ion-list>
-            <section class="hour-section">
-              <h3 *ngIf="noActivities" class="section-title">Vandaag geen uren geregistreerd</h3>
-              <h3 *ngIf="!noActivities" class="section-title">Totaal aantal uren</h3>
+  <div class="total-hours-box">
+      <ion-list>
+          <section class="hour-section">
+            <h3 *ngIf="noActivities" class="section-title">Vandaag geen uren geregistreerd</h3>
+            <h3 *ngIf="!noActivities" class="section-title">Totaal aantal uren</h3>
 
-              <ion-item>
-                <ion-label *ngIf="noActivities">-</ion-label>
-                <ion-label *ngIf="!noActivities">{{ totalHours }}</ion-label>
-              </ion-item>
-            </section>
-          </ion-list>
-    </div>
+            <ion-item>
+              <ion-label *ngIf="noActivities">-</ion-label>
+              <ion-label *ngIf="!noActivities">{{ totalHours }}</ion-label>
+            </ion-item>
+          </section>
+        </ion-list>
+  </div>
 </ion-footer>

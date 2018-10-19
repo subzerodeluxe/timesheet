@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { ActivityLine } from '../../models/activityLine.interface';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { TimeSheet } from '../../models/timesheet.interface';
@@ -8,6 +7,7 @@ import { map, mergeMap, switchMap, combineLatest, filter} from 'rxjs/operators';
 import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Storage } from '@ionic/storage';
+import { add } from 'timelite/time'
 
 @Injectable()
 export class TimesheetProvider {
@@ -22,7 +22,7 @@ export class TimesheetProvider {
   weekNumber: string;
   year: string;
   uid: string;
-  public totalHoursCounter: BehaviorSubject<string> = new BehaviorSubject<string>('0');
+  public totalHoursCounter: BehaviorSubject<number> = new BehaviorSubject<string>(0);
 
   constructor(public afs: AngularFirestore, public userService: UserProvider,
     public authService: AuthProvider, public storage: Storage) {
@@ -101,15 +101,16 @@ export class TimesheetProvider {
   }
 
   calculateTotalHours(incomingHours: number) {
+
     this.storage.get('totalHours').then((currentHours: number) => {
-      const x = Number.parseInt(currentHours.toString()) + Number.parseInt(incomingHours.toString());
-      console.log(x);
-      this.storage.set('totalHours', x.toString())
-        .then(_ => this.totalHoursCounter.next(x.toString()))
+      const x = +currentHours + +incomingHours;
+      console.log('The sum ', x);
+     this.storage.set('totalHours', x)
+       .then(_ => this.totalHoursCounter.next(x));
     });
   }
 
-  calculateHoursDifference(startTime, endTime): string {
+  calculateHoursDifference(startTime, endTime): number {
     let start = moment.utc(startTime, "HH:mm");
     let end = moment.utc(endTime, "HH:mm");
 
@@ -118,9 +119,14 @@ export class TimesheetProvider {
 
     // calculate the duration
     let d = moment.duration(end.diff(start));
+    let a = d.asHours();
+    console.log('Berekening in uren: ', a);
+    //let f = moment.utc(+a).format('H:mm');
+    // console.log('Nieuwe format ', f);
 
     // format a string result
-    const correctHours = moment.utc(+d).format('H:mm');  
+    // const correctHours = moment.utc(+d).format('H:mm'); 
+    const correctHours = d.asHours();   
     return correctHours;
   }
 
