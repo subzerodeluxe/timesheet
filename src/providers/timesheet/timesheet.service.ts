@@ -3,11 +3,9 @@ import * as moment from 'moment';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { TimeSheet } from '../../models/timesheet.interface';
-import { map, mergeMap, switchMap, combineLatest, filter} from 'rxjs/operators';
 import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Storage } from '@ionic/storage';
-import { add } from 'timelite/time'
 
 @Injectable()
 export class TimesheetProvider {
@@ -18,6 +16,7 @@ export class TimesheetProvider {
   weekNumbersRef: AngularFirestoreCollection<any>;
   timesheet: TimeSheet;
   docPresent: boolean;
+  currentDate: string;
   timesheetPresent = false;
   weekNumber: string;
   year: string;
@@ -27,73 +26,77 @@ export class TimesheetProvider {
   constructor(public afs: AngularFirestore, public userService: UserProvider,
     public authService: AuthProvider, public storage: Storage) {
       this.activitiesRef = this.afs.collection('activities');
-      
-      this.authService.getAuthenticatedUser()
-        .subscribe(user => this.uid = user.uid);
+
+      this.currentDate = this.getCurrentDayNumber().toString(); 
+      this.weekNumber = this.getCurrentWeekNumber().toString();
+      this.year = this.getCurrentYear().toString(); 
 
       this.storage.get('totalHours').then(hours => {
         console.log('Storage hours: ', hours);
         if (hours !== '0') {
           this.totalHoursCounter.next(hours);
         }
-      })
+      }).catch(e => console.log('Ophalen aantal uren ging niet goed'));
   }
 
-  getTimesheet() {
-    return this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).valueChanges();
-  }
+  // getTimesheet() {
+  //   return this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).valueChanges();
+  // }
 
-  async createTimesheet(user): Promise<any> {
-    this.weekNumber = this.getCurrentWeekNumber().toString();
-    this.year = this.getCurrentYear().toString();
-    this.uid = user.uid;
+  // async createTimesheet(user): Promise<any> {
+  //   this.weekNumber = this.getCurrentWeekNumber().toString();
+  //   this.year = this.getCurrentYear().toString();
+  //   this.uid = user.uid;
     
-    const doc = await this.docExists(`week-${this.weekNumber}-${this.year}-${this.uid}`);
-    console.log('Controleren of timesheet bestaat...');
-    if (doc.exists === false) {
-     return this.authService.getAuthenticatedUser().pipe(
-        map(user => {
-          this.timesheet = {
-            id: `week-${this.weekNumber}-${this.year}-${this.uid}`,
-            employee: { uid: user.uid },
-            weekNumber: this.getCurrentWeekNumber(),
-            finished: false,
-            created: this.getCurrentIsoString(),
-            lastUpdated: this.getCurrentIsoString(),
-            totalHours: 0
-          };
-        }),
-        mergeMap(() => this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).set(this.timesheet))
-      ).toPromise();
-    } else {
-      return 'timesheet already exists';
-    }
-  } 
+  //   const doc = await this.docExists(`week-${this.weekNumber}-${this.year}-${this.uid}`);
+  //   console.log('Controleren of timesheet bestaat...');
+  //   if (doc.exists === false) {
+  //    return this.authService.getAuthenticatedUser().pipe(
+  //       map(user => {
+  //         this.timesheet = {
+  //           id: `week-${this.weekNumber}-${this.year}-${this.uid}`,
+  //           employee: { uid: user.uid },
+  //           weekNumber: this.getCurrentWeekNumber(),
+  //           finished: false,
+  //           created: this.getCurrentIsoString(),
+  //           lastUpdated: this.getCurrentIsoString(),
+  //           totalHours: 0
+  //         };
+  //       }),
+  //       mergeMap(() => this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).set(this.timesheet))
+  //     ).toPromise();
+  //   } else {
+  //     return 'timesheet already exists';
+  //   }
+  // } 
 
-  async docExists(path: string): Promise<any> {
-    return this.timesheetsRef.doc(path).ref.get();
-  }
+  // async docExists(path: string): Promise<any> {
+  //   return this.timesheetsRef.doc(path).ref.get();
+  // }
 
-  findAllDailyActivitiesByUser() {
-    const currentDate = this.getCurrentDayNumber().toString(); 
-    console.log('CurrentDate ', currentDate);
+  findAllDailyActivitiesByUser(userObject: any) {
+    console.log('CurrentDate ', this.currentDate);
     
     return this.afs.collection('activities', ref => {
       return ref
-        .where('userDateString', '==', `${currentDate}-week-${this.weekNumber}-${this.year}-${this.uid}`);
+        .where('userDateString', '==', `${this.currentDate}-week-${this.weekNumber}-${this.year}-${userObject.uid}`);
     }).valueChanges();
   }
 
-  findAllWeekActivitiesByUser() {
+  findAllWeekActivitiesByUser(userObject: any) {
     return this.afs.collection('activities', ref => 
-      ref.where('timesheetId', '==', `week-${this.weekNumber}-${this.year}-${this.uid}`)).valueChanges();
+      ref.where('timesheetId', '==', `week-${this.weekNumber}-${this.year}-${userObject.uid}`)).valueChanges();
   }
 
-  async saveActivity(activityObject: any) {
+  async saveActivity(activityObject: any, user: any) {
+    console.log('Doorgestuurde user: ', user.uid);
+    const weekNumber = this.getCurrentWeekNumber().toString();
+    const year = this.getCurrentYear().toString(); 
+
     this.enrichedActivity = {
-      timesheetId: `week-${this.weekNumber}-${this.year}-${this.uid}`,
-      uid: this.uid,
-      userDateString: `${this.getCurrentDayNumber().toString()}-week-${this.weekNumber}-${this.year}-${this.uid}`,
+      timesheetId: `week-${weekNumber}-${year}-${user.uid}`,
+      uid: user.uid,
+      userDateString: `${this.getCurrentDayNumber().toString()}-week-${weekNumber}-${year}-${user.uid}`,
       ...activityObject
     };
     this.calculateTotalHours(activityObject.hoursDifference);
@@ -119,8 +122,6 @@ export class TimesheetProvider {
 
     // calculate the duration
     let d = moment.duration(end.diff(start));
-    let a = d.asHours();
-    console.log('Berekening in uren: ', a);
     //let f = moment.utc(+a).format('H:mm');
     // console.log('Nieuwe format ', f);
 

@@ -16,9 +16,9 @@ export class WorkingHoursPipe implements PipeTransform {
       this.newHours = hours.toString() + ' uur';
     } else {
       let f = str.substr(2);
-      let a = str.substr(0,1);
-      let result = this.check(f);   // 15 
-      let final = a + ' uur ' + 'en ' + result + ' min.';
+      let hours = str.substr(0,1);
+      let min = this.check(f);   // 15 
+      let final = hours + ' uur ' + 'en ' + min + ' min.';
   
       this.newHours = final;
     }

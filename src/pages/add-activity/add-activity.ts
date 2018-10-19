@@ -5,7 +5,6 @@ import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { ActivityLine } from '../../models/activityLine.interface';
-import { Subscription } from 'rxjs/Subscription';
 import { validation_messages } from '../../app/app.config';
 
 @IonicPage({
@@ -20,14 +19,16 @@ export class AddActivityPage {
   firstActivityForm: FormGroup; 
   secondActivityForm: FormGroup;
   thirdActivityForm: FormGroup;
-  totalHours: string; 
+  totalHours: number; 
   lastSlide = false;
+  user: any;
   validation_messages = validation_messages;
   @ViewChild('slider') slider: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public time: TimesheetProvider,
     public formBuilder: FormBuilder, public authProvider: AuthProvider, public layoutProvider: LayoutProvider) {
 
+    this.user = this.navParams.get('userObject');
     this.firstActivityForm = new FormGroup({
       clientName: new FormControl('', Validators.compose([
         Validators.maxLength(25),
@@ -97,7 +98,7 @@ export class AddActivityPage {
       const loading = this.layoutProvider.showLoading();
       loading.present();
 
-      this.totalHours = this.time.calculateHoursDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime).toString();
+      this.totalHours = this.time.calculateHoursDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime);
 
       const activityObject: ActivityLine  = { 
         isoDateString: this.time.getCurrentIsoString(),
@@ -110,9 +111,8 @@ export class AddActivityPage {
       };
 
       try {
-        await this.time.saveActivity(activityObject);
+        await this.time.saveActivity(activityObject, this.user);
         loading.dismiss().then(() => {
-          console.log('Gelukt!');
           this.layoutProvider.presentBottomToast('Activiteit toegevoegd aan werkbriefje.');
           setTimeout(() => {
             this.navCtrl.setRoot('timesheet');
@@ -121,13 +121,13 @@ export class AddActivityPage {
       } catch (e) {
         console.log(e);
         loading.dismiss().then(_ => {
-          this.layoutProvider.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.');
+          this.layoutProvider.presentBottomToast(e);
         });
       }
     }
   }  
 
   calculateHours(startTime, endTime) {
-    this.totalHours = this.time.calculateHoursDifference(startTime, endTime).toString();
+    this.totalHours = this.time.calculateHoursDifference(startTime, endTime);
   }
 }

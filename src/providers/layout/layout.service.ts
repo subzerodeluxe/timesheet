@@ -34,6 +34,21 @@ export class LayoutProvider {
     }, 1500);
   }
 
+  presentLoadingLoggin() {
+    const customSpinner: any = this.sanitizer.bypassSecurityTrustHtml(AppConfig.customSpinner);
+  
+    let loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: customSpinner
+    });
+
+    loading.present();
+  
+    setTimeout(() => {
+      loading.dismiss();
+    }, 2500);
+  }
+
   showAlertMessage(title, message, buttonText) {
     console.log(message);
     let alert = this.alertCtrl.create({

@@ -32,16 +32,15 @@ export class LoginPage implements OnDestroy {
   }
 
   async regularLogin(value: any) {
-    this.layout.presentLoadingDefault(); 
+    this.layout.presentLoadingLoggin(); 
     this.errorMessage = '';
     const result = await this.authProvider.regularLogin(value);
-    console.log('Het resultaat: ', result);
     if (result === 'success') {
       this.userSubscription = this.userProvider.getAuthenticatedUserProfile()
         .subscribe(profile => {
           if (profile.firstName != null) {
             this.layout.presentTopToast(`Welkom terug, ${profile.firstName}`);
-            this.navCtrl.setRoot('tabs');
+            this.navCtrl.setRoot('tabs');   
           } else {
             const welcomeAlert = this.layout.showAlertMessage('Vul je gegevens aan', 'Je profiel is nog niet compleet.', 'Ik snap het');
             welcomeAlert.present();

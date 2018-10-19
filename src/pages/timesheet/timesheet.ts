@@ -33,22 +33,25 @@ export class TimesheetPage implements OnDestroy {
   totalHours: string;
  
   constructor(public navCtrl: NavController, public navParams: NavParams,
-     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
+    public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
     this.segment = "today";
     this.isoString = this.time.getCurrentIsoString();
 
-    this.weekActivities$ = this.time.findAllWeekActivitiesByUser();
-    this.time.findAllDailyActivitiesByUser().subscribe(activities => {
-      if (activities.length === 0) {
-        this.noActivities = true;
-        console.log('Week activities: ', activities.length);
-      } else {
-        this.noActivities = false;
-        this.activities = activities;
-        console.log('Week activities: ', activities.length);
-      }
-    })
-
+    this.subscription = this.userProvider.getAuthenticatedUserProfile()
+      .subscribe(user => {
+        this.userObject = user;
+        this.weekActivities$ = this.time.findAllWeekActivitiesByUser(this.userObject);
+        this.time.findAllDailyActivitiesByUser(this.userObject).subscribe(activities => {
+          if (activities.length === 0) {
+            this.noActivities = true;
+            console.log('Week activities: ', activities.length);
+          } else {
+            this.noActivities = false;
+            this.activities = activities;
+            console.log('Week activities: ', activities.length);
+          }
+        });
+      }); 
     this.time.totalHoursCounter.subscribe((hours) => {
       this.totalHours = hours;
       console.log('Counter: ', this.totalHours);
@@ -60,11 +63,7 @@ export class TimesheetPage implements OnDestroy {
     this.layout.presentLoadingDefault();
     setTimeout(() => {
       this.state = 'big';
-    }, 0);
-    this.subscription = this.userProvider.getAuthenticatedUserProfile()
-      .subscribe(user => {
-        this.userObject = user
-      });   
+    }, 0);  
   }
 
   onEnd(event) {
@@ -85,7 +84,7 @@ export class TimesheetPage implements OnDestroy {
   }
 
   addNewActivity() {
-    this.navCtrl.push('add-activity');
+    this.navCtrl.push('add-activity', { userObject: this.userObject });
   }
 
   openActivity(activity) {

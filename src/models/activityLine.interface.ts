@@ -7,7 +7,7 @@ export interface EnrichedActivity {
 
 export interface ActivityLine {
     isoDateString: string;
-    hoursDifference: string; // 9:30 
+    hoursDifference: number;
     hoursDifferenceWithBreak?: string; // 7:45
     clientName: string;  // Needse molen 
     location: string; // Neede
