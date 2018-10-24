@@ -76,7 +76,7 @@ export class TimesheetPage implements OnDestroy {
   }
 
   onSegmentChanged(segmentButton: SegmentButton) {
-    this.layout.presentLoadingDefault();
+    // this.layout.presentLoadingDefault();
   }
 
   onSegmentSelected(segmentButton: SegmentButton) {

@@ -9,14 +9,17 @@ import { IonicModule } from 'ionic-angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoActivitiesComponent } from './no-activities/no-activities';
 import { PipesModule } from '../pipes/pipes.module';
+import { SkeletonItemComponent } from './skeleton-item/skeleton-item';
 
 @NgModule({
 	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
-    NoActivitiesComponent
+    NoActivitiesComponent,
+    SkeletonItemComponent
     ],
 	imports: [IonicModule, PipesModule, CommonModule, ReactiveFormsModule],
 	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
-    NoActivitiesComponent
+    NoActivitiesComponent,
+    SkeletonItemComponent
     ]
 })
 export class ComponentsModule {}

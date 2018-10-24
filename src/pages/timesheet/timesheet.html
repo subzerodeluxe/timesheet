@@ -59,6 +59,10 @@
 
     <div *ngSwitchCase="'overview'">
         <ion-list class="schedule-list">
+
+            
+            <skeleton-item height="80px" width="98%"></skeleton-item>
+            
           <ion-item class="schedule-item" *ngFor="let activity of weekActivities$ | async">
           <ion-row>
             <ion-col width-20 class="schedule-date">
