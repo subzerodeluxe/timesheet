@@ -1,13 +1,14 @@
 
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{ activityObject?.customer }}</ion-title>
+    <ion-title>{{ activityObject?.clientName }}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
 
+  <div *ngFor="let activity of activityObject.activities">
+    <p>{{ activity.name }}</p>
+  </div>
 </ion-content>

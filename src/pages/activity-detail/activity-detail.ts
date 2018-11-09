@@ -16,10 +16,9 @@ export class ActivityDetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
 
     this.activityObject = this.navParams.get("activity");
+
     console.log('Activity object: ', this.activityObject);
   }
 
-  // ionViewCanEnter() {
-  //   return this.authProvider.authenticated();
-  // }
+
 }

@@ -92,6 +92,7 @@ export class TimesheetPage implements OnDestroy {
     loading.present();
 
     setTimeout(() => {
+      console.log('Being pushed: ', activity); 
       this.navCtrl.push('activity-detail', { activity: activity })
     }, 1000);
 
