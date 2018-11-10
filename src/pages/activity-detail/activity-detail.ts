@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, IonicPage, Form } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth.service';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 @IonicPage({
   name: 'activity-detail'
@@ -12,13 +13,32 @@ import { AuthProvider } from '../../providers/auth/auth.service';
 export class ActivityDetailPage {
 
   activityObject: any;
+  activityForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider, public formBuilder: FormBuilder) {
 
     this.activityObject = this.navParams.get("activity");
 
-    console.log('Activity object: ', this.activityObject);
+    this.activityForm = new FormGroup({
+      clientName: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      location: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      startTime: new FormControl(),
+      endTime: new FormControl(),
+      activities: this.formBuilder.array([
+        this.initActivityFields()
+     ])
+    });
   }
+
+  initActivityFields(): FormGroup {
+    return this.formBuilder.group({
+       name: ['', Validators.required]
+    });
+   }
 
 
 }

@@ -82,14 +82,6 @@ export class AccountPage implements OnInit, OnDestroy {
     }
   }
 
-
-  logOut(): void {
-    this.authProvider.logOut()
-      .then(res => {
-        this.navCtrl.setRoot('walkthrough');
-      }).catch(_  => this.layout.showAlertMessage('Oeps!', 'Er ging iets mis.', 'Ok'));
-  }
-
   ngOnDestroy(): void {
     if (this.authenticatedEmployee$ != null) {
       this.authenticatedEmployee$.unsubscribe();

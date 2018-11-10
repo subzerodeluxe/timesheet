@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ActivityDetailPage } from './activity-detail';
+import { PipesModule } from '../../pipes/pipes.module';
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   declarations: [
@@ -8,6 +10,8 @@ import { ActivityDetailPage } from './activity-detail';
   ],
   imports: [
     IonicPageModule.forChild(ActivityDetailPage),
+    ComponentsModule,
+    PipesModule
   ]
 })
 export class ActivityDetailPageModule {}

@@ -70,7 +70,7 @@
                 <h3 class="schedule-month">{{ activity.isoDateString | formatDate:'MMM' | slice:0:-1 | uppercase }}</h3>
                 <h4 class="schedule-time">{{ activity.isoDateString | formatDate:'YYYY' }}</h4>
             </ion-col>
-            <ion-col width-80 class="schedule-data">
+            <ion-col width-80 class="schedule-data" (click)="openActivity(activity)">
                 <div class="data-item">
                     <div class="item-content">
                       <h2 class="item-title one-line">{{activity.clientName}}</h2>

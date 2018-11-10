@@ -5,10 +5,70 @@
   </ion-navbar>
 </ion-header>
 
+<ion-content padding class="forms-validations-content">
+  <form class="sample-form validations-form" [formGroup]="activityForm"  (ngSubmit)="onSubmit(activityForm.value)">
+    <section class="form-section">
+      <h2 class="section-title">Klantgegevens</h2>
+      <ion-item>
+        <ion-label floating>Naam van klant</ion-label>
+        <ion-input name="clientName" type="text" formControlName="clientName" [(ngModel)]="activityObject.clientName" 
+          class="form-controll" required></ion-input>
+      </ion-item>
+      <!-- <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.username">
+          <div class="error-message" *ngIf="validations_form.get('username').hasError(validation.type) && (validations_form.get('username').dirty || validations_form.get('username').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div> -->
 
-<ion-content padding>
+      <ion-item>
+        <ion-label floating>Locatie</ion-label>
+        <ion-input name="location" type="text" formControlName="location" [(ngModel)]="activityObject.location" 
+          class="form-controll" required></ion-input>
 
-  <div *ngFor="let activity of activityObject.activities">
-    <p>{{ activity.name }}</p>
-  </div>
+      </ion-item>
+    </section>
+
+    <section class="form-section">
+      <h2 class="section-title">Tijden</h2>
+
+      <ion-item>
+        <ion-label floating>Begonnen om</ion-label>
+        <ion-datetime 
+          
+          displayFormat="HH:mm" 
+          minuteValues="0,15,30,45"
+          formControlName="startTime"
+          [(ngModel)]="activityObject.startTime" 
+          cancelText=Annuleer 
+          doneText=Klaar></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Gestopt om</ion-label>
+          <ion-datetime 
+            
+              displayFormat="HH:mm"
+              minuteValues="0,15,30,45" 
+              formControlName="endTime"
+              [(ngModel)]="activityObject.endTime"
+              cancelText=Annuleer 
+              doneText=Klaar>
+          </ion-datetime>
+      </ion-item>
+    </section>
+   
+
+    <section class="form-section">
+      <h2 class="section-title">Werkzaamheden</h2>
+        <div *ngFor="let activity of activityObject.activities">
+          <p>{{ activity.name }}</p>
+        </div>
+
+        
+    </section>
+
+    <button ion-button full type="submit" [disabled]="!activityForm.valid">Opslaan</button>
+  </form>
 </ion-content>

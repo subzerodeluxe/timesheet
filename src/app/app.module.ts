@@ -26,7 +26,6 @@ import { environment } from '../environment/environment';
 
 // Other modules
 import { ComponentsModule } from '../components/components.module';
-import { DirectivesModule } from '../directives/directives.module';
 import { CommonModule } from '@angular/common';
 import { PipesModule } from '../pipes/pipes.module';
 
@@ -50,7 +49,6 @@ import { PipesModule } from '../pipes/pipes.module';
     HttpClientModule,
     ComponentsModule,
     PipesModule,
-    DirectivesModule,
     TextMaskModule,
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
