@@ -55,7 +55,7 @@ export class ActivityDetailPage {
       const loading = this.layout.showLoading();
       loading.present();
 
-      const firebaseHoursDifference = this.time.calculateHoursDifference(activityFormValue.startTime, activityFormValue.endTime);
+      const firebaseMinutesDifference = this.time.calculateMinutesDifference(activityFormValue.startTime, activityFormValue.endTime);
 
       const updatedActivityObject: firebaseActivity  = { 
         clientName: activityFormValue.clientName,
@@ -63,7 +63,7 @@ export class ActivityDetailPage {
         startTime: activityFormValue.startTime,  
         endTime: activityFormValue.endTime,
         // activities: activityFormValue.value.activities,
-        hoursDifference: firebaseHoursDifference
+        minutesDifference: firebaseMinutesDifference
       };
 
       const result = await this.time.updateActivity(updatedActivityObject, this.activityObject.id); 
@@ -82,22 +82,53 @@ export class ActivityDetailPage {
   }
 
   calculateHours(startTime, endTime) {
-    const firebaseHoursDifference = this.time.calculateHoursDifference(startTime, endTime);
-    const hoursDifference = this.calculateHoursDifference(firebaseHoursDifference);
+    const firebaseHoursDifference = this.time.calculateMinutesDifference(startTime, endTime);
+    const hoursDifferenceBeforeBreak = this.calculateHoursDifference(firebaseHoursDifference);
 
-    console.log(hoursDifference);
+    console.log(hoursDifferenceBeforeBreak);
     let alert = this.layout.alertCtrl.create({
       title: 'Hoeveel minuten heb je pauze gehad?',
-      message: `Je hebt zonder pauze ${hoursDifference} gewerkt.`,
+      message: `Je hebt zonder pauze ${hoursDifferenceBeforeBreak} gewerkt.`,
+      inputs: [
+        {
+          type:'radio',
+          label:'15 minuten pauze gehad',
+          value:'15'
+        },
+        {
+          type:'radio',
+          label:'30 minuten pauze gehad',
+          value:'30'
+        },
+        {
+          type:'radio',
+          label:'45 minuten pauze gehad',
+          value:'45'
+        },
+        {
+          type:'radio',
+          label:'Een uur pauze gehad',
+          value:'60'
+        }
+      ],
       buttons: [
         {
-          text: 'Het is goed zo',
+          text: 'Geen pauze gehad',
           role: 'cancel'
         },
         {
           text: 'Geef duur van pauze op',
-          handler: () => {
-            console.log('Tja');
+          handler: minutes => {
+            console.log(minutes);
+
+            console.log('Firebase hours: ', firebaseHoursDifference);
+            const minutesAsInt = parseInt(this.reverseCheck(minutes));
+            const hoursDifference = (firebaseHoursDifference - minutesAsInt);
+            console.log('Final break difference ', hoursDifference);
+              // Aantal minute pauze moet af van huidig totaal
+              //console.log('Huidig totaal ', hoursDifferenceBeforeBreak);
+              //const hoursWithBreakDifference = (hoursDifferenceBeforeBreak - minutes);
+              //console.log('New hours: ', hoursWithBreakDifference);
           }
         }
       ]
@@ -137,6 +168,33 @@ export class ActivityDetailPage {
         hrString = '45';
         break; 
      } 
+      default: { 
+         hrString = 'Error'; 
+         break; 
+      } 
+    } 
+    return hrString; 
+  }
+
+  reverseCheck(hrString): string {
+ 
+    switch(hrString) { 
+      case '15': { 
+         hrString = '25';
+         break; 
+      } 
+      case '30': { 
+        hrString = '5'; 
+         break; 
+      } 
+      case '45': { 
+        hrString = '75';
+        break; 
+      }
+      case '60': { 
+        hrString = '00';
+        break; 
+     }  
       default: { 
          hrString = 'Error'; 
          break; 

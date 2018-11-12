@@ -23,7 +23,7 @@ export class TimesheetProvider {
   weekNumber: string;
   year: string;
   uid: string;
-  public totalHoursCounter: BehaviorSubject<string> = new BehaviorSubject<string>('0');
+  public totalMinutesCounter: BehaviorSubject<string> = new BehaviorSubject<string>('0');
 
   constructor(public afs: AngularFirestore, public userService: UserProvider,
     public authService: AuthProvider, public storage: Storage) {
@@ -33,10 +33,10 @@ export class TimesheetProvider {
       this.weekNumber = this.getCurrentWeekNumber().toString();
       this.year = this.getCurrentYear().toString(); 
 
-      this.storage.get('totalHours').then(hours => {
-        console.log('Storage hours: ', hours);
-        if (hours !== '0') {
-          this.totalHoursCounter.next(hours);
+      this.storage.get('totalMinutes').then(minutes => {
+        console.log('Storage minutes: ', minutes);
+        if (minutes !== '0') {
+          this.totalMinutesCounter.next(minutes);
         }
       }).catch(e => console.log('Ophalen aantal uren ging niet goed'));
   }
@@ -93,32 +93,28 @@ export class TimesheetProvider {
     } 
   }
 
-  calculateTotalHours(incomingHours: number) {
-
-    this.storage.get('totalHours').then((currentHours: number) => {
-      const x = +currentHours + +incomingHours;
+  calculateTotalHours(incomingMinutes: number) {
+    this.storage.get('totalMinutes').then((currentMinutes: number) => {
+      const x = +currentMinutes + +incomingMinutes;
       console.log('The sum ', x);
-     this.storage.set('totalHours', x)
-       .then(_ => this.totalHoursCounter.next(x.toString()));
+     this.storage.set('totalMinutes', x)
+       .then(_ => this.totalMinutesCounter.next(x.toString()));
     });
   }
 
-  calculateHoursDifference(startTime, endTime): number {
-    let start = moment.utc(startTime, "HH:mm");
-    let end = moment.utc(endTime, "HH:mm");
+  calculateMinutesDifference(startTime, endTime): number {
+    const start = moment.utc(startTime, "HH:mm");
+    const end = moment.utc(endTime, "HH:mm");
 
     // account for crossing over to midnight the next day
     if (end.isBefore(start)) end.add(1, 'day');
 
     // calculate the duration
     let d = moment.duration(end.diff(start));
-    //let f = moment.utc(+a).format('H:mm');
-    // console.log('Nieuwe format ', f);
-
-    // format a string result
-    // const correctHours = moment.utc(+d).format('H:mm'); 
-    const correctHours = d.asHours();   
-    return correctHours;
+  
+    const correctMinutes = d.asMinutes();
+    console.log('Correct minutes?: ', correctMinutes);   
+    return correctMinutes;
   }
 
   deleteActivity(activityObject: any): Promise<void> {

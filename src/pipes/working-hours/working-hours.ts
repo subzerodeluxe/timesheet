@@ -1,50 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import * as moment from 'moment';
+import 'moment-duration-format';
+import 'moment/locale/nl'
+moment.locale('nl');
 
 @Pipe({
   name: 'formatHours',
 })
 export class WorkingHoursPipe implements PipeTransform {
   
-  newHours: string; 
-
-  transform(hours: number) {
-  
-    let str = hours.toString();
-
-    if (str.length === 1) {
-      this.newHours = hours.toString() + ' uur';
-    } else {
-      let f = str.substr(2);
-      let hours = str.substr(0,1);
-      let min = this.check(f);   // 15 
-      let final = hours + ' uur ' + 'en ' + min + ' min.';
-  
-      this.newHours = final;
-    }
-  
-    return this.newHours;
-  }
-
-  check(hrString): string {
- 
-    switch(hrString) { 
-      case '25': { 
-         hrString = '15';
-         break; 
-      } 
-      case '5': { 
-        hrString = '30'; 
-         break; 
-      } 
-      case '75': { 
-        hrString = '45';
-        break; 
-     } 
-      default: { 
-         hrString = 'Error'; 
-         break; 
-      } 
-    } 
-    return hrString;  
+  transform(minutes: number) {
+    
+    let finalHours = moment.duration(minutes, "minutes").format("h:mm");
+    
+    let index = finalHours.indexOf(":"); 
+    
+    let slicedMinutes = finalHours.slice(index + 1); 
+    let slicedHours = finalHours.slice(0, index); 
+    
+    finalHours = slicedHours + ' uur ' + 'en ' + slicedMinutes + ' min.';
+    return finalHours;
   }
 }

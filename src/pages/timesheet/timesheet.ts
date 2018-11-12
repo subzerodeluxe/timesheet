@@ -30,7 +30,7 @@ export class TimesheetPage implements OnDestroy {
   state = 'small';
   activities: any;
   weekActivities$: Observable<any>;
-  totalHours: string;
+  totalMinutes: string;
  
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
@@ -53,9 +53,9 @@ export class TimesheetPage implements OnDestroy {
         });
       }); 
       
-    this.time.totalHoursCounter.subscribe((hours) => {
-      this.totalHours = hours;
-      console.log('Counter: ', this.totalHours);
+    this.time.totalMinutesCounter.subscribe((minutes) => {
+      this.totalMinutes = minutes;
+      console.log('Counter: ', this.totalMinutes);
     });
     
   }

@@ -5,8 +5,7 @@ export interface EnrichedActivity {
 
 export interface ActivityLine {
     isoDateString: string;
-    hoursDifference: number;
-    hoursDifferenceWithBreak?: string; // 7:45
+    minutesDifference: number;
     clientName: string;  // Needse molen 
     location: string; // Neede
     startTime: string; // 7:30
@@ -22,7 +21,7 @@ export interface firebaseActivity {
     activities?: Array<Activity>;
     clientName: string;
     endTime: string;
-    hoursDifference: number;
+    minutesDifference: number;
     isoDateString?: string;
     location: string;
     startTime: string;

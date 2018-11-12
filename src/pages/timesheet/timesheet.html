@@ -39,7 +39,7 @@
                   <div class="item-description">
                     <ion-icon class="description-icon" name="map"></ion-icon>
                     <p class="description-text one-line">{{ activity?.location }}</p>
-                    <h3 class="sub-hours">{{ activity?.hoursDifference | formatHours }}</h3>
+                    <h3 class="sub-hours">{{ activity?.minutesDifference | formatHours }}</h3>
                   </div>
 
                 </div>
@@ -81,7 +81,7 @@
                       <div class="item-description">
                         <ion-icon class="description-icon" name="map"></ion-icon>
                         <p class="description-text one-line">{{ activity.location }}</p>
-                        <h3 class="sub-hours">{{ activity?.hoursDifference | formatHours }}</h3>
+                        <h3 class="sub-hours">{{ activity?.minutesDifference | formatHours }}</h3>
                       </div>
                     </div>
                     <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
@@ -103,7 +103,7 @@
 
             <ion-item>
               <ion-label *ngIf="noActivities">-</ion-label>
-              <ion-label *ngIf="!noActivities">{{ totalHours }}</ion-label>
+              <ion-label *ngIf="!noActivities">{{ totalMinutes }}</ion-label>
             </ion-item>
           </section>
         </ion-list>

@@ -19,7 +19,7 @@ export class AddActivityPage {
   firstActivityForm: FormGroup; 
   secondActivityForm: FormGroup;
   thirdActivityForm: FormGroup;
-  totalHours: number; 
+  totalMinutes: number; 
   lastSlide = false;
   user: any;
   validation_messages = validation_messages;
@@ -87,7 +87,6 @@ export class AddActivityPage {
  async saveActivity() {
     if(!this.firstActivityForm.valid){
       this.slider.slideTo(0);
-      // boodschap: niet alle velden zijn (correct) ingevuld!
       this.layoutProvider.presentBottomToast('Niet alle velden zijn (correct) ingevuld!')
     }
     else if(!this.secondActivityForm.valid) {
@@ -98,11 +97,10 @@ export class AddActivityPage {
         this.layoutProvider.presentBottomToast('Niet alle velden zijn (correct) ingevuld!')
       }
     else {
-
       const loading = this.layoutProvider.showLoading();
       loading.present();
 
-      this.totalHours = this.time.calculateHoursDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime);
+      this.totalMinutes = this.time.calculateMinutesDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime);
 
       const activityObject: ActivityLine  = { 
         isoDateString: this.time.getCurrentIsoString(),
@@ -111,7 +109,7 @@ export class AddActivityPage {
         startTime: this.thirdActivityForm.value.startTime,  
         endTime: this.thirdActivityForm.value.endTime,
         activities: this.secondActivityForm.value.activities,
-        hoursDifference: this.totalHours
+        minutesDifference: this.totalMinutes
       };
 
       try {
@@ -132,6 +130,6 @@ export class AddActivityPage {
   }  
 
   calculateHours(startTime, endTime) {
-    this.totalHours = this.time.calculateHoursDifference(startTime, endTime);
+    this.totalMinutes = this.time.calculateMinutesDifference(startTime, endTime);
   }
 }
