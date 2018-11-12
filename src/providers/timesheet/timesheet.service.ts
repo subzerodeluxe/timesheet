@@ -6,6 +6,8 @@ import { TimeSheet } from '../../models/timesheet.interface';
 import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Storage } from '@ionic/storage';
+import { map } from 'rxjs/operators';
+import { firebaseActivity } from '../../models/activityLine.interface';
 
 @Injectable()
 export class TimesheetProvider {
@@ -39,53 +41,28 @@ export class TimesheetProvider {
       }).catch(e => console.log('Ophalen aantal uren ging niet goed'));
   }
 
-  // getTimesheet() {
-  //   return this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).valueChanges();
-  // }
-
-  // async createTimesheet(user): Promise<any> {
-  //   this.weekNumber = this.getCurrentWeekNumber().toString();
-  //   this.year = this.getCurrentYear().toString();
-  //   this.uid = user.uid;
-    
-  //   const doc = await this.docExists(`week-${this.weekNumber}-${this.year}-${this.uid}`);
-  //   console.log('Controleren of timesheet bestaat...');
-  //   if (doc.exists === false) {
-  //    return this.authService.getAuthenticatedUser().pipe(
-  //       map(user => {
-  //         this.timesheet = {
-  //           id: `week-${this.weekNumber}-${this.year}-${this.uid}`,
-  //           employee: { uid: user.uid },
-  //           weekNumber: this.getCurrentWeekNumber(),
-  //           finished: false,
-  //           created: this.getCurrentIsoString(),
-  //           lastUpdated: this.getCurrentIsoString(),
-  //           totalHours: 0
-  //         };
-  //       }),
-  //       mergeMap(() => this.timesheetsRef.doc(`week-${this.weekNumber}-${this.year}-${this.uid}`).set(this.timesheet))
-  //     ).toPromise();
-  //   } else {
-  //     return 'timesheet already exists';
-  //   }
-  // } 
-
-  // async docExists(path: string): Promise<any> {
-  //   return this.timesheetsRef.doc(path).ref.get();
-  // }
-
   findAllDailyActivitiesByUser(userObject: any) {
-    console.log('CurrentDate ', this.currentDate);
-    
-    return this.afs.collection('activities', ref => {
-      return ref
-        .where('userDateString', '==', `${this.currentDate}-week-${this.weekNumber}-${this.year}-${userObject.uid}`);
-    }).valueChanges();
+     return this.afs.collection('activities', ref => {
+      return ref.where('userDateString', '==', `${this.currentDate}-week-${this.weekNumber}-${this.year}-${userObject.uid}`);
+        }).snapshotChanges().pipe(
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data() as firebaseActivity;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          }))
+        )
   }
 
   findAllWeekActivitiesByUser(userObject: any) {
-    return this.afs.collection('activities', ref => 
-      ref.where('timesheetId', '==', `week-${this.weekNumber}-${this.year}-${userObject.uid}`)).valueChanges();
+    return this.afs.collection('activities', ref => {
+     return ref.where('timesheetId', '==', `week-${this.weekNumber}-${this.year}-${userObject.uid}`);
+        }).snapshotChanges().pipe(
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data() as firebaseActivity;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          }))
+        )
   }
 
   async saveActivity(activityObject: any, user: any) {
@@ -129,6 +106,10 @@ export class TimesheetProvider {
     // const correctHours = moment.utc(+d).format('H:mm'); 
     const correctHours = d.asHours();   
     return correctHours;
+  }
+
+  deleteActivity(activityObject: any): Promise<void> {
+    return this.activitiesRef.doc(activityObject.id).delete();
   }
 
   getCurrentWeekNumber(): number {

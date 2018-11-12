@@ -52,6 +52,7 @@ export class TimesheetPage implements OnDestroy {
           }
         });
       }); 
+      
     this.time.totalHoursCounter.subscribe((hours) => {
       this.totalHours = hours;
       console.log('Counter: ', this.totalHours);
@@ -98,7 +99,7 @@ export class TimesheetPage implements OnDestroy {
 
     setTimeout(() => {
       loading.dismiss();
-    }, 4000);
+    }, 1500);
   }
 
   ngOnDestroy() {

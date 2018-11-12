@@ -50,7 +50,6 @@ export class LayoutProvider {
   }
 
   showAlertMessage(title, message, buttonText) {
-    console.log(message);
     let alert = this.alertCtrl.create({
         title: title,
         subTitle: message,

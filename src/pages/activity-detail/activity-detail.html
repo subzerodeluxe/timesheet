@@ -1,7 +1,11 @@
-
 <ion-header>
   <ion-navbar>
     <ion-title>{{ activityObject?.clientName }}</ion-title>
+    <ion-buttons end (click)="deleteActivity()">
+      <button ion-button>
+        <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -65,6 +69,18 @@
         <div *ngFor="let activity of activityObject.activities">
           <p>{{ activity.name }}</p>
         </div>
+
+        <ion-item>
+          <ion-label floating>Taak</ion-label>
+          <ion-input type="text" class="form-controll" maxlength="50"></ion-input>
+        </ion-item>
+
+        <span float-right ion-button icon-left clear
+           
+            (click)="removeInputField(i)">
+            <ion-icon name="close"></ion-icon>
+            Verwijder
+        </span>
 
         
     </section>
