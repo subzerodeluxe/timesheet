@@ -44,11 +44,10 @@
 
     <section class="form-section">
       <h2 class="section-title">Tijden</h2>
-
       <ion-item>
         <ion-label floating>Begonnen om</ion-label>
         <ion-datetime 
-          (ionChange)="calculateHours(activityForm.value.startTime, activityForm.value.endTime)"  
+          (ionChange)="calculateBreak(activityForm.value.startTime, activityForm.value.endTime)"  
           displayFormat="HH:mm" 
           minuteValues="0,15,30,45"
           formControlName="startTime"
@@ -60,7 +59,7 @@
       <ion-item>
         <ion-label floating>Gestopt om</ion-label>
           <ion-datetime 
-              (ionChange)="calculateHours(activityForm.value.startTime, activityForm.value.endTime)"
+              (ionChange)="calculateBreak(activityForm.value.startTime, activityForm.value.endTime)"
               displayFormat="HH:mm"
               minuteValues="0,15,30,45" 
               formControlName="endTime"

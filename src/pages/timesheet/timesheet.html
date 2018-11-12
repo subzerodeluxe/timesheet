@@ -103,7 +103,7 @@
 
             <ion-item>
               <ion-label *ngIf="noActivities">-</ion-label>
-              <ion-label *ngIf="!noActivities">{{ totalMinutes }}</ion-label>
+              <ion-label *ngIf="!noActivities">{{ totalMinutes | formatHours }}</ion-label>
             </ion-item>
           </section>
         </ion-list>

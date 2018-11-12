@@ -9,7 +9,6 @@ moment.locale('nl');
 export class MomentPipe implements PipeTransform {
   
   transform(value: Date | moment.Moment, dateFormat: string): any {
-    console.log(moment.locale()); // en
     if (dateFormat === 'dd') {
       const result = moment(value).format(dateFormat);
       return result.toUpperCase();

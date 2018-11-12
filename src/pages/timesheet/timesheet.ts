@@ -44,6 +44,7 @@ export class TimesheetPage implements OnDestroy {
         this.time.findAllDailyActivitiesByUser(this.userObject).subscribe(activities => {
           if (activities.length === 0) {
             this.noActivities = true;
+            this.time.storage.set('totalMinutes', 0); 
             console.log('Week activities: ', activities.length);
           } else {
             this.noActivities = false;
@@ -55,9 +56,8 @@ export class TimesheetPage implements OnDestroy {
       
     this.time.totalMinutesCounter.subscribe((minutes) => {
       this.totalMinutes = minutes;
-      console.log('Counter: ', this.totalMinutes);
+      console.log('Counter says: ', this.totalMinutes);
     });
-    
   }
   
   ionViewDidLoad() {

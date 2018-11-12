@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { TimeSheet } from '../../models/timesheet.interface';
-import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { map } from 'rxjs/operators';
 import { firebaseActivity } from '../../models/activityLine.interface';
+
+import * as moment from 'moment';
+import 'moment-duration-format';
+import 'moment/locale/nl'
+moment.locale('nl');
 
 @Injectable()
 export class TimesheetProvider {
@@ -76,7 +80,7 @@ export class TimesheetProvider {
       userDateString: `${this.getCurrentDayNumber().toString()}-week-${weekNumber}-${year}-${user.uid}`,
       ...activityObject
     };
-    this.calculateTotalHours(activityObject.hoursDifference);
+    this.calculateStorageHours(activityObject.minutesDifference);
     this.activitiesRef.add(this.enrichedActivity);
   }
 
@@ -93,7 +97,7 @@ export class TimesheetProvider {
     } 
   }
 
-  calculateTotalHours(incomingMinutes: number) {
+  calculateStorageHours(incomingMinutes: number) {
     this.storage.get('totalMinutes').then((currentMinutes: number) => {
       const x = +currentMinutes + +incomingMinutes;
       console.log('The sum ', x);
@@ -117,7 +121,26 @@ export class TimesheetProvider {
     return correctMinutes;
   }
 
+  transformMinutesToHours(minutes: number): string {
+    let finalHours = moment.duration(minutes, "minutes").format("h:mm");
+    
+    let index = finalHours.indexOf(":"); 
+    
+    let slicedMinutes = finalHours.slice(index + 1); 
+    let slicedHours = finalHours.slice(0, index); 
+    
+    finalHours = slicedHours + ' uur ' + 'en ' + slicedMinutes + ' minuten';
+    return finalHours;
+  }
+
   deleteActivity(activityObject: any): Promise<void> {
+    console.log('Dit gaat er af: ', activityObject.minutesDifference);
+    this.storage.get('totalMinutes').then((currentMinutes: number) => {
+      const x = (currentMinutes - activityObject.minutesDifference);
+      console.log('New total: ', x);
+     this.storage.set('totalMinutes', x)
+       .then(_ => this.totalMinutesCounter.next(x.toString()));
+    });
     return this.activitiesRef.doc(activityObject.id).delete();
   }
 

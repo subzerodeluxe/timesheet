@@ -18,8 +18,10 @@ export class ActivityDetailPage {
 
   activityObject: any;
   activityForm: FormGroup;
-  totalHours: number;
+  minutesDifference: number;
+  minutesWithBreakDifference: number;
   validation_messages = validation_messages;
+  usedBreak: boolean = false; 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public layout: LayoutProvider, public time: TimesheetProvider,
     public authProvider: AuthProvider, public formBuilder: FormBuilder) {
@@ -55,15 +57,22 @@ export class ActivityDetailPage {
       const loading = this.layout.showLoading();
       loading.present();
 
-      const firebaseMinutesDifference = this.time.calculateMinutesDifference(activityFormValue.startTime, activityFormValue.endTime);
-
+      
+      if (this.usedBreak === false) {
+        this.minutesDifference = this.time.calculateMinutesDifference(activityFormValue.startTime, activityFormValue.endTime);
+      } else {
+        this.minutesDifference = this.minutesWithBreakDifference;
+      }
+      
+      console.log('Welke minuten worden gebruikt? ', this.minutesDifference);
+     
       const updatedActivityObject: firebaseActivity  = { 
         clientName: activityFormValue.clientName,
         location: activityFormValue.location,
         startTime: activityFormValue.startTime,  
         endTime: activityFormValue.endTime,
         // activities: activityFormValue.value.activities,
-        minutesDifference: firebaseMinutesDifference
+        minutesDifference: this.minutesDifference
       };
 
       const result = await this.time.updateActivity(updatedActivityObject, this.activityObject.id); 
@@ -81,14 +90,14 @@ export class ActivityDetailPage {
       }
   }
 
-  calculateHours(startTime, endTime) {
-    const firebaseHoursDifference = this.time.calculateMinutesDifference(startTime, endTime);
-    const hoursDifferenceBeforeBreak = this.calculateHoursDifference(firebaseHoursDifference);
+  calculateBreak(startTime, endTime) {
+    const minutesDifferenceBeforeBreak = this.time.calculateMinutesDifference(startTime, endTime);
+    const transformedMinutes = this.time.transformMinutesToHours(minutesDifferenceBeforeBreak);
 
-    console.log(hoursDifferenceBeforeBreak);
+    console.log(minutesDifferenceBeforeBreak);
     let alert = this.layout.alertCtrl.create({
       title: 'Hoeveel minuten heb je pauze gehad?',
-      message: `Je hebt zonder pauze ${hoursDifferenceBeforeBreak} gewerkt.`,
+      message: `Je hebt zonder pauze ${transformedMinutes} gewerkt.`,
       inputs: [
         {
           type:'radio',
@@ -118,91 +127,18 @@ export class ActivityDetailPage {
         },
         {
           text: 'Geef duur van pauze op',
-          handler: minutes => {
-            console.log(minutes);
-
-            console.log('Firebase hours: ', firebaseHoursDifference);
-            const minutesAsInt = parseInt(this.reverseCheck(minutes));
-            const hoursDifference = (firebaseHoursDifference - minutesAsInt);
-            console.log('Final break difference ', hoursDifference);
-              // Aantal minute pauze moet af van huidig totaal
-              //console.log('Huidig totaal ', hoursDifferenceBeforeBreak);
-              //const hoursWithBreakDifference = (hoursDifferenceBeforeBreak - minutes);
-              //console.log('New hours: ', hoursWithBreakDifference);
+          handler: breakMinutes => {
+            console.log('Minuten pauze: ', breakMinutes);
+            this.usedBreak = true;
+            this.minutesWithBreakDifference = (minutesDifferenceBeforeBreak - breakMinutes);
+            console.log('Totaal ', this.minutesWithBreakDifference);
           }
         }
       ]
     });
     alert.present();
   }
-
-  calculateHoursDifference(hours) {
-    console.log('Incoming hours, ', hours); 
-    let str = hours.toString();
-    let newHours;
-    if (str.length === 1) {
-      newHours = hours.toString() + ' uur';
-    } else {
-      let f = str.substr(2);
-      let hours = str.substr(0,1);
-      let min = this.check(f);   // 15 
-      let final = hours + ' uur ' + 'en ' + min + ' minuten';
-      newHours = final;
-    }
-
-    return newHours;
-  }
-
-  check(hrString): string {
  
-    switch(hrString) { 
-      case '25': { 
-         hrString = '15';
-         break; 
-      } 
-      case '5': { 
-        hrString = '30'; 
-         break; 
-      } 
-      case '75': { 
-        hrString = '45';
-        break; 
-     } 
-      default: { 
-         hrString = 'Error'; 
-         break; 
-      } 
-    } 
-    return hrString; 
-  }
-
-  reverseCheck(hrString): string {
- 
-    switch(hrString) { 
-      case '15': { 
-         hrString = '25';
-         break; 
-      } 
-      case '30': { 
-        hrString = '5'; 
-         break; 
-      } 
-      case '45': { 
-        hrString = '75';
-        break; 
-      }
-      case '60': { 
-        hrString = '00';
-        break; 
-     }  
-      default: { 
-         hrString = 'Error'; 
-         break; 
-      } 
-    } 
-    return hrString; 
-  }
-
   deleteActivity() {
     console.log('Deleting activity');
       let alert = this.layout.alertCtrl.create({
@@ -230,8 +166,6 @@ export class ActivityDetailPage {
           }
         ]
       });
-      alert.present();
+    alert.present();
   }
-
-
 }

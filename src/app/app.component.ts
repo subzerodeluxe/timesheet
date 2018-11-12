@@ -48,24 +48,3 @@ export class MyApp {
     })
   }
 }
-
-
-  // initTimesheetListener(user):  void {
-  //   console.log('Timesheet listener started.');
-  //   this.timesheetProvider.createTimesheet(user)
-  //     .then(res => {
-  //       console.log('De response: ', res);
-  //       if (res === undefined) {
-  //         console.log('Timesheet succesvol aangemaakt.');
-  //         //this.timesheetExists = true;
-  //       } else {
-  //         const alert = this.layoutProvider.showAlertMessage('TEST: werkbriefje bestaat al.', 'Geen nieuwe aangemaakt', 'Ok');
-  //         alert.present();
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log('Errors: ', err);
-  //       const alert = this.layoutProvider.showAlertMessage('ERROR', err, 'Ok');
-  //       alert.present();
-  //     });
-  // }
