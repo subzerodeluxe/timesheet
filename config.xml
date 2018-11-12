@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.mbw.timesheet" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>timesheet</name>
+    <name>Digitaal werkurenbriefje</name>
     <description>Keep track of your weekly hours</description>
     <author email="maarten.waanders@gmail.com" href="https://maarten-waanders.nl/">Maarten Waanders</author>
     <content src="index.html" />
