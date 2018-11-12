@@ -4,6 +4,8 @@ import { AuthProvider } from '../../providers/auth/auth.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
+import { validation_messages } from '../../app/app.config';
+import { firebaseActivity } from '../../models/activityLine.interface';
 
 @IonicPage({
   name: 'activity-detail'
@@ -16,6 +18,8 @@ export class ActivityDetailPage {
 
   activityObject: any;
   activityForm: FormGroup;
+  totalHours: number;
+  validation_messages = validation_messages;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public layout: LayoutProvider, public time: TimesheetProvider,
     public authProvider: AuthProvider, public formBuilder: FormBuilder) {
@@ -24,25 +28,122 @@ export class ActivityDetailPage {
 
     this.activityForm = new FormGroup({
       clientName: new FormControl('', Validators.compose([
+        Validators.maxLength(25),
+        Validators.minLength(4),
         Validators.required
-      ])),
+        ])),
       location: new FormControl('', Validators.compose([
+        Validators.maxLength(25),
+        Validators.minLength(4),
         Validators.required
       ])),
       startTime: new FormControl(),
-      endTime: new FormControl(),
-      activities: this.formBuilder.array([
-        this.initActivityFields()
-     ])
-    });
+      endTime: new FormControl()
+      // activities: this.formBuilder.array([
+      //   this.initActivityFields()
+      // ])
+    });  
   }
 
-  initActivityFields(): FormGroup {
-    return this.formBuilder.group({
-       name: ['', Validators.required]
-    });
-   }
+  // initActivityFields(): FormGroup {
+  //   return this.formBuilder.group({
+  //      name: ['', Validators.required]
+  //   });
+  // }
 
+  async updateActivity(activityFormValue: any) {
+      const loading = this.layout.showLoading();
+      loading.present();
+
+      const firebaseHoursDifference = this.time.calculateHoursDifference(activityFormValue.startTime, activityFormValue.endTime);
+
+      const updatedActivityObject: firebaseActivity  = { 
+        clientName: activityFormValue.clientName,
+        location: activityFormValue.location,
+        startTime: activityFormValue.startTime,  
+        endTime: activityFormValue.endTime,
+        // activities: activityFormValue.value.activities,
+        hoursDifference: firebaseHoursDifference
+      };
+
+      const result = await this.time.updateActivity(updatedActivityObject, this.activityObject.id); 
+      if (result) {
+        loading.dismiss().then(() => {
+          this.layout.presentBottomToast('Activiteit succesvol bijgewerkt.');
+          setTimeout(() => {
+            this.navCtrl.setRoot('timesheet');
+          }, 1500);
+        });
+      } else {
+        loading.dismiss().then(_ => {
+          this.layout.presentBottomToast('Er ging iets mis met bijwerken. Probeer het opnieuw.');
+        });
+      }
+  }
+
+  calculateHours(startTime, endTime) {
+    const firebaseHoursDifference = this.time.calculateHoursDifference(startTime, endTime);
+    const hoursDifference = this.calculateHoursDifference(firebaseHoursDifference);
+
+    console.log(hoursDifference);
+    let alert = this.layout.alertCtrl.create({
+      title: 'Hoeveel minuten heb je pauze gehad?',
+      message: `Je hebt zonder pauze ${hoursDifference} gewerkt.`,
+      buttons: [
+        {
+          text: 'Het is goed zo',
+          role: 'cancel'
+        },
+        {
+          text: 'Geef duur van pauze op',
+          handler: () => {
+            console.log('Tja');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  calculateHoursDifference(hours) {
+    console.log('Incoming hours, ', hours); 
+    let str = hours.toString();
+    let newHours;
+    if (str.length === 1) {
+      newHours = hours.toString() + ' uur';
+    } else {
+      let f = str.substr(2);
+      let hours = str.substr(0,1);
+      let min = this.check(f);   // 15 
+      let final = hours + ' uur ' + 'en ' + min + ' minuten';
+      newHours = final;
+    }
+
+    return newHours;
+  }
+
+  check(hrString): string {
+ 
+    switch(hrString) { 
+      case '25': { 
+         hrString = '15';
+         break; 
+      } 
+      case '5': { 
+        hrString = '30'; 
+         break; 
+      } 
+      case '75': { 
+        hrString = '45';
+        break; 
+     } 
+      default: { 
+         hrString = 'Error'; 
+         break; 
+      } 
+    } 
+    return hrString; 
+  }
 
   deleteActivity() {
     console.log('Deleting activity');
@@ -52,10 +153,7 @@ export class ActivityDetailPage {
         buttons: [
           {
             text: 'Nee',
-            role: 'cancel',
-            handler: () => {
-              console.log('Cancel clicked');
-            }
+            role: 'cancel'
           },
           {
             text: 'Ja, verwijder',
@@ -75,7 +173,6 @@ export class ActivityDetailPage {
         ]
       });
       alert.present();
-    
   }
 
 

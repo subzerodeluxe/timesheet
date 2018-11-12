@@ -8,8 +8,7 @@ export class WorkingHoursPipe implements PipeTransform {
   newHours: string; 
 
   transform(hours: number) {
-    console.log('PIPE incoming hours: ', hours);
-    
+  
     let str = hours.toString();
 
     if (str.length === 1) {

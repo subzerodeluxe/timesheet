@@ -4,24 +4,12 @@
   </ion-navbar>
 </ion-header>
 
-  <!-- <ion-toolbar>
-    <ion-buttons start>
-      <button ion-button icon-left (click)="prev()"><ion-icon name="arrow-back"></ion-icon> Prev</button>
-    </ion-buttons>
-    <ion-buttons end>
-      <button ion-button icon-right (click)="next()">Next <ion-icon name="arrow-forward"></ion-icon></button>
-    </ion-buttons>
-  </ion-toolbar> -->
-
-
 <ion-content padding class="forms-validations-content">
-    
   <ion-slides #slider (ionSlideDidChange)="onSlideChanged()" [pager]="true" paginationType="progress">
     <ion-slide class="slide-1">
       <form class="activity-form validations-form" [formGroup]="firstActivityForm"> 
           <h2 class="section-title">Waar ben je geweest?</h2>
         <section class="form-section"> 
-            <!-- <h2 class="section-title">Waar ben je geweest?</h2> -->
           <ion-item>
             <ion-label floating>Naam van klant</ion-label>
             <ion-input type="text" formControlName="clientName" class="form-controll" required></ion-input>
@@ -38,6 +26,16 @@
               <ion-label floating>Locatie</ion-label>
               <ion-input type="text" formControlName="location" class="form-controll" required></ion-input>
           </ion-item>
+
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.location">
+              <div class="error-message" *ngIf="firstActivityForm.get('location').hasError(validation.type) 
+                && (firstActivityForm.get('location').dirty || firstActivityForm.get('location').touched)">
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
+
         </section>
         <!-- <button ion-button icon-right (click)="nextSlide()">Volgende <ion-icon name="arrow-forward"></ion-icon></button> -->
         <ion-buttons end>

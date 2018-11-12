@@ -35,7 +35,11 @@ export class AddActivityPage {
         Validators.minLength(4),
         Validators.required
         ])),
-      location: new FormControl('', Validators.required)
+      location: new FormControl('', Validators.compose([
+        Validators.maxLength(25),
+        Validators.minLength(4),
+        Validators.required
+        ]))
     });
 
     this.secondActivityForm = this.formBuilder.group({

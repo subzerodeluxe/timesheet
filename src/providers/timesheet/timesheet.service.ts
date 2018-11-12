@@ -80,6 +80,19 @@ export class TimesheetProvider {
     this.activitiesRef.add(this.enrichedActivity);
   }
 
+  async updateActivity(activityObject: any, id: string): Promise<boolean> { 
+    const ref = this.activitiesRef.doc(id)
+    try {
+      const uploadedActivity = activityObject;
+      await ref.update({...uploadedActivity});
+      return true;
+    } 
+    catch(e) {
+      console.log('Er gaat iets niet goed. ', e);
+      return false;
+    } 
+  }
+
   calculateTotalHours(incomingHours: number) {
 
     this.storage.get('totalHours').then((currentHours: number) => {

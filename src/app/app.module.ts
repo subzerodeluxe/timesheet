@@ -58,7 +58,7 @@ import { PipesModule } from '../pipes/pipes.module';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
+    MyApp
   ],
   providers: [
     StatusBar,

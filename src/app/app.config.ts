@@ -77,8 +77,14 @@ export const slideOptions: NativeTransitionOptions = {
     { type: 'required', message: 'Vergeet niet je achternaam in te vullen.' }
   ],
   'clientName': [
-    { type: 'required', message: 'Dit is een verplicht veld.' },
-    { type: 'minlength', message: 'Veld moet minimaal 4 tekens bevatten.' },
-    { type: 'maxlength', message: 'Veld mag niet langer zijn dan 25 tekens.' }
+    { type: 'required', message: 'Vul aub een klantnaam in.' },
+    { type: 'minlength', message: 'Klantnaam moet minimaal 4 tekens bevatten.' },
+    { type: 'maxlength', message: 'Klantnaam mag niet langer zijn dan 25 tekens.' }
+  ],
+  'location': [
+    { type: 'required', message: 'Vul aub een locatie in.' },
+    { type: 'minlength', message: 'Locatie moet minimaal 4 tekens bevatten.' },
+    { type: 'maxlength', message: 'Locatie mag niet langer zijn dan 25 tekens.' }
   ]
+
 };

@@ -19,14 +19,14 @@ export interface Activity {
 }
 
 export interface firebaseActivity {
-    activities: Array<Activity>;
+    activities?: Array<Activity>;
     clientName: string;
     endTime: string;
     hoursDifference: number;
-    isoDateString: string;
+    isoDateString?: string;
     location: string;
     startTime: string;
-    timesheetId: string;
-    uid: string;
-    userDateString: string; 
+    timesheetId?: string;
+    uid?: string;
+    userDateString?: string; 
 }

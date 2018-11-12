@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController, LoadingController } from 'ionic-angular';
+import { AlertController, ToastController, LoadingController, PopoverController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AppConfig } from '../../app/app.config';
 @Injectable()
 export class LayoutProvider {
 
   constructor(public alertCtrl: AlertController, 
-    public loadingCtrl: LoadingController, public toastCtrl: ToastController, public sanitizer: DomSanitizer) {
+    public loadingCtrl: LoadingController, public toastCtrl: ToastController, public sanitizer: DomSanitizer, public popOver: PopoverController) {
   }
 
   showLoading() {
@@ -67,13 +67,13 @@ export class LayoutProvider {
       toast.present();
   }
 
-    presentTopToast(text) {
-      let toast = this.toastCtrl.create({
-          message: text,
-          duration: 3000,
-          position: 'top'
-          });
-      toast.present();
+  presentTopToast(text) {
+    let toast = this.toastCtrl.create({
+        message: text,
+        duration: 3000,
+        position: 'top'
+        });
+    toast.present();
   }
 
 }
