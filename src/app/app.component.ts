@@ -3,10 +3,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Platform } from 'ionic-angular';
 import { LayoutProvider } from '../providers/layout/layout.service';
-import { TimesheetProvider } from '../providers/timesheet/timesheet.service';
 import { Subscription } from 'rxjs/Subscription';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { UserProvider } from '../providers/user/user.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   templateUrl: 'app.html'

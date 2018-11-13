@@ -18,10 +18,10 @@ import { LayoutProvider } from '../providers/layout/layout.service';
 import { UserProvider } from '../providers/user/user.service';
 
 // Angular Fire imports 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environment/environment';
 
 // Other modules

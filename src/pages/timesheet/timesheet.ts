@@ -67,8 +67,12 @@ export class TimesheetPage implements OnDestroy {
     }, 0);  
   }
 
+  callTestFunction() {
+    console.log('Call the function');
+  }
+
   onEnd(event) {
-    this.state = 'small';
+    this.state = 'smalls';
     if (event.toState === 'small') {
       setTimeout(() => {
         this.state = 'big';

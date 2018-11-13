@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { TimeSheet } from '../../models/timesheet.interface';
-import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { map } from 'rxjs/operators';

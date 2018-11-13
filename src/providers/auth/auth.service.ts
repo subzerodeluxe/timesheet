@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { first } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs-compat';
 import { Employee } from '../../models/employee.interface';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '@firebase/auth-types';
 
 

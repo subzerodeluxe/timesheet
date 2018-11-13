@@ -1,7 +1,8 @@
 {
   "functions": {
-    "predeploy": "npm --prefix functions run lint && npm --prefix functions run build"
+    "predeploy": [
+      "npm --prefix ./functions/ run lint",
+      "npm --prefix ./functions/ run build"
+    ]
   }
 }
-
-
