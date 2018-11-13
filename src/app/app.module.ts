@@ -16,18 +16,21 @@ import { TimesheetProvider } from '../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../providers/auth/auth.service';
 import { LayoutProvider } from '../providers/layout/layout.service';
 import { UserProvider } from '../providers/user/user.service';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 // Angular Fire imports 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { environment } from '../environment/environment';
 
 // Other modules
 import { ComponentsModule } from '../components/components.module';
 import { CommonModule } from '@angular/common';
 import { PipesModule } from '../pipes/pipes.module';
+import { LocalNotificationService } from '../providers/local-notification-service/local-notification.service';
 
 @NgModule({
   declarations: [
@@ -54,6 +57,7 @@ import { PipesModule } from '../pipes/pipes.module';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
+    AngularFireFunctionsModule,
     AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
@@ -66,10 +70,12 @@ import { PipesModule } from '../pipes/pipes.module';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TimesheetProvider,
     Keyboard,
+    LocalNotifications,
     NativePageTransitions,
     AuthProvider,
     LayoutProvider,
-    UserProvider
+    UserProvider,
+    LocalNotificationService
   ]
 })
 export class AppModule {}

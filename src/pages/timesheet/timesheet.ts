@@ -4,10 +4,10 @@ import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { UserProvider } from '../../providers/user/user.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs-compat/Subscription';
 import { Employee } from '../../models/employee.interface';
 import { infinitePulse } from '../../app/animations';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs-compat/Observable';
 
 // Gebruik animaties voor het laden van de activities in timesheet: https://www.youtube.com/watch?v=ra5qNKNc95U
 @IonicPage({
@@ -69,6 +69,13 @@ export class TimesheetPage implements OnDestroy {
 
   callTestFunction() {
     console.log('Call the function');
+    this.layout.presentBottomToast('Functie wordt gecalled');
+    const data = { message: 'Dit wordt doorgestuurd als test'};
+     this.time.testCallFunction(data)
+      .subscribe(data => {
+        this.layout.presentBottomToast(JSON.stringify(data)); 
+        console.log(data)
+      });
   }
 
   onEnd(event) {

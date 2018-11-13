@@ -3,7 +3,7 @@ import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { TimeSheet } from '../../models/timesheet.interface';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { map } from 'rxjs/operators';
 import { firebaseActivity } from '../../models/activityLine.interface';
@@ -11,6 +11,7 @@ import { firebaseActivity } from '../../models/activityLine.interface';
 import * as moment from 'moment';
 import 'moment-duration-format';
 import 'moment/locale/nl'
+import { AngularFireFunctions } from '@angular/fire/functions';
 moment.locale('nl');
 
 @Injectable()
@@ -29,7 +30,7 @@ export class TimesheetProvider {
   uid: string;
   public totalMinutesCounter: BehaviorSubject<string> = new BehaviorSubject<string>('0');
 
-  constructor(public afs: AngularFirestore, public userService: UserProvider,
+  constructor(public afs: AngularFirestore, public userService: UserProvider, private fns: AngularFireFunctions,
     public authService: AuthProvider, public storage: Storage) {
       this.activitiesRef = this.afs.collection('activities');
 
@@ -67,6 +68,12 @@ export class TimesheetProvider {
             return { id, ...data };
           }))
         )
+  }
+
+  testCallFunction(incomingText): Observable<any> {
+    console.log('Function gets called as we speak ..');
+    const callable = this.fns.httpsCallable('testOnCall');
+    return callable(incomingText);
   }
 
   async saveActivity(activityObject: any, user: any) {
