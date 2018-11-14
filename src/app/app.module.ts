@@ -23,7 +23,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFireFunctionsModule, FunctionsRegionToken } from '@angular/fire/functions';
 import { environment } from '../environment/environment';
 
 // Other modules
@@ -68,6 +68,7 @@ import { LocalNotificationService } from '../providers/local-notification-servic
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: FunctionsRegionToken, useValue: 'us-central1' },
     TimesheetProvider,
     Keyboard,,
     NativePageTransitions,
