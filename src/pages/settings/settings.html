@@ -1,43 +1,54 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Instellingen</ion-title>
+    <ion-title>Notificatie instellingen</ion-title>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content>
-  <ion-list no-lines>
+<ion-content class="filters-content">
 
-      <ion-item>
-        <ion-label>Tijdstip uren doorgeven:</ion-label>
-       
-        <ion-datetime 
-                    (ionChange)="timeChange($event)"
-                    displayFormat="HH:mm" 
-                    minuteValues="0,15,30,45"
-                    [(ngModel)]="notifyTime" 
-                    cancelText=Annuleer 
-                    doneText=Klaar></ion-datetime>
-      </ion-item>
+    <ion-item-divider>Beheer notificaties</ion-item-divider>
+      <ion-list class="switchers-list">
+        <ion-item class="switcher-item">
+          <ion-label>Notificaties uit/aan</ion-label>
+          <ion-toggle [(ngModel)]="defaultNotifications" (ionChange)="notify($event)"></ion-toggle>
+        </ion-item>
+      </ion-list>
+  
+  <ion-item-divider>Stuur een herinnering om</ion-item-divider>
+  <ion-item>
+    <ion-label>Tijdstip</ion-label>
+   
+    <ion-datetime 
+        [disabled]="notificationsOff"
+        (ionChange)="timeChange($event)"
+        displayFormat="HH:mm" 
+        minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"
+        [(ngModel)]="notifyTime" 
+        cancelText=Annuleer 
+        doneText=Klaar>
+    </ion-datetime>
+  </ion-item>
 
-      <ion-item>
-          <ion-label>op de onderstaande dagen:</ion-label>
-      </ion-item>
 
-      <ion-item *ngFor="let day of days">
+  <p>Deze app ondersteunt met het doorgeven van uren. Je kunt zelf bepalen wanneer er een notificatie wordt gestuurd.</p>
+
+
+  <!-- <ion-item-divider>Geef aan op welke dagen</ion-item-divider>
+      <ion-list class="checkbox-list" *ngFor="let day of days">
+        <ion-item class="checkbox-item">
           <ion-label>{{day.title}}</ion-label>
-          <ion-checkbox [(ngModel)]="day.checked" color="primary"></ion-checkbox>
-      </ion-item>
-
-  </ion-list>
-
-  <button (click)="setupNotifications()" ion-button color="primary" full>Opslaan</button>
-
+          <ion-checkbox [disabled]="notificationsOff" [(ngModel)]="day.checked"></ion-checkbox>
+        </ion-item>
+      </ion-list> -->
+     
+  <!-- <button (click)="setupNotifications()" [disabled]="notificationsOff" ion-button color="primary" full>Opslaan</button> -->
+  <ion-fab bottom center>
+      <button ion-fab (click)="setupNotifications()" [hidden]="notificationsOff">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-fab>
 </ion-content>
-
-
-  <!-- <button (click)="cancelAll()" ion-button color="danger" full>Leave me alone!</button>
- -->
 
   <!-- <button ion-button block class="auth-action-button login-button" (click)="logOut()">Uitloggen</button> -->
 

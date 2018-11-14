@@ -10,13 +10,13 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { Keyboard } from '@ionic-native/keyboard';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { IonicStorageModule } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 // Providers
 import { TimesheetProvider } from '../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../providers/auth/auth.service';
 import { LayoutProvider } from '../providers/layout/layout.service';
 import { UserProvider } from '../providers/user/user.service';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 
 // Angular Fire imports 
 import { AngularFireModule } from '@angular/fire';
@@ -69,12 +69,12 @@ import { LocalNotificationService } from '../providers/local-notification-servic
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TimesheetProvider,
-    Keyboard,
-    LocalNotifications,
+    Keyboard,,
     NativePageTransitions,
     AuthProvider,
     LayoutProvider,
     UserProvider,
+    LocalNotifications,
     LocalNotificationService
   ]
 })

@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import 'moment-duration-format';
 import 'moment/locale/nl'
-import { LocalNotifications } from '@ionic-native/local-notifications';
+moment.locale('nl');
 import { Platform } from 'ionic-angular';
 import { LayoutProvider } from '../layout/layout.service';
-moment.locale('nl');
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 
 @Injectable()
@@ -14,12 +14,10 @@ export class LocalNotificationService {
 
   notifyTime: any;
   notifications: any[] = [];
-  chosenHours: number;
-  chosenMinutes: number;
+  setupStartHours: string;
 
-  constructor(public http: HttpClient, private layout: LayoutProvider, 
-    private localNotifications: LocalNotifications, private platform: Platform) {
-    
+  constructor(public http: HttpClient, private layout: LayoutProvider, private localNot: LocalNotifications,
+     private platform: Platform) {
   }
 
   initDays(): any[] {
@@ -34,68 +32,77 @@ export class LocalNotificationService {
     return days;
   }
 
-  addNotifications(){
+  addNotifications(days, chosenHours, chosenMinutes) {
  
     let currentDate = new Date();
     let currentDay = currentDate.getDay(); // Sunday = 0, Monday = 1, etc.
- 
-    for(let day of this.days){
+    
+    console.log('Incoming days: ', days);
+    console.log('ChoosenHours: ', chosenHours);
+    for(let day of days){
  
         if (day.checked){
  
             let firstNotificationTime = new Date();
             let dayDifference = day.dayCode - currentDay;
  
-            if(dayDifference < 0){
+            if(dayDifference < 0) {
                 dayDifference = dayDifference + 7; // for cases where the day is in the following week
             }
  
             firstNotificationTime.setHours(firstNotificationTime.getHours() + (24 * (dayDifference)));
-            firstNotificationTime.setHours(this.chosenHours);
-            firstNotificationTime.setMinutes(this.chosenMinutes);
+            firstNotificationTime.setHours(chosenHours);
+            firstNotificationTime.setMinutes(chosenMinutes);
  
             let notification = {
                 id: day.dayCode,
-                title: 'Hey!',
-                text: 'You just got notified :)',
+                title: `Herinnering: vul je uren in!`,
+                text: 'Hallo Willem. Het is tijd om je werkbriefje bij te werken.',
+                data: { mydata: 'Hoe komen we hier.' },
                 at: firstNotificationTime,
                 every: 'week'
             };
  
             this.notifications.push(notification);
- 
         }
- 
     }
  
     console.log("Notifications to be scheduled: ", this.notifications);
- 
-    if(this.platform.is('cordova')){
- 
-        // Cancel any existing notifications
-        this.localNotifications.cancelAll().then(() => {
- 
-            // Schedule the new notifications
-            this.localNotifications.schedule(this.notifications);
- 
-            this.notifications = [];
- 
-            let alert = this.layout.alertCtrl.create({
-                title: 'Notifications set',
-                buttons: ['Ok']
-            });
- 
-            alert.present();
- 
-        });
- 
-    }
- 
-}
 
-  timeChange(time){
-    this.chosenHours = time.hour.value;
-    this.chosenMinutes = time.minute.value;
+    
+ 
+        if (this.platform.is('cordova')) {
+            // Cancel any existing notifications
+            this.localNot.cancelAll().then(() => {
+
+                this.layout.presentBottomToast(`Local notifications getriggerd om ${this.notifications[0].at}`);
+                // Schedule the new notifications
+                this.localNot.schedule(this.notifications); 
+
+                this.notifications = [];
+
+                let alert = this.layout.alertCtrl.create({
+                    title: 'Gelukt!',
+                    message: 'Notificaties zijn ingesteld.',
+                    buttons: ['Ok']
+                });
+                alert.present();
+            })   
+        }
   }
 
+  cancelAll(){
+ 
+    this.localNot.cancelAll().then(() => {
+        this.notifications = [];
+    })
+ 
+    let alert = this.layout.alertCtrl.create({
+        title: 'Gelukt!',
+        message: 'Alle notificaties zijn uitgeschakeld',
+        buttons: ['Ok']
+    });
+ 
+    alert.present();
+  }
 }
