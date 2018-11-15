@@ -24,40 +24,48 @@ export class TimesheetPage implements OnDestroy {
   
   segment: string;
   subscription: Subscription;
+  showWeekHours: boolean = false;
+  dailyActivitiesExist: boolean = false;
   noActivities: boolean = true;
+  noWeekActivities: boolean = true;
   isoString: string;
   userObject: Employee;
   state = 'small';
   activities: any;
-  weekActivities$: Observable<any>;
-  totalMinutes: string;
- 
+  weekActivities: any;
+  totalDailyMinutes: number;
+  totaWeeklyMinutes: number;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
-    this.segment = "today";
-    this.isoString = this.time.getCurrentIsoString();
+      this.segment = "today";
+      this.isoString = this.time.getCurrentIsoString();
 
-    this.subscription = this.userProvider.getAuthenticatedUserProfile()
+      this.subscription = this.userProvider.getAuthenticatedUserProfile()
       .subscribe(user => {
         this.userObject = user;
-        this.weekActivities$ = this.time.findAllWeekActivitiesByUser(this.userObject);
-        this.time.findAllDailyActivitiesByUser(this.userObject).subscribe(activities => {
-          if (activities.length === 0) {
-            this.noActivities = true;
-            this.time.storage.set('totalMinutes', 0); 
-            console.log('Week activities: ', activities.length);
+        this.time.findAllWeekActivitiesByUser(this.userObject).subscribe(weekActivities => {
+          if (weekActivities.length === 0) {
+            this.noWeekActivities = true; 
           } else {
-            this.noActivities = false;
-            this.activities = activities;
-            console.log('Week activities: ', activities.length);
+            this.noWeekActivities = false;
+            this.weekActivities = weekActivities;
+            this.time.calculateWeekMinutes(this.weekActivities);
+            console.log('De activiteiten van de week: ', this.weekActivities);
           }
-        });
-      }); 
-      
-    this.time.totalMinutesCounter.subscribe((minutes) => {
-      this.totalMinutes = minutes;
-      console.log('Counter says: ', this.totalMinutes);
-    });
+      })
+
+      this.time.findAllDailyActivitiesByUser(this.userObject).subscribe(activities => {
+        if (activities.length === 0) {
+          this.noActivities = true;
+        } else { 
+          this.noActivities = false;
+          this.activities = activities;
+          this.time.calculateDailyMinutes(this.activities);
+          console.log('De activiteiten van de dag: ', this.activities);
+        } 
+      });
+    }); 
   }
   
   ionViewDidLoad() {
@@ -67,11 +75,12 @@ export class TimesheetPage implements OnDestroy {
     }, 0);  
   }
 
+
   callTestFunction() {
     console.log('Call the function');
     this.layout.presentBottomToast('Functie wordt gecalled');
     const data = { message: 'Dit wordt doorgestuurd als test'};
-     this.time.testCallFunction(data)
+     this.time.testPDF(data)
       .subscribe(data => {
         this.layout.presentBottomToast(JSON.stringify(data)); 
         console.log(data)
@@ -79,7 +88,7 @@ export class TimesheetPage implements OnDestroy {
   }
 
   onEnd(event) {
-    this.state = 'smalls';
+    this.state = 'small';
     if (event.toState === 'small') {
       setTimeout(() => {
         this.state = 'big';
@@ -88,11 +97,16 @@ export class TimesheetPage implements OnDestroy {
   }
 
   onSegmentChanged(segmentButton: SegmentButton) {
-    // this.layout.presentLoadingDefault();
+    if (segmentButton.value === "overview") {
+      this.showWeekHours = true;
+    } else {
+      this.showWeekHours = false;
+    }
   }
 
   onSegmentSelected(segmentButton: SegmentButton) {
     // LATEN STAAN
+    console.log('On segment selected ', segmentButton.value);
   }
 
   addNewActivity() {

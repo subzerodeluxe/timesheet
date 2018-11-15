@@ -50,17 +50,17 @@
           </ion-row>
         </ion-item>
       </ion-list>
-      <!-- <ion-fab bottom right [@shake]="state" (@shake.done)="onEnd($event)">
+      <ion-fab bottom right [@shake]="state" (@shake.done)="onEnd($event)">
           <button ion-fab (click)="addNewActivity()">
             <ion-icon name="add"></ion-icon>
-          </button>
-        </ion-fab> -->
+          </button>  
+        </ion-fab>
 
-        <ion-fab bottom right [@shake]="state" (@shake.done)="onEnd($event)">
+        <!-- <ion-fab bottom right [@shake]="state" (@shake.done)="onEnd($event)">
             <button ion-fab (click)="callTestFunction()">
               <ion-icon name="add"></ion-icon>
             </button>
-          </ion-fab>
+          </ion-fab> -->
     </div> <!-- today switch -->   
 
     <div *ngSwitchCase="'overview'">
@@ -69,7 +69,7 @@
             
           <!-- <skeleton-item height="80px" width="98%"></skeleton-item> -->
             
-          <ion-item class="schedule-item" *ngFor="let activity of weekActivities$ | async">
+          <ion-item class="schedule-item" *ngFor="let activity of weekActivities">
           <ion-row>
             <ion-col width-20 class="schedule-date">
                 <h2 class="schedule-day">{{ activity.isoDateString | formatDate:'D' }}</h2>
@@ -101,17 +101,6 @@
 </ion-content> 
 
 <ion-footer class="footer" no-border>
-  <div class="total-hours-box">
-      <ion-list>
-          <section class="hour-section">
-            <h3 *ngIf="noActivities" class="section-title">Vandaag geen uren geregistreerd</h3>
-            <h3 *ngIf="!noActivities" class="section-title">Totaal aantal uren</h3>
-
-            <ion-item>
-              <ion-label *ngIf="noActivities">-</ion-label>
-              <ion-label *ngIf="!noActivities">{{ totalMinutes | formatHours }}</ion-label>
-            </ion-item>
-          </section>
-        </ion-list>
-  </div>
+  <daily-footer-counter *ngIf="!showWeekHours"></daily-footer-counter>
+  <weekly-footer-counter *ngIf="showWeekHours"></weekly-footer-counter>
 </ion-footer>

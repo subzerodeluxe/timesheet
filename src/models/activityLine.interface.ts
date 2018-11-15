@@ -18,6 +18,7 @@ export interface Activity {
 }
 
 export interface firebaseActivity {
+    id?: string;
     activities?: Array<Activity>;
     clientName: string;
     endTime: string;

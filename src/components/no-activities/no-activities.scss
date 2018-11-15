@@ -36,9 +36,6 @@ no-activities {
 		@include element-shadow();
 
 		.title-text {
-			// flex: 0 0 88%;
-			// max-width: 88%;
-			// padding-left: 8px;
 			white-space: normal;
 			font-size: 2rem;
 			line-height: 1.4;
@@ -48,15 +45,11 @@ no-activities {
 		}
 
 		.description-text {
-			// flex: 0 0 88%;
-			// max-width: 88%;
-			// padding-left: 8px;
 			white-space: normal;
 			font-size: 1.4rem;
 			line-height: 1.4;
 			letter-spacing: 0.2px;
 			color: $theme-color;
-
 		}
 	}
 }

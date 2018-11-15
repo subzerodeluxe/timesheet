@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
-import { TimeSheet } from '../../models/timesheet.interface';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
@@ -19,16 +18,12 @@ export class TimesheetProvider {
 
   enrichedActivity: any;
   activitiesRef: AngularFirestoreCollection<any>;
-  timesheetsRef: AngularFirestoreCollection<any>;
-  weekNumbersRef: AngularFirestoreCollection<any>;
-  timesheet: TimeSheet;
-  docPresent: boolean;
   currentDate: string;
-  timesheetPresent = false;
   weekNumber: string;
   year: string;
   uid: string;
-  public totalMinutesCounter: BehaviorSubject<string> = new BehaviorSubject<string>('0');
+  public totalDailyMinutesCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public totalWeekMinutesCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(public afs: AngularFirestore, public userService: UserProvider, private fns: AngularFireFunctions,
     public authService: AuthProvider, public storage: Storage) {
@@ -36,17 +31,10 @@ export class TimesheetProvider {
 
       this.currentDate = this.getCurrentDayNumber().toString(); 
       this.weekNumber = this.getCurrentWeekNumber().toString();
-      this.year = this.getCurrentYear().toString(); 
-
-      this.storage.get('totalMinutes').then(minutes => {
-        console.log('Storage minutes: ', minutes);
-        if (minutes !== '0') {
-          this.totalMinutesCounter.next(minutes);
-        }
-      }).catch(e => console.log('Ophalen aantal uren ging niet goed'));
+      this.year = this.getCurrentYear().toString();
   }
 
-  findAllDailyActivitiesByUser(userObject: any) {
+  findAllDailyActivitiesByUser(userObject: any): Observable<any> {
      return this.afs.collection('activities', ref => {
       return ref.where('userDateString', '==', `${this.currentDate}-week-${this.weekNumber}-${this.year}-${userObject.uid}`);
         }).snapshotChanges().pipe(
@@ -54,11 +42,32 @@ export class TimesheetProvider {
             const data = a.payload.doc.data() as firebaseActivity;
             const id = a.payload.doc.id;
             return { id, ...data };
-          }))
+          })
         )
+      )
   }
 
-  findAllWeekActivitiesByUser(userObject: any) {
+  calculateDailyMinutes(incomingMinutes: any) {
+    let totalMinutes = 0;
+    
+    for (let i = 0; i < incomingMinutes.length; i++) {
+      totalMinutes += incomingMinutes[i].minutesDifference;
+    }
+
+    this.totalDailyMinutesCounter.next(totalMinutes);
+  }
+
+  calculateWeekMinutes(incomingMinutes: any) {
+    let totalMinutes = 0;
+    
+    for (let i = 0; i < incomingMinutes.length; i++) {
+      totalMinutes += incomingMinutes[i].minutesDifference;
+    }
+
+    this.totalWeekMinutesCounter.next(totalMinutes);
+  }
+
+  findAllWeekActivitiesByUser(userObject: any): Observable<any> {
     return this.afs.collection('activities', ref => {
      return ref.where('timesheetId', '==', `week-${this.weekNumber}-${this.year}-${userObject.uid}`);
         }).snapshotChanges().pipe(
@@ -76,6 +85,11 @@ export class TimesheetProvider {
     return callable(incomingText);
   }
 
+  testPDF(incomingText) {
+    const callable = this.fns.httpsCallable('createPDF');
+    return callable(incomingText);
+  }
+
   async saveActivity(activityObject: any, user: any) {
     console.log('Doorgestuurde user: ', user.uid);
     const weekNumber = this.getCurrentWeekNumber().toString();
@@ -87,7 +101,6 @@ export class TimesheetProvider {
       userDateString: `${this.getCurrentDayNumber().toString()}-week-${weekNumber}-${year}-${user.uid}`,
       ...activityObject
     };
-    this.calculateStorageHours(activityObject.minutesDifference);
     this.activitiesRef.add(this.enrichedActivity);
   }
 
@@ -102,15 +115,6 @@ export class TimesheetProvider {
       console.log('Er gaat iets niet goed. ', e);
       return false;
     } 
-  }
-
-  calculateStorageHours(incomingMinutes: number) {
-    this.storage.get('totalMinutes').then((currentMinutes: number) => {
-      const x = +currentMinutes + +incomingMinutes;
-      console.log('The sum ', x);
-     this.storage.set('totalMinutes', x)
-       .then(_ => this.totalMinutesCounter.next(x.toString()));
-    });
   }
 
   calculateMinutesDifference(startTime, endTime): number {
@@ -142,11 +146,11 @@ export class TimesheetProvider {
 
   deleteActivity(activityObject: any): Promise<void> {
     console.log('Dit gaat er af: ', activityObject.minutesDifference);
-    this.storage.get('totalMinutes').then((currentMinutes: number) => {
+    this.storage.get('totalDailyMinutes').then((currentMinutes: number) => {
       const x = (currentMinutes - activityObject.minutesDifference);
       console.log('New total: ', x);
-     this.storage.set('totalMinutes', x)
-       .then(_ => this.totalMinutesCounter.next(x.toString()));
+     this.storage.set('totalDailyMinutes', x)
+       .then(_ => this.totalDailyMinutesCounter.next(x));
     });
     return this.activitiesRef.doc(activityObject.id).delete();
   }

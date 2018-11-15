@@ -23,7 +23,9 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+
       
+
       const authObserver = afAuth.authState.subscribe(user => {
         if (user) {
           this.rootPage = 'tabs';
