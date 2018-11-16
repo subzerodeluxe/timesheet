@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavController, NavParams, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, IonicPage, App } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -26,7 +26,7 @@ export class AccountPage implements OnInit, OnDestroy {
   private authenticatedEmployee$: Subscription;
   public validation_messages = validation_messages;
  
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController, public app: App,
     public userProvider: UserProvider, public navParams: NavParams, 
     public layout: LayoutProvider, public authProvider: AuthProvider) {
     
@@ -45,7 +45,6 @@ export class AccountPage implements OnInit, OnDestroy {
   }
 
   vehicleIsToggled() {
-    console.log("Toggled: "+ this.isToggled); 
     if (this.isToggled === true) {
       this.checked = true;  // No vehicle
       this.profileForm.get('licensePlate').setValue('');
@@ -82,6 +81,14 @@ export class AccountPage implements OnInit, OnDestroy {
       this.layout.presentBottomToast('Profiel niet bijgwerkt. Probeer het opnieuw.');
     }
   }
+
+  logOut(): void {
+    this.authProvider.logOut()
+      .then(_ => {
+        this.app.getRootNav().setRoot('login');
+      }).catch(_  => this.layout.showAlertMessage('Oeps!', 'Er ging iets mis. Probeer het opnieuw!', 'Ok'));
+  }
+
 
   ngOnDestroy(): void {
     if (this.authenticatedEmployee$ != null) {

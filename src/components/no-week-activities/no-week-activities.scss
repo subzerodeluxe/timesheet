@@ -1,0 +1,26 @@
+no-week-activities {
+    .schedule-data {
+		border-radius: 6px;
+        background-color: $white;
+        margin-top: 50px;
+		padding: 12px 14px;
+		@include element-shadow();
+
+		.title-text {
+			white-space: normal;
+			font-size: 2rem;
+			line-height: 1.4;
+			letter-spacing: 0.2px;
+			color: $theme-color;
+
+		}
+
+		.description-text {
+			white-space: normal;
+			font-size: 1.4rem;
+			line-height: 1.4;
+			letter-spacing: 0.2px;
+			color: $theme-color;
+		}
+	}
+}

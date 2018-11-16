@@ -6,10 +6,8 @@ import { LayoutProvider } from '../../providers/layout/layout.service';
 import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs-compat/Subscription';
 import { Employee } from '../../models/employee.interface';
-import { infinitePulse } from '../../app/animations';
-import { Observable } from 'rxjs-compat/Observable';
+import { infinitePulse, staggerAnimation } from '../../app/animations';
 
-// Gebruik animaties voor het laden van de activities in timesheet: https://www.youtube.com/watch?v=ra5qNKNc95U
 @IonicPage({
   name: 'timesheet'
 })
@@ -17,7 +15,8 @@ import { Observable } from 'rxjs-compat/Observable';
   selector: 'page-timesheet',
   templateUrl: 'timesheet.html',
   animations: [
-    infinitePulse
+    infinitePulse,
+    staggerAnimation
   ]
 })
 export class TimesheetPage implements OnDestroy {
@@ -33,9 +32,8 @@ export class TimesheetPage implements OnDestroy {
   state = 'small';
   activities: any;
   weekActivities: any;
-  totalDailyMinutes: number;
-  totaWeeklyMinutes: number;
-
+  whichNoActivities: string;
+  
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
       this.segment = "today";
@@ -104,10 +102,7 @@ export class TimesheetPage implements OnDestroy {
     }
   }
 
-  onSegmentSelected(segmentButton: SegmentButton) {
-    // LATEN STAAN
-    console.log('On segment selected ', segmentButton.value);
-  }
+  onSegmentSelected(segmentButton: SegmentButton) { }
 
   addNewActivity() {
     this.navCtrl.push('add-activity', { userObject: this.userObject });

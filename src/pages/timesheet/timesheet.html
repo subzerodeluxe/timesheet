@@ -61,15 +61,15 @@
               <ion-icon name="add"></ion-icon>
             </button>
           </ion-fab> -->
-    </div> <!-- today switch -->   
+    </div> 
 
     <div *ngSwitchCase="'overview'">
-        <ion-list class="schedule-list">
 
-            
-          <!-- <skeleton-item height="80px" width="98%"></skeleton-item> -->
-            
-          <ion-item class="schedule-item" *ngFor="let activity of weekActivities">
+        <no-week-activities [authenticatedUser]="userObject" *ngIf="noWeekActivities === true"></no-week-activities>
+
+      <ion-list class="schedule-list" @staggerAnimation>
+        <ion-item class="schedule-item" *ngFor="let activity of weekActivities">
+          <h2 class="section-title">{{ activity.isoDateString | formatDate: 'dddd'}}</h2> 
           <ion-row>
             <ion-col width-20 class="schedule-date">
                 <h2 class="schedule-day">{{ activity.isoDateString | formatDate:'D' }}</h2>
@@ -96,7 +96,7 @@
           </ion-row>
         </ion-item>
       </ion-list>
-      </div>
+    </div>
   </div>
 </ion-content> 
 

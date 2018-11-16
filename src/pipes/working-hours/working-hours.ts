@@ -10,10 +10,13 @@ moment.locale('nl');
 export class WorkingHoursPipe implements PipeTransform {
   
   transform(minutes: any) {
-  
+
     let finalHours;
-    if (typeof minutes === 'number') {
-     // console.log('Binnenkomende minutes: ', minutes);
+    if (typeof minutes !== 'number') {
+      minutes = parseInt(minutes);
+    }
+
+    if (typeof minutes === 'number' && minutes > 0) {
       finalHours = moment.duration(minutes, "minutes").format("h:mm");
       
       let index = finalHours.indexOf(":"); 
@@ -23,17 +26,7 @@ export class WorkingHoursPipe implements PipeTransform {
       
       finalHours = slicedHours + ' uur ' + 'en ' + slicedMinutes + ' min.';
     } else {
-     // console.log('Het is geen number he');
-
-      minutes = parseInt(minutes);
-      finalHours = moment.duration(minutes, "minutes").format("h:mm");
-      
-      let index = finalHours.indexOf(":"); 
-      
-      let slicedMinutes = finalHours.slice(index + 1); 
-      let slicedHours = finalHours.slice(0, index); 
-      
-      finalHours = slicedHours + ' uur ' + 'en ' + slicedMinutes + ' min.';
+      finalHours = '-';
     }
      
     return finalHours;

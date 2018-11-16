@@ -146,12 +146,6 @@ export class TimesheetProvider {
 
   deleteActivity(activityObject: any): Promise<void> {
     console.log('Dit gaat er af: ', activityObject.minutesDifference);
-    this.storage.get('totalDailyMinutes').then((currentMinutes: number) => {
-      const x = (currentMinutes - activityObject.minutesDifference);
-      console.log('New total: ', x);
-     this.storage.set('totalDailyMinutes', x)
-       .then(_ => this.totalDailyMinutesCounter.next(x));
-    });
     return this.activitiesRef.doc(activityObject.id).delete();
   }
 

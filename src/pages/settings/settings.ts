@@ -160,12 +160,4 @@ export class SettingsPage {
 
       alert.present();
   }
-
-  logOut(): void {
-    this.authProvider.logOut()
-      .then(res => {
-        this.navCtrl.setRoot('walkthrough');
-      }).catch(_  => this.layout.showAlertMessage('Oeps!', 'Er ging iets mis.', 'Ok'));
-  }
-
 }

@@ -23,6 +23,9 @@ export class AddActivityPage {
   lastSlide = false;
   user: any;
   validation_messages = validation_messages;
+  minutesDifference: number;
+  minutesWithBreakDifference: number;
+  usedBreak: boolean = false;
   @ViewChild('slider') slider: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public time: TimesheetProvider,
@@ -100,7 +103,11 @@ export class AddActivityPage {
       const loading = this.layoutProvider.showLoading();
       loading.present();
 
-      this.totalMinutes = this.time.calculateMinutesDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime);
+      if (this.usedBreak === false) {
+        this.minutesDifference = this.time.calculateMinutesDifference(this.thirdActivityForm.value.startTime, this.thirdActivityForm.value.endTime);
+      } else {
+        this.minutesDifference = this.minutesWithBreakDifference;
+      }
 
       const activityObject: ActivityLine  = { 
         isoDateString: this.time.getCurrentIsoString(),
@@ -109,7 +116,7 @@ export class AddActivityPage {
         startTime: this.thirdActivityForm.value.startTime,  
         endTime: this.thirdActivityForm.value.endTime,
         activities: this.secondActivityForm.value.activities,
-        minutesDifference: this.totalMinutes
+        minutesDifference: this.minutesDifference
       };
 
       try {
@@ -129,7 +136,52 @@ export class AddActivityPage {
     }
   }  
 
-  calculateHours(startTime, endTime) {
-    this.totalMinutes = this.time.calculateMinutesDifference(startTime, endTime);
+  calculateBreak(startTime, endTime) {
+    const minutesDifferenceBeforeBreak = this.time.calculateMinutesDifference(startTime, endTime);
+    const transformedMinutes = this.time.transformMinutesToHours(minutesDifferenceBeforeBreak);
+
+    console.log(minutesDifferenceBeforeBreak);
+    let alert = this.layoutProvider.alertCtrl.create({
+      title: 'Hoe lang heb je pauze gehad?',
+      message: `Je hebt zonder pauze ${transformedMinutes} gewerkt.`,
+      inputs: [
+        {
+          type:'radio',
+          label:'15 minuten pauze gehad',
+          value:'15'
+        },
+        {
+          type:'radio',
+          label:'30 minuten pauze gehad',
+          value:'30'
+        },
+        {
+          type:'radio',
+          label:'45 minuten pauze gehad',
+          value:'45'
+        },
+        {
+          type:'radio',
+          label:'Een uur pauze gehad',
+          value:'60'
+        }
+      ],
+      buttons: [
+        {
+          text: 'X - Geen pauze gehad',
+          role: 'cancel'
+        },
+        {
+          text: 'Bevestig duur pauze',
+          handler: breakMinutes => {
+            console.log('Minuten pauze: ', breakMinutes);
+            this.usedBreak = true;
+            this.minutesWithBreakDifference = (minutesDifferenceBeforeBreak - breakMinutes);
+            console.log('Totaal ', this.minutesWithBreakDifference);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }

@@ -21,6 +21,30 @@ page-settings {
 		}
 	}
 
+	.schedule-data {
+		border-radius: 6px;
+		background-color: $white;
+		padding: 12px 14px;
+		@include element-shadow();
+
+		.title-text {
+			white-space: normal;
+			font-size: 2rem;
+			line-height: 1.4;
+			letter-spacing: 0.2px;
+			color: $theme-color;
+
+		}
+
+		.description-text {
+			white-space: normal;
+			font-size: 1.4rem;
+			line-height: 1.4;
+			letter-spacing: 0.2px;
+			color: $theme-color;
+		}
+	}
+
 	.filters-content
 	{
 		background-color: color($colors, background, base);
@@ -51,22 +75,6 @@ page-settings {
 
 	@include checkbox-tags-styles($white, $white-d, $theme-color, $white);
 
-	.rounded-tags
-	{
-		background-color: $white;
-		padding: 15px;
-		@include element-shadow();
-
-		.checkbox-tag
-		{
-			.item-inner
-			{
-				border-radius: 2.2rem;
-				background-color: $white-b;
-				color: $white;
-			}
-		}
-	}
 
 	@include radio-tags-styles($white, $theme-color, $white);
 
@@ -109,4 +117,12 @@ page-settings {
 			}
 		}
 	}
+
+	.auth-action-button
+		{
+			margin: 0px;
+			margin-top: 20px;
+
+			@include call-to-action-button-styles(color($colors, button, base), color($colors, button, contrast));
+		}
 }

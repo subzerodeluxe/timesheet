@@ -78,13 +78,13 @@
     <ion-slide class="slide-3">
         <form class="activity-form validations-form" [formGroup]="thirdActivityForm">
           <section class="form-section">
-              <h2 *ngIf="!totalMinutes" class="section-title">Bijna klaar ...</h2>
-              <h2 class="section-title" *ngIf="totalMinutes">Totaal {{ totalMinutes | formatHours }} gewerkt</h2>
+              <h2 *ngIf="!minutesWithBreakDifference" class="section-title">Bijna klaar ...</h2>
+              <h2 class="section-title" *ngIf="minutesWithBreakDifference">Totaal {{ minutesWithBreakDifference | formatHours }} gewerkt inclusief pauze</h2>
 
               <ion-item>
                   <ion-label floating>Hoe laat ben je begonnen?</ion-label>
                   <ion-datetime 
-                    (ionChange)="calculateHours(thirdActivityForm.value.startTime, thirdActivityForm.value.endTime)"
+                    (ionChange)="calculateBreak(thirdActivityForm.value.startTime, thirdActivityForm.value.endTime)"
                     displayFormat="HH:mm" 
                     minuteValues="0,15,30,45"
                     formControlName="startTime" 
@@ -97,7 +97,7 @@
               <ion-item>
                   <ion-label floating>En hoe laat was je klaar?</ion-label>
                   <ion-datetime 
-                      (ionChange)="calculateHours(thirdActivityForm.value.startTime, thirdActivityForm.value.endTime)"
+                      (ionChange)="calculateBreak(thirdActivityForm.value.startTime, thirdActivityForm.value.endTime)"
                       displayFormat="HH:mm"
                       minuteValues="0,15,30,45" 
                       formControlName="endTime" 

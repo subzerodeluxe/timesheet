@@ -12,20 +12,23 @@ import { PipesModule } from '../pipes/pipes.module';
 import { SkeletonItemComponent } from './skeleton-item/skeleton-item';
 import { WeeklyFooterCounterComponent } from './weekly-footer-counter/weekly-footer-counter';
 import { DailyFooterCounterComponent } from './daily-footer-counter/daily-footer-counter';
+import { NoWeekActivitiesComponent } from './no-week-activities/no-week-activities';
 
 @NgModule({
 	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
     NoActivitiesComponent,
     SkeletonItemComponent,
     WeeklyFooterCounterComponent,
-    DailyFooterCounterComponent
+    DailyFooterCounterComponent,
+    NoWeekActivitiesComponent
     ],
 	imports: [IonicModule, PipesModule, CommonModule, ReactiveFormsModule],
 	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
     NoActivitiesComponent,
     SkeletonItemComponent,
     WeeklyFooterCounterComponent,
-    DailyFooterCounterComponent
+    DailyFooterCounterComponent,
+    NoWeekActivitiesComponent
     ]
 })
 export class ComponentsModule {}

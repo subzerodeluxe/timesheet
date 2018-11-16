@@ -1,4 +1,4 @@
-import {  animate, style, trigger, state, transition, keyframes } from '@angular/animations';
+import {  animate, style, trigger, state, transition, keyframes, query, stagger } from '@angular/animations';
 
 
 export const walkthrough = trigger('bounce', [
@@ -23,3 +23,40 @@ export const infinitePulse = trigger('shake', [
   transition('small => big', animate('750ms 500ms ease')),
   transition('big => small', animate('750ms 500ms ease'))
 ]);
+
+
+export const staggerAnimation = trigger('staggerAnimation', [
+  transition('* => *', [
+    query('.schedule-item', style({ opacity: 0, transform: 'translateX(-40px)' }), { optional: true }),
+    query('.schedule-item', stagger('500ms', [
+      animate('800ms 0.9s ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
+    ]), { optional: true }),
+    query('.schedule-item', [
+      animate(1000, style('*'))
+    ], { optional: true })
+  ])
+])
+
+export const loadHoursAnimation = trigger('staggerAnimation', [
+  transition('* => *', [
+    query('.hour-section', style({ opacity: 0, transform: 'translateX(-40px)' }), { optional: true }),
+    query('.hour-section', stagger('500ms', [
+      animate('800ms 0.9s ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
+    ]), { optional: true }),
+    query('.hour-section', [
+      animate(1000, style('*'))
+    ], { optional: true })
+  ])
+])
+
+export const showNoActivitiesMessage = trigger('staggerAnimation', [
+  transition('* => *', [
+    query('.schedule-data', style({ opacity: 0, transform: 'translateX(-40px)' }), { optional: true }),
+    query('.schedule-data', stagger('500ms', [
+      animate('800ms 0.9s ease-out', style({ opacity: 1, transform: 'translateX(0)' })),
+    ]), { optional: true }),
+    query('.schedule-data', [
+      animate(1000, style('*'))
+    ], { optional: true })
+  ])
+])

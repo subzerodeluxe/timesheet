@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
+import { loadHoursAnimation } from '../../app/animations';
 
 
 @Component({
   selector: 'weekly-footer-counter',
-  templateUrl: 'weekly-footer-counter.html'
+  templateUrl: 'weekly-footer-counter.html',
+  animations: [
+    loadHoursAnimation
+  ]
 })
 export class WeeklyFooterCounterComponent {
 

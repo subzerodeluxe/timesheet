@@ -66,5 +66,10 @@
               <ion-checkbox [(ngModel)]="isToggled" formControlName="vehicleNotPresent" (click)="vehicleIsToggled($event)"></ion-checkbox>
             </ion-item>
         </section>
+        
+        <button ion-button icon-start block class="auth-action-button" (click)="logOut()">
+            <ion-icon name="log-out"></ion-icon>
+            Uitloggen</button> 
+
       </form>
 </ion-content>
