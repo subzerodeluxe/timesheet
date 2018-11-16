@@ -32,18 +32,16 @@ export class AuthProvider {
 
   async registerAccount(value: any): Promise<string> {
     try {
-      console.log('Valid string? ', value.matching_passwords.password);
       const user = await this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.matching_passwords.password);
+      console.log('Wat is de user?', user.user.metadata.creationTime);
       await this.createUserProfileOnRegister(user);
       return 'success';
     } catch(err) {
       console.log(err);
       const authError = err.code.startsWith('auth');
       if (authError == true) {
-        console.log('Error vanuit authenticatie method');
         this.errorMessage = this.handleFirebaseError(err.code);
       } else {
-        console.log('Error creating user profile');
         this.deleteAuthenticatedUserAccount()
           .then(_ => console.log('AUTHENTICATED USER DELETED!'))
           .catch(_ => this.errorMessage = this.handleFirebaseError(err));
@@ -72,13 +70,13 @@ export class AuthProvider {
     });
   }
 
-  createUserProfileOnRegister(user) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`employees/${user.uid}`);
+  createUserProfileOnRegister(user: any) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`employees/${user.user.uid}`);
   
     const data: Employee = {
-      uid: user.uid,
-      email: user.email,
-      creationTime: user.metadata.creationTime,
+      uid: user.user.uid,
+      email: user.user.email,
+      creationTime: user.user.metadata.creationTime,
       vehicleInformation: {
         licensePlate: '',
         vehicleNotPresent: true

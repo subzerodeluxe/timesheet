@@ -76,7 +76,7 @@ export class AccountPage implements OnInit, OnDestroy {
     const result = await this.userProvider.saveProfile(emObject, this.employee.uid);
     if (result) {
       this.layout.presentBottomToast('Profiel succesvol bijgewerkt.');
-      this.navCtrl.setRoot('timesheet');
+      this.navCtrl.setRoot('tabs');
     } else {
       this.layout.presentBottomToast('Profiel niet bijgwerkt. Probeer het opnieuw.');
     }

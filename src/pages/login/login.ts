@@ -31,6 +31,10 @@ export class LoginPage implements OnDestroy {
     this.navCtrl.push('register');
   }
 
+  forgotPassword() {
+    this.navCtrl.push('register');
+  }
+
   async regularLogin(value: any) {
     this.layout.presentLoadingLoggin(); 
     this.errorMessage = '';

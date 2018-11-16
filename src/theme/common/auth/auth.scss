@@ -65,6 +65,7 @@
 	.facebook-auth-button
 	{
 		margin: 0px;
+		margin-top: 20px;
 		@include call-to-action-button-styles(color($colors, facebook, base), color($colors, facebook, contrast));
 	}
 

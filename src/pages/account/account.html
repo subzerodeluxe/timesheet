@@ -1,28 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Profiel</ion-title>
-    <ion-buttons end [hidden]="!profileForm.valid" (click)="saveProfile(profileForm.value)">
-      <button ion-button>
-        Opslaan
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content class="profile-content">
 
-  <div [formGroup]="profileForm" class="user-image-content">
-    <ion-row no-padding class="user-image-row">
-      <ion-col no-padding width-40>
-        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="profileImage" alt="this is the image" title="IMAGE!"></preload-image>
-      </ion-col>
-    </ion-row>
-    <ion-row no-padding class="user-image-row">
-      <ion-col no-padding width-60>
-        <button class="image-action-button" ion-button outline block small>
-          Wijzig afbeelding</button>
-      </ion-col>
-    </ion-row>
-  </div>
+  <h2 class="section-title">Persoonlijke gegevens</h2> 
 
 
     <form [formGroup]="profileForm" class="profile-form">
@@ -66,10 +49,18 @@
               <ion-checkbox [(ngModel)]="isToggled" formControlName="vehicleNotPresent" (click)="vehicleIsToggled($event)"></ion-checkbox>
             </ion-item>
         </section>
+
+        <button ion-button 
+          icon-start block class="auth-action-button" 
+          [hidden]="!profileForm.valid" 
+          (click)="saveProfile(profileForm.value)">
+          Gegevens opslaan</button> 
         
         <button ion-button icon-start block class="auth-action-button" (click)="logOut()">
             <ion-icon name="log-out"></ion-icon>
             Uitloggen</button> 
 
       </form>
+
+      
 </ion-content>

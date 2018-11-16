@@ -69,4 +69,34 @@
   <ion-row class="alt-options">
     <ion-col no-padding width-50></ion-col>
   </ion-row>
+
+  <h2 class="section-title">Wachtwoord vergeten?</h2>
+  <form class="login-form auth-form validations-form" [formGroup]="forgotPasswordForm" (ngSubmit)="forgotPassword(forgotPasswordForm.value)">
+    <ion-item>
+      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+    </ion-item>
+
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.email">
+          <div class="error-message" *ngIf="forgotPasswordForm.get('email').hasError(validation.type) && (forgotPasswordForm.get('email').dirty 
+          || forgotPasswordForm.get('email').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <button ion-button block class="auth-action-button login-button" type="submit" [disabled]="!forgotPasswordForm.valid">Verstuur nieuw wachtwoord</button>
+
+    </form>
+
+    <div class="validation-errors">
+      <ng-container >
+        <div class="error-message" *ngIf="errorMessage">
+               {{ errorMessage }}
+        </div>
+      </ng-container>
+    </div>
+    
+    <ion-row class="alt-options">
+      <ion-col no-padding width-50></ion-col>
+    </ion-row>
 </ion-content>

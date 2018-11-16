@@ -6,6 +6,7 @@ import { LayoutProvider } from '../../providers/layout/layout.service';
 import { UserProvider } from '../../providers/user/user.service';
 import { PasswordValidator } from '../../components/validators/password.validator';
 import { validation_messages } from '../../app/app.config';
+import { Subscription } from 'rxjs';
 
 @IonicPage({
   name: 'register'
@@ -17,12 +18,14 @@ import { validation_messages } from '../../app/app.config';
 export class RegisterPage {
 
   registerForm: FormGroup;
+  forgotPasswordForm: FormGroup;
   loading: any;
   errorMessage: string = '';
   matching_passwords_group: FormGroup;
   validation_messages = validation_messages;
+  userSubscription: Subscription;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
+  constructor(public navCtrl: NavController, public navParams: NavParams,
     public authProvider: AuthProvider, public layout: LayoutProvider, public userService: UserProvider) {
 
   }
@@ -46,20 +49,54 @@ export class RegisterPage {
       ])),
       matching_passwords: this.matching_passwords_group
     });
+
+    this.forgotPasswordForm = new FormGroup({
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      ])),
+    })
   }
 
   async registerAccount(value: any) {
     this.layout.presentLoadingDefault(); 
     this.errorMessage = '';
     const result = await this.authProvider.registerAccount(value);
-    console.log('Het resultaat: ', result);
+
     if (result === 'success') {
-      this.layout.presentBottomToast(`Gelukt! Je kunt nu inloggen met ${value.email}`);
-      this.navCtrl.setRoot('login');  
+      this.userSubscription = this.userService.getAuthenticatedUserProfile()
+        .subscribe(profile => {
+          if (profile.firstName != null) {
+            this.layout.presentBottomToast(`Gelukt! Je wordt nu ingelogd met ${value.email}`);
+            this.navCtrl.setRoot('tabs');   
+          } else {
+            this.layout.presentBottomToast(`Gelukt! Je wordt nu ingelogd met ${value.email}`);
+            setTimeout(() => {
+              const welcomeAlert = this.layout.showAlertMessage('Vul je gegevens aan', 'Je profiel is nog niet compleet. Deze gegevens komen terug op je werkbriefje. Het is dus belangrijk dat je ze goed invuld.', 'Ik snap het');
+              welcomeAlert.present();
+              this.navCtrl.setRoot('account');
+            }, 1500);
+          }
+        }, err => {
+          this.errorMessage = err.message;
+        });
+  
     } else {
       this.errorMessage = result;
       this.layout.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.');
     }
   }
-}
 
+  forgotPassword(value: any) {
+    console.log(value);
+    this.authProvider.resetPassword(value.email)
+      .then(_ => this.layout.presentBottomToast('Volg de aanwijzingen in de email om je wachtwoord te veranderen.'))
+      .catch(e => this.layout.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.'))
+  }
+
+  ngOnDestroy() {
+    if (this.userSubscription != null) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+}
