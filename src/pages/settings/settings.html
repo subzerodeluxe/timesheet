@@ -15,7 +15,7 @@
         </ion-item>
       </ion-list>
   
-  <ion-item-divider>Stuur een herinnering om</ion-item-divider>
+  <ion-item-divider>Stuur dagelijks een herinnering om</ion-item-divider>
   <ion-item>
     <ion-label>Tijdstip</ion-label>
    
@@ -34,24 +34,5 @@
       <h4 class="description-text" text-center>Deze app ondersteunt met het doorgeven van uren. Je kunt zelf bepalen wanneer er een notificatie wordt gestuurd.</h4>
     </div>
 
-    
   <button ion-button block class="auth-action-button" (click)="setupNotifications()" [disabled]="notificationsOff">Opslaan</button>
 </ion-content>
-
-
-
- <!-- <ion-item-divider>Geef aan op welke dagen</ion-item-divider>
-      <ion-list class="checkbox-list" *ngFor="let day of days">
-        <ion-item class="checkbox-item">
-          <ion-label>{{day.title}}</ion-label>
-          <ion-checkbox [disabled]="notificationsOff" [(ngModel)]="day.checked"></ion-checkbox>
-        </ion-item>
-      </ion-list> -->
-     
-  <!-- <button (click)="setupNotifications()" [disabled]="notificationsOff" ion-button color="primary" full>Opslaan</button> -->
-  <!-- <ion-fab bottom center>
-      <button ion-fab (click)="setupNotifications()" [hidden]="notificationsOff">
-        <ion-icon name="checkmark"></ion-icon>
-      </button>
-    </ion-fab> -->
-

@@ -13,6 +13,7 @@ import { SkeletonItemComponent } from './skeleton-item/skeleton-item';
 import { WeeklyFooterCounterComponent } from './weekly-footer-counter/weekly-footer-counter';
 import { DailyFooterCounterComponent } from './daily-footer-counter/daily-footer-counter';
 import { NoWeekActivitiesComponent } from './no-week-activities/no-week-activities';
+import { ActivityFormComponent } from './activity-form/activity-form';
 
 @NgModule({
 	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
@@ -20,7 +21,8 @@ import { NoWeekActivitiesComponent } from './no-week-activities/no-week-activiti
     SkeletonItemComponent,
     WeeklyFooterCounterComponent,
     DailyFooterCounterComponent,
-    NoWeekActivitiesComponent
+    NoWeekActivitiesComponent,
+    ActivityFormComponent
     ],
 	imports: [IonicModule, PipesModule, CommonModule, ReactiveFormsModule],
 	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
@@ -28,7 +30,8 @@ import { NoWeekActivitiesComponent } from './no-week-activities/no-week-activiti
     SkeletonItemComponent,
     WeeklyFooterCounterComponent,
     DailyFooterCounterComponent,
-    NoWeekActivitiesComponent
+    NoWeekActivitiesComponent,
+    ActivityFormComponent
     ]
 })
 export class ComponentsModule {}

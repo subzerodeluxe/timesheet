@@ -73,18 +73,6 @@ export class TimesheetPage implements OnDestroy {
     }, 0);  
   }
 
-
-  callTestFunction() {
-    console.log('Call the function');
-    this.layout.presentBottomToast('Functie wordt gecalled');
-    const data = { message: 'Dit wordt doorgestuurd als test'};
-     this.time.testPDF(data)
-      .subscribe(data => {
-        this.layout.presentBottomToast(JSON.stringify(data)); 
-        console.log(data)
-      });
-  }
-
   onEnd(event) {
     this.state = 'small';
     if (event.toState === 'small') {

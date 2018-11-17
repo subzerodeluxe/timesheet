@@ -6,12 +6,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { map } from 'rxjs/operators';
 import { firebaseActivity } from '../../models/activityLine.interface';
-
 import * as moment from 'moment';
 import 'moment-duration-format';
-import 'moment/locale/nl'
 import { AngularFireFunctions } from '@angular/fire/functions';
-moment.locale('nl');
 
 @Injectable()
 export class TimesheetProvider {
@@ -79,6 +76,22 @@ export class TimesheetProvider {
         )
   }
 
+  calculateDateRange(): any {
+    const currentYear = this.getCurrentYear(); 
+    const currentWeekNumber = this.getCurrentWeekNumber(); 
+    const startDayofWeekNumberAsISOString = moment([currentYear]).isoWeek(currentWeekNumber).startOf('isoWeek').format()    
+
+    let max = moment(startDayofWeekNumberAsISOString).add(5, 'days').format();
+
+     const timeObject = {
+        start: startDayofWeekNumberAsISOString,
+        min: startDayofWeekNumberAsISOString,
+        max: max, 
+      };
+
+    return timeObject;
+  }
+
   testCallFunction(incomingText): Observable<any> {
     console.log('Function gets called as we speak ..');
     const callable = this.fns.httpsCallable('testOnCall');
@@ -94,11 +107,26 @@ export class TimesheetProvider {
     console.log('Doorgestuurde user: ', user.uid);
     const weekNumber = this.getCurrentWeekNumber().toString();
     const year = this.getCurrentYear().toString(); 
-
+  
     this.enrichedActivity = {
       timesheetId: `week-${weekNumber}-${year}-${user.uid}`,
       uid: user.uid,
       userDateString: `${this.getCurrentDayNumber().toString()}-week-${weekNumber}-${year}-${user.uid}`,
+      ...activityObject
+    };
+    this.activitiesRef.add(this.enrichedActivity);
+  }
+
+  async saveActivityWithCustomDate(activityObject: any, user: any) {
+    console.log('Doorgestuurde user: ', user.uid);
+    const weekNumber = this.getCurrentWeekNumber().toString();
+    const year = this.getCurrentYear().toString(); 
+    const dayNumber = this.calculateDayNumber(activityObject.isoDateString);
+
+    this.enrichedActivity = {
+      timesheetId: `week-${weekNumber}-${year}-${user.uid}`,
+      uid: user.uid,
+      userDateString: `${dayNumber.toString()}-week-${weekNumber}-${year}-${user.uid}`,
       ...activityObject
     };
     this.activitiesRef.add(this.enrichedActivity);
@@ -150,15 +178,19 @@ export class TimesheetProvider {
   }
 
   getCurrentWeekNumber(): number {
-    const weekNumber = moment().week(); // Number
-    weekNumber.toLocaleString()
+    const weekNumber = moment().isoWeek(); // Number
     return weekNumber;
   }
 
+  calculateDayNumber(isoDateString: string): number {
+    const dayNumber = moment(isoDateString).date();
+    return dayNumber;
+  }
+
   getCurrentDayNumber(): number {
-    // const date = moment().isoWeekday().toString(); 
-    const dayNumber = moment().date();
-   
+    const currentIso = this.getCurrentIsoString();
+    const date = moment(currentIso);
+    const dayNumber = date.date();
     return dayNumber; 
   }
 
