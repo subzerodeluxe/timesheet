@@ -5,7 +5,6 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { validation_messages } from '../../app/app.config';
-import { firebaseActivity } from '../../models/activityLine.interface';
 
 @IonicPage({
   name: 'activity-detail'
@@ -30,10 +29,37 @@ export class ActivityDetailPage {
 
     if (this.navParams.get("activity") != null) {
       this.clientName = this.navParams.get("activity").clientName; 
+      this.activityObject = this.navParams.get("activity");
       this.update = true; 
     } else {
       this.clientName = 'Nieuwe klus';
       this.update = false;
     }
+  }
+
+  deleteActivity() {
+    console.log('Deleting activity');
+      
+    let alert = this.layout.alertCtrl.create({
+      cssClass: 'delete-prompt'
+    });
+    alert.setTitle('Verwijder klus');
+    alert.setMessage('Weet je zeker dat je deze klus wilt verwijderen?');
+    
+    alert.addButton('Annuleer');
+    alert.addButton({
+      text: 'Ja, verwijder',
+      handler: () => {
+        this.time.deleteActivity(this.activityObject)
+          .then(_ => {
+            this.layout.presentBottomToast('Gelukt! De klus is verwijderd van je werkbriefje!');
+            this.navCtrl.setRoot('timesheet');
+          })
+          .catch(e => {
+            this.layout.presentBottomToast(e);
+          })
+        }
+    });
+    alert.present();
   }
 }

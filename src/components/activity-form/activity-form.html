@@ -46,7 +46,9 @@
     <section class="form-section">
       <h2 *ngIf="update && !minutesWithBreakDifference" class="section-title">Tijden</h2>
       <h2 *ngIf="update && minutesWithBreakDifference" class="section-title">{{ minutesWithBreakDifference | formatHours}} gewerkt inclusief pauze</h2>
-      <h2 *ngIf="!update" class="section-title">Tijdstip en datum</h2>
+      
+      <h2 *ngIf="!update && !minutesWithBreakDifference" class="section-title">Tijdstip en datum</h2>
+      <h2 *ngIf="!update && minutesWithBreakDifference" class="section-title">{{ minutesWithBreakDifference | formatHours}} gewerkt inclusief pauze</h2>
 
       <ion-item *ngIf="!update">
         <ion-label floating>Datum</ion-label>
