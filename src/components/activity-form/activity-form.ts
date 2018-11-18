@@ -199,34 +199,4 @@ export class ActivityFormComponent {
     });
     alert.present();
   }
- 
-  deleteActivity() {
-    console.log('Deleting activity');
-      let alert = this.layout.alertCtrl.create({
-        title: 'Verwijder',
-        message: 'Weet je zeker dat je deze klus wilt verwijderen?',
-        buttons: [
-          {
-            text: 'Nee',
-            role: 'cancel'
-          },
-          {
-            text: 'Ja, verwijder',
-            handler: () => {
-              console.log('Deleting activity');
-              this.time.deleteActivity(this.activityObject)
-                .then(_ => {
-                  console.log('DELETED!');
-                  this.layout.presentBottomToast('Gelukt! De klus is verwijderd van je werkbriefje!');
-                  this.navCtrl.setRoot('timesheet');
-                })
-                .catch(e => {
-                  this.layout.presentBottomToast(e);
-                })
-              }
-          }
-        ]
-      });
-    alert.present();
-  }
 }

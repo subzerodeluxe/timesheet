@@ -11,6 +11,8 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { IonicStorageModule } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
 
 // Providers
 import { TimesheetProvider } from '../providers/timesheet/timesheet.service';
@@ -72,6 +74,8 @@ import { LocalNotificationService } from '../providers/local-notification-servic
     TimesheetProvider,
     Keyboard,,
     NativePageTransitions,
+    File,
+    FileOpener,
     AuthProvider,
     LayoutProvider,
     UserProvider,

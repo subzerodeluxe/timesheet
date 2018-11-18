@@ -9,6 +9,14 @@ import { firebaseActivity } from '../../models/activityLine.interface';
 import * as moment from 'moment';
 import 'moment-duration-format';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { LayoutProvider } from '../layout/layout.service';
+import { FileOpener } from '@ionic-native/file-opener';
+import { Platform } from 'ionic-angular';
+import { File } from '@ionic-native/file';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Injectable()
 export class TimesheetProvider {
@@ -22,7 +30,9 @@ export class TimesheetProvider {
   public totalDailyMinutesCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public totalWeekMinutesCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-  constructor(public afs: AngularFirestore, public userService: UserProvider, private fns: AngularFireFunctions,
+  constructor(public afs: AngularFirestore, public userService: UserProvider, public layout: LayoutProvider,
+    private fns: AngularFireFunctions, public plt: Platform, 
+    private file: File, private fileOpener: FileOpener,
     public authService: AuthProvider, public storage: Storage) {
       this.activitiesRef = this.afs.collection('activities');
 
@@ -42,6 +52,29 @@ export class TimesheetProvider {
           })
         )
       )
+  }
+
+  createLocalPDF(docDefinition: any) {
+    return pdfMake.createPdf(docDefinition);
+  }
+
+  downloadLocalPDF(pdfObj: any, userObject: any) {
+    let weekNumber = this.getCurrentWeekNumber().toString();
+    const file = `werkurenbriefje-week-${weekNumber}-${userObject.firstName}-${userObject.lastName}`;
+
+    if (this.plt.is('cordova')) {
+      pdfObj.getBuffer((buffer) => {
+        let blob = new Blob([buffer], { type: 'application/pdf' });
+        // Save the PDF to the data Directorys of our App
+        this.file.writeFile(this.file.dataDirectory, file, blob, { replace: true }).then(fileEntry => {
+          // Open the PDf with the correct OS tools
+          this.fileOpener.open(this.file.dataDirectory + file, 'application/pdf');
+        }).catch(e => this.layout.presentBottomToast('Er ging iets mis. Probeer het opnieuw.')); 
+      });
+    } else {
+      // On a browser simply use download!
+      pdfObj.download(file);
+    }
   }
 
   calculateDailyMinutes(incomingMinutes: any) {
@@ -91,6 +124,7 @@ export class TimesheetProvider {
 
     return timeObject;
   }
+ 
 
   testCallFunction(incomingText): Observable<any> {
     console.log('Function gets called as we speak ..');
@@ -101,6 +135,12 @@ export class TimesheetProvider {
   testPDF(incomingText) {
     const callable = this.fns.httpsCallable('createPDF');
     return callable(incomingText);
+  }
+
+  getStartDay(weekActivies: any) {
+    console.log(weekActivies);
+    return weekActivies.filter(
+      activity => activity.isoDateString === "2018-11-14T16:33:48.167+01:00");
   }
 
   async saveActivity(activityObject: any, user: any) {

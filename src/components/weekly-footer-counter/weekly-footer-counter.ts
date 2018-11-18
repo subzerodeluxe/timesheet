@@ -29,18 +29,7 @@ export class WeeklyFooterCounterComponent {
     this.navCtrl.push('activity-detail');
   }
 
-
-  callTestFunction() {
-    console.log('Call the function');
-    this.layout.presentBottomToast('Functie wordt gecalled');
-    const data = { message: 'Dit wordt doorgestuurd als test'};
-     this.time.testPDF(data)
-      .subscribe(data => {
-        this.layout.presentBottomToast(JSON.stringify(data)); 
-        console.log(data)
-      });
-  }
-    
+  
   ionViewDidLoad() {
     setTimeout(() => {
       this.state = 'big';

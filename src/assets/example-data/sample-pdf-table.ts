@@ -87,9 +87,5 @@ export const sampleTable = {
                 fontSize: 13,
                 color: 'black'
             }
-        },
-        defaultStyle: {
-            // alignment: 'justify'
         }
-        
-    }
+}

@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { NavController, NavParams, SegmentButton, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, SegmentButton, IonicPage, Platform } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
@@ -7,6 +7,7 @@ import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs-compat/Subscription';
 import { Employee } from '../../models/employee.interface';
 import { infinitePulse, staggerAnimation } from '../../app/animations';
+import { sampleTable } from '../../assets/example-data/sample-pdf-table';
 
 @IonicPage({
   name: 'timesheet'
@@ -33,6 +34,7 @@ export class TimesheetPage implements OnDestroy {
   activities: any;
   weekActivities: any;
   whichNoActivities: string;
+  pdfObj = null;
   
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
@@ -64,6 +66,77 @@ export class TimesheetPage implements OnDestroy {
         } 
       });
     }); 
+  }
+
+  generatePDF() {
+    console.log('Starting to create local PDF');
+    const docDefinition = sampleTable;
+    const weekNumber = this.time.getCurrentWeekNumber().toString();
+    const startDay = this.time.getStartDay(this.weekActivities);
+
+    const test = { content: [
+      {text: 'WEEK-WERKBRIEFJE', style: 'header'},
+      {text: `Week nr. ${weekNumber}`, style: 'subheader'},
+      
+      {text: [`Ingevuld door ${this.userObject.firstName} ${this.userObject.lastName}`], bold: true},
+      {text: [`Van ${startDay} tot ergens in 2018`], bold: true}
+    ],
+    styles: {
+      header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10]
+      },
+      totalHeader: {
+          fontSize: 18,
+          bold: true,
+          alignment: 'left',
+          margin: [0, 0, 0, 0]
+      },
+       block: {
+          fontSize: 13,
+          bold: true,
+          alignment: 'left',
+          margin: [0, 20, 0, 0]
+      },
+      small: {
+          fontSize: 13,
+          bold: true,
+          alignment: 'left',
+          margin: [0, 0, 0, 0]
+      },
+      subheader: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 10, 0, 5]
+      },
+      tableExample: {
+          margin: [0, 5, 0, 15]
+      },
+      tableHeader: {
+          bold: true,
+          fontSize: 13,
+          color: 'black'
+      }
+    }};
+
+
+    this.pdfObj = this.time.createLocalPDF(sampleTable);
+  }
+
+  downloadPDF() {
+    this.time.downloadLocalPDF(this.pdfObj, this.userObject);
+  }
+
+  callTestFunction() {
+    console.log('Call the function');
+    this.layout.presentBottomToast('Functie wordt gecalled');
+    const data = { message: 'Dit wordt doorgestuurd als test'};
+     this.time.testPDF(data)
+      .subscribe(data => {
+        this.layout.presentBottomToast(JSON.stringify(data)); 
+        console.log(data)
+      });
   }
   
   ionViewDidLoad() {
