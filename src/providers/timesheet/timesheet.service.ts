@@ -54,49 +54,7 @@ export class TimesheetProvider {
       )
   }
 
-  createLocalPDF(docDefinition: any) {
-    return pdfMake.createPdf(docDefinition);
-  }
-
-  downloadLocalPDF(pdfObj: any, userObject: any) {
-    let weekNumber = this.getCurrentWeekNumber().toString();
-    const file = `werkurenbriefje-week-${weekNumber}-${userObject.firstName}-${userObject.lastName}`;
-
-    if (this.plt.is('cordova')) {
-      pdfObj.getBuffer((buffer) => {
-        let blob = new Blob([buffer], { type: 'application/pdf' });
-        // Save the PDF to the data Directorys of our App
-        this.file.writeFile(this.file.dataDirectory, file, blob, { replace: true }).then(fileEntry => {
-          // Open the PDf with the correct OS tools
-          this.fileOpener.open(this.file.dataDirectory + file, 'application/pdf');
-        }).catch(e => this.layout.presentBottomToast('Er ging iets mis. Probeer het opnieuw.')); 
-      });
-    } else {
-      // On a browser simply use download!
-      pdfObj.download(file);
-    }
-  }
-
-  calculateDailyMinutes(incomingMinutes: any) {
-    let totalMinutes = 0;
-    
-    for (let i = 0; i < incomingMinutes.length; i++) {
-      totalMinutes += incomingMinutes[i].minutesDifference;
-    }
-
-    this.totalDailyMinutesCounter.next(totalMinutes);
-  }
-
-  calculateWeekMinutes(incomingMinutes: any) {
-    let totalMinutes = 0;
-    
-    for (let i = 0; i < incomingMinutes.length; i++) {
-      totalMinutes += incomingMinutes[i].minutesDifference;
-    }
-
-    this.totalWeekMinutesCounter.next(totalMinutes);
-  }
-
+  
   findAllWeekActivitiesByUser(userObject: any): Observable<any> {
     return this.afs.collection('activities', ref => {
      return ref.where('timesheetId', '==', `week-${this.weekNumber}-${this.year}-${userObject.uid}`);
@@ -107,6 +65,50 @@ export class TimesheetProvider {
             return { id, ...data };
           }))
         )
+  }
+
+
+  createLocalPDF(docDefinition: any) {
+    try {
+      const generatedPDF = pdfMake.createPdf(docDefinition);
+      return generatedPDF;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  downloadLocalPDF(pdfObj: any, userObject: any) {
+    const weekNumber = this.getCurrentWeekNumber().toString();
+    const currentYear = this.getCurrentYear();
+    const file = `werkurenbriefje-week-${weekNumber}-${currentYear}-${userObject.firstName}-${userObject.lastName}`;
+
+    if (this.plt.is('cordova')) {
+      pdfObj.getBuffer((buffer) => {
+        let blob = new Blob([buffer], { type: 'application/pdf' });
+        // Save the PDF to the data Directorys of our App
+        this.file.writeFile(this.file.dataDirectory, file, blob, { replace: true }).then(fileEntry => {
+          // Open the PDf with the correct OS tools
+          this.fileOpener.open(this.file.dataDirectory + file, 'application/pdf');
+        }).catch(e => this.layout.presentBottomToast('Er ging iets mis met ophalen van het werkbriefje. Probeer het opnieuw.')); 
+      });
+    } else {
+      // On a browser simply use download!
+      try {
+        pdfObj.download(file);
+      } catch (error) {
+        this.layout.presentBottomToast('Er ging iets mis met ophalen van het werkbriefje. Probeer het opnieuw');
+      }
+    }
+  }
+
+  calculateDailyMinutes(incomingMinutes: any) {
+    const totalMinutes = incomingMinutes.reduce((acc, activity) => acc + activity.minutesDifference, 0);
+    this.totalDailyMinutesCounter.next(totalMinutes);
+  }
+
+  calculateWeekMinutes(incomingMinutes: any) {
+    const totalMinutes = incomingMinutes.reduce((acc, activity) => acc + activity.minutesDifference, 0);
+    this.totalWeekMinutesCounter.next(totalMinutes); 
   }
 
   calculateDateRange(): any {
@@ -124,23 +126,27 @@ export class TimesheetProvider {
 
     return timeObject;
   }
- 
 
-  testCallFunction(incomingText): Observable<any> {
-    console.log('Function gets called as we speak ..');
-    const callable = this.fns.httpsCallable('testOnCall');
-    return callable(incomingText);
+  calculateDatesForPDF(weekActivies: any): any {
+    weekActivies.sort((a, b) => {   
+          return a.isoDateString > b.isoDateString ? 1 : a.isoDateString < b.isoDateString ? -1 : 0
+    });
+  
+    const earliestDate = weekActivies[0].isoDateString;
+    const latestDate   = weekActivies[weekActivies.length - 1].isoDateString;
+
+    const timeObject = {
+      earliestDate: moment(earliestDate).format('dddd D MMMM'),
+      latestDate: moment(latestDate).format('dddd D MMMM'),
+      year: moment(earliestDate).format('YYYY')
+    };
+    
+    return timeObject;
   }
 
-  testPDF(incomingText) {
-    const callable = this.fns.httpsCallable('createPDF');
-    return callable(incomingText);
-  }
-
-  getStartDay(weekActivies: any) {
-    console.log(weekActivies);
-    return weekActivies.filter(
-      activity => activity.isoDateString === "2018-11-14T16:33:48.167+01:00");
+  formatRowDateForPDF(date: string): string {
+    const formattedDate = moment(date).format('dddd D MMM');
+    return formattedDate;
   }
 
   async saveActivity(activityObject: any, user: any) {

@@ -69,76 +69,143 @@ export class TimesheetPage implements OnDestroy {
   }
 
   generatePDF() {
-    console.log('Starting to create local PDF');
-    const docDefinition = sampleTable;
-    const weekNumber = this.time.getCurrentWeekNumber().toString();
-    const startDay = this.time.getStartDay(this.weekActivities);
-
-    const test = { content: [
-      {text: 'WEEK-WERKBRIEFJE', style: 'header'},
-      {text: `Week nr. ${weekNumber}`, style: 'subheader'},
+    if (this.noWeekActivities === true) {
+      this.layout.presentBottomToast('Niet mogelijk om werkbriefje te genereren. Reden: er zijn geen klussen om de werkbrief te vullen.');
+    } else {
+      console.log('Starting to create local PDF');
+      const docDefinition = sampleTable;
       
-      {text: [`Ingevuld door ${this.userObject.firstName} ${this.userObject.lastName}`], bold: true},
-      {text: [`Van ${startDay} tot ergens in 2018`], bold: true}
-    ],
-    styles: {
-      header: {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 0, 0, 10]
-      },
-      totalHeader: {
-          fontSize: 18,
-          bold: true,
-          alignment: 'left',
-          margin: [0, 0, 0, 0]
-      },
-       block: {
-          fontSize: 13,
-          bold: true,
-          alignment: 'left',
-          margin: [0, 20, 0, 0]
-      },
-      small: {
-          fontSize: 13,
-          bold: true,
-          alignment: 'left',
-          margin: [0, 0, 0, 0]
-      },
-      subheader: {
-          fontSize: 16,
-          bold: true,
-          margin: [0, 10, 0, 5]
-      },
-      tableExample: {
-          margin: [0, 5, 0, 15]
-      },
-      tableHeader: {
-          bold: true,
-          fontSize: 13,
-          color: 'black'
+      const test = { 
+        content: this.generatePDFHeaderAndBody(),
+        styles: this.generatePDFStyles()
+      }; 
+  
+      this.pdfObj = this.time.createLocalPDF(test);
+      const r = this.time.createLocalPDF(docDefinition);
+      console.log('Generated PDF: ', this.pdfObj);
+      console.log('Zo zou die moeten zijn: ', r);
+    }
+  }
+
+  generateRows(): any {
+ 
+    const clientNamesArray = this.weekActivities.map(activity => activity.clientName);
+    const totalMinutesArray = this.weekActivities.map(activity => activity.minutesDifference);
+    const isoDateStringsArray = this.weekActivities.map(activity => activity.isoDateString);
+   // const activitiesArray = this.weekActivities.map(activity => activity.activities.map(activity => activity.name));
+    
+    console.log('Client name array: ', clientNamesArray);
+    // console.log('Activities array: ', activitiesArray);
+    // console.log('Activities array: ', activitiesArray[0]);
+
+    const firstRow = [
+      this.time.formatRowDateForPDF(isoDateStringsArray[0]),
+      this.time.transformMinutesToHours(totalMinutesArray[0]), 
+      clientNamesArray[0], 
+      {
+        ul: [
+          'Trapleuning geschilderd'
+        ]
       }
-    }};
+      // {
+      //   ul: activitiesArray[0]
+      // }
+    ];
 
+    return firstRow;
+  }
 
-    this.pdfObj = this.time.createLocalPDF(sampleTable);
+  generatePDFHeaderAndBody() {
+
+      const weekNumber = this.time.getCurrentWeekNumber().toString();
+      const correctDates = this.time.calculateDatesForPDF(this.weekActivities);
+      const totalMinutes= this.weekActivities.reduce((acc, activity) => acc + activity.minutesDifference, 0);
+      const formattedTotalHours = this.time.transformMinutesToHours(totalMinutes);
+     
+      const rows = this.generateRows();
+      console.log('De rows zijn als volgt: ', rows);
+      const tableBody = [
+        [{text: 'Datum', style: 'tableHeader'}, {text: 'Aantal uren', style: 'tableHeader'}, {text: 'Aannemer/klant', style: 'tableHeader'}, {text: 'Werkzaamheden', style: 'tableHeader'}],
+        rows
+      ]; 
+      
+      const pdfContent =  [   // MAAK HIER NOG EEN INTERFACE VAN
+          {text: 'WEEK-WERKBRIEFJE', style: 'header'},
+          {text: `Week nr. ${weekNumber}`, style: 'subheader'},
+          {text: `Ingevuld door ${this.userObject.firstName} ${this.userObject.lastName}`, bold: true},
+          {text: `Van ${correctDates.earliestDate} t/m ${correctDates.latestDate} ${correctDates.year}`, bold: true},
+          {
+            style: 'tableExample',
+            margin: [0, 25],
+            table: {
+              headerRows: 2,
+              heights: [30, 40, 40, 40, 40],
+              widths: ['*', 50, '*', 200],
+              body: tableBody
+            }
+          },
+          {
+            stack: [
+                `Totaal: ${formattedTotalHours}`,
+                {text: 'Kenteken auto: 45-XD-33', style: 'block'},
+                {text: 'Kilometerstand: 125.034', style: 'small'}
+            ],
+            style: 'totalHeader'
+          }
+        ];  
+      
+    return pdfContent; 
+  }
+
+  generatePDFStyles() {
+    const pdfStyles =  {
+      styles: {
+        header: {
+            fontSize: 18,
+            bold: true,
+            margin: [0, 0, 0, 10]
+        },
+        totalHeader: {
+            fontSize: 18,
+            bold: true,
+            alignment: 'left',
+            margin: [0, 0, 0, 0]
+        },
+        block: {
+            fontSize: 13,
+            bold: true,
+            alignment: 'left',
+            margin: [0, 20, 0, 0]
+        },
+        small: {
+            fontSize: 13,
+            bold: true,
+            alignment: 'left',
+            margin: [0, 0, 0, 0]
+        },
+        subheader: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10, 0, 5]
+        },
+        tableExample: {
+            margin: [0, 5, 0, 15]
+        },
+        tableHeader: {
+            bold: true,
+            fontSize: 13,
+            color: 'black'
+        }
+      }
+    };
+
+    return pdfStyles.styles;
   }
 
   downloadPDF() {
     this.time.downloadLocalPDF(this.pdfObj, this.userObject);
   }
 
-  callTestFunction() {
-    console.log('Call the function');
-    this.layout.presentBottomToast('Functie wordt gecalled');
-    const data = { message: 'Dit wordt doorgestuurd als test'};
-     this.time.testPDF(data)
-      .subscribe(data => {
-        this.layout.presentBottomToast(JSON.stringify(data)); 
-        console.log(data)
-      });
-  }
-  
   ionViewDidLoad() {
     this.layout.presentLoadingDefault();
     setTimeout(() => {
