@@ -87,32 +87,29 @@ export class TimesheetPage implements OnDestroy {
     }
   }
 
-  generateRows(): any {
- 
-    const clientNamesArray = this.weekActivities.map(activity => activity.clientName);
-    const totalMinutesArray = this.weekActivities.map(activity => activity.minutesDifference);
-    const isoDateStringsArray = this.weekActivities.map(activity => activity.isoDateString);
-   // const activitiesArray = this.weekActivities.map(activity => activity.activities.map(activity => activity.name));
-    
-    console.log('Client name array: ', clientNamesArray);
-    // console.log('Activities array: ', activitiesArray);
-    // console.log('Activities array: ', activitiesArray[0]);
-
-    const firstRow = [
-      this.time.formatRowDateForPDF(isoDateStringsArray[0]),
-      this.time.transformMinutesToHours(totalMinutesArray[0]), 
-      clientNamesArray[0], 
+  generateTable(): any {
+    let rows = this.weekActivities.map(activity => ([
+      this.time.formatRowDateForPDF(activity.isoDateString), 
+      this.time.transformMinutesToHours(activity.minutesDifference), 
+      activity.clientName,
       {
-        ul: [
-          'Trapleuning geschilderd'
-        ]
+        ul: activity.activities.map(single => ([
+          single.name
+       ]))
       }
-      // {
-      //   ul: activitiesArray[0]
-      // }
-    ];
+    ]));
 
-    return firstRow;
+    const headers = [{text: 'Datum', style: 'tableHeader'}, {text: 'Aantal uren', style: 'tableHeader'}, {text: 'Aannemer/klant', style: 'tableHeader'}, {text: 'Werkzaamheden', style: 'tableHeader'}];
+    rows = [headers, ...rows];
+
+    console.log('Wat  zijn de rows? ', rows);
+
+    return {
+        headerRows: 2,
+        heights: [30, 40, 40, 40, 40],
+        widths: ['*', 50, '*', 200],
+        body: rows
+    };
   }
 
   generatePDFHeaderAndBody() {
@@ -121,14 +118,8 @@ export class TimesheetPage implements OnDestroy {
       const correctDates = this.time.calculateDatesForPDF(this.weekActivities);
       const totalMinutes= this.weekActivities.reduce((acc, activity) => acc + activity.minutesDifference, 0);
       const formattedTotalHours = this.time.transformMinutesToHours(totalMinutes);
-     
-      const rows = this.generateRows();
-      console.log('De rows zijn als volgt: ', rows);
-      const tableBody = [
-        [{text: 'Datum', style: 'tableHeader'}, {text: 'Aantal uren', style: 'tableHeader'}, {text: 'Aannemer/klant', style: 'tableHeader'}, {text: 'Werkzaamheden', style: 'tableHeader'}],
-        rows
-      ]; 
-      
+      const table = this.generateTable();
+  
       const pdfContent =  [   // MAAK HIER NOG EEN INTERFACE VAN
           {text: 'WEEK-WERKBRIEFJE', style: 'header'},
           {text: `Week nr. ${weekNumber}`, style: 'subheader'},
@@ -137,12 +128,7 @@ export class TimesheetPage implements OnDestroy {
           {
             style: 'tableExample',
             margin: [0, 25],
-            table: {
-              headerRows: 2,
-              heights: [30, 40, 40, 40, 40],
-              widths: ['*', 50, '*', 200],
-              body: tableBody
-            }
+            table
           },
           {
             stack: [

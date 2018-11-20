@@ -89,14 +89,14 @@ export class TimesheetProvider {
         this.file.writeFile(this.file.dataDirectory, file, blob, { replace: true }).then(fileEntry => {
           // Open the PDf with the correct OS tools
           this.fileOpener.open(this.file.dataDirectory + file, 'application/pdf');
-        }).catch(e => this.layout.presentBottomToast('Er ging iets mis met ophalen van het werkbriefje. Probeer het opnieuw.')); 
+        }).catch(e => this.layout.presentBottomToast('Er ging iets mis met het ophalen van het werkbriefje. Probeer het opnieuw.')); 
       });
     } else {
       // On a browser simply use download!
       try {
         pdfObj.download(file);
       } catch (error) {
-        this.layout.presentBottomToast('Er ging iets mis met ophalen van het werkbriefje. Probeer het opnieuw');
+        this.layout.presentBottomToast('Er ging iets mis met het ophalen van het werkbriefje. Probeer het opnieuw.');
       }
     }
   }
