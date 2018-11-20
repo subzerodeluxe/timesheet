@@ -9,12 +9,12 @@
 
 
     <form [formGroup]="profileForm" class="profile-form">
-        <ion-list class="user-data-content">
+      <section class="form-section">
           <ion-item>
             <ion-label stacked>Voornaam</ion-label>
             <ion-input type="text" name="firstName" [(ngModel)]="employee.firstName" formControlName="firstName"></ion-input>
           </ion-item>
-
+          
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.firstName">
               <div class="error-message" *ngIf="profileForm.get('firstName').hasError(validation.type) && (profileForm.get('firstName').dirty || profileForm.get('firstName').touched)">
@@ -35,7 +35,7 @@
               </div>
             </ng-container>
           </div>
-        </ion-list>
+      </section>
 
         <section class="form-section">
           <h2 class="section-title">Aanvullende informatie</h2> 

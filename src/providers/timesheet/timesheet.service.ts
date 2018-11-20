@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { AuthProvider } from '../auth/auth.service';
 import { UserProvider } from '../user/user.service';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { Storage } from '@ionic/storage';
-import { map } from 'rxjs/operators';
+import { map, mergeMap, first} from 'rxjs/operators';
 import { firebaseActivity } from '../../models/activityLine.interface';
 import * as moment from 'moment';
 import 'moment-duration-format';
@@ -65,6 +65,29 @@ export class TimesheetProvider {
             return { id, ...data };
           }))
         )
+  }
+
+
+
+
+  findTimesheetByUserAndWeekNumber(): Observable<any> {
+
+    const activities = this.afs.collection('activities', ref => {
+      return ref.where('timesheetId', '==', `week-47-2018-eFI1cHuXpyS01Yjcj8jWAQavIMN2`);
+         }).snapshotChanges().pipe(
+           map(actions => actions.map(a => {
+             const data = a.payload.doc.data() as firebaseActivity;
+             const id = a.payload.doc.id;
+             return { id, ...data };
+           })
+          )
+         );
+      
+    const timesheet = this.afs.collection('timesheets').doc('week-47-2018-eFI1cHuXpyS01Yjcj8jWAQavIMN2').valueChanges();
+    const correctTimesheet = combineLatest(activities, timesheet);
+
+    return correctTimesheet;
+      
   }
 
 

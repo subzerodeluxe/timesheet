@@ -19,6 +19,17 @@ export class LayoutProvider {
     return loading; 
   }
 
+  showCreatePDFLoading() {
+    const pdfSpinner: any = this.sanitizer.bypassSecurityTrustHtml(AppConfig.createPDFSpinner);
+   
+    let loading = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: pdfSpinner
+      });
+    return loading; 
+  }
+
+
   presentLoadingDefault() {
     const customSpinner: any = this.sanitizer.bypassSecurityTrustHtml(AppConfig.customSpinner);
   

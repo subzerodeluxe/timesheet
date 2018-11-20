@@ -1,0 +1,14 @@
+<ion-content padding>
+ 
+
+  <img class="profile-image" *ngIf="profileImage" 
+  [src]="profileImage"/>
+</ion-content>
+
+<ion-footer>
+  <ion-navbar>
+    <ion-title (click)="closeModal()">
+      <ion-icon name="close"></ion-icon>
+     Annuleer</ion-title>
+  </ion-navbar>
+</ion-footer>

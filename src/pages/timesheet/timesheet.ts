@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { NavController, NavParams, SegmentButton, IonicPage, Platform } from 'ionic-angular';
+import { NavController, NavParams, SegmentButton, IonicPage, Platform, ModalController } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs-compat/Subscription';
 import { Employee } from '../../models/employee.interface';
 import { infinitePulse, staggerAnimation } from '../../app/animations';
 import { sampleTable } from '../../assets/example-data/sample-pdf-table';
+import { CarInputComponent } from '../../components/car-input/car-input';
 
 @IonicPage({
   name: 'timesheet'
@@ -36,7 +37,7 @@ export class TimesheetPage implements OnDestroy {
   whichNoActivities: string;
   pdfObj = null;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController,
     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
       this.segment = "today";
       this.isoString = this.time.getCurrentIsoString();
@@ -68,23 +69,87 @@ export class TimesheetPage implements OnDestroy {
     }); 
   }
 
-  generatePDF() {
+  generatePDF(noCar?: boolean) {
+
     if (this.noWeekActivities === true) {
       this.layout.presentBottomToast('Niet mogelijk om werkbriefje te genereren. Reden: er zijn geen klussen om de werkbrief te vullen.');
     } else {
-      console.log('Starting to create local PDF');
-      const docDefinition = sampleTable;
-      
-      const test = { 
-        content: this.generatePDFHeaderAndBody(),
+      const loading = this.layout.showCreatePDFLoading();
+      loading.present();
+
+      const pdf = { 
+        content: this.generatePDFHeaderAndBody(noCar),
         styles: this.generatePDFStyles()
       }; 
   
-      this.pdfObj = this.time.createLocalPDF(test);
-      const r = this.time.createLocalPDF(docDefinition);
-      console.log('Generated PDF: ', this.pdfObj);
-      console.log('Zo zou die moeten zijn: ', r);
+      this.pdfObj = this.time.createLocalPDF(pdf);
+
+      setTimeout(() => {
+        this.downloadPDF();
+        loading.dismiss();
+      }, 3000);
     }
+  }
+
+  presentPDFAlert() {
+    let alert = this.layout.alertCtrl.create({
+      cssClass: 'category-prompt'
+    });
+    alert.setTitle('Welke auto heb je deze week gebruikt?');
+
+    alert.addInput({
+      type: 'radio',
+      label:'Bedrijfsauto',
+      value:'companyCar',
+      checked: true
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label:'Eigen auto',
+      value:'ownCar'
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label:'Geen auto gebruikt',
+      value:'noCar'
+    });
+
+
+    alert.addButton('Annuleer');
+    alert.addButton({
+      text: 'Bevestig keuze',
+      handler: choice => {
+        switch (choice) {
+          case 'noCar': {
+            const noCar = true;
+            this.generatePDF(noCar);
+            break;
+          }
+          case 'companyCar': {
+            this.openCarInputModal('companyCar');
+            console.log('Gekozen voor company car');
+            break;
+          }
+          case 'ownCar': {
+            this.openCarInputModal('ownCar');
+            console.log('Gekozen voor own car');
+            break;
+          }
+          default: {
+            this.layout.presentBottomToast('Er ging iets mis. Probeer het opnieuw.');
+            break;
+          }
+        }
+      }
+    });
+    alert.present();
+  }
+
+  openCarInputModal(choice: string) {
+    let modal = this.modalCtrl.create(CarInputComponent, { carChoice: choice });
+    modal.present();
   }
 
   generateTable(): any {
@@ -112,15 +177,19 @@ export class TimesheetPage implements OnDestroy {
     };
   }
 
-  generatePDFHeaderAndBody() {
+  generatePDFHeaderAndBody(noCar?: boolean) {
 
       const weekNumber = this.time.getCurrentWeekNumber().toString();
       const correctDates = this.time.calculateDatesForPDF(this.weekActivities);
       const totalMinutes= this.weekActivities.reduce((acc, activity) => acc + activity.minutesDifference, 0);
       const formattedTotalHours = this.time.transformMinutesToHours(totalMinutes);
       const table = this.generateTable();
-  
-      const pdfContent =  [   // MAAK HIER NOG EEN INTERFACE VAN
+      let carInput;
+      if (noCar === true) {
+        carInput = 'Geen auto gebruikt.'
+      }
+
+      const pdfContent =  [  
           {text: 'WEEK-WERKBRIEFJE', style: 'header'},
           {text: `Week nr. ${weekNumber}`, style: 'subheader'},
           {text: `Ingevuld door ${this.userObject.firstName} ${this.userObject.lastName}`, bold: true},
@@ -133,8 +202,8 @@ export class TimesheetPage implements OnDestroy {
           {
             stack: [
                 `Totaal: ${formattedTotalHours}`,
-                {text: 'Kenteken auto: 45-XD-33', style: 'block'},
-                {text: 'Kilometerstand: 125.034', style: 'small'}
+                {text: carInput, style: 'block'},
+               // {text: 'Kilometerstand: 125.034', style: 'small'}
             ],
             style: 'totalHeader'
           }

@@ -3,3 +3,8 @@ export interface Vehicle {
     mileAge?: number; // 128.895 
     vehicleNotPresent: boolean;
 }
+
+export interface VehicleInfo {
+    licensePlate: string;
+    type: string // company or private
+}

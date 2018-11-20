@@ -33,6 +33,7 @@ import { ComponentsModule } from '../components/components.module';
 import { CommonModule } from '@angular/common';
 import { PipesModule } from '../pipes/pipes.module';
 import { LocalNotificationService } from '../providers/local-notification-service/local-notification.service';
+import { CarInputComponent } from '../components/car-input/car-input';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { LocalNotificationService } from '../providers/local-notification-servic
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    CarInputComponent
   ],
   providers: [
     StatusBar,
