@@ -1,14 +1,72 @@
-<ion-content padding>
- 
-
-  <img class="profile-image" *ngIf="profileImage" 
-  [src]="profileImage"/>
-</ion-content>
-
-<ion-footer>
+<ion-header>
   <ion-navbar>
-    <ion-title (click)="closeModal()">
-      <ion-icon name="close"></ion-icon>
-     Annuleer</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="closeModal()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
-</ion-footer>
+</ion-header>
+
+<ion-content padding class="forms-validations-content">
+    <form *ngIf="companyCar === true" class="activity-form validations-form" [formGroup]="companyCarForm" (ngSubmit)="submitCar(companyCarForm.value)">
+    <section class="form-section">
+        <h2 class="section-title">Informatie over bedrijfsauto</h2>
+        <ion-item>
+          <ion-label floating>Kenteken</ion-label>
+          <ion-input name="licenseplate" type="text" formControlName="licenseplate"
+          class="form-controll" required></ion-input>
+        </ion-item>
+
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.licenseplate">
+            <div class="error-message" *ngIf="companyCarForm.get('licenseplate').hasError(validation.type) && 
+            (companyCarForm.get('licenseplate').dirty || companyCarForm.get('licenseplate').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+
+        <ion-item>
+            <ion-label floating>Huidige kilometerstand</ion-label>
+            <ion-input name="companyMileage" type="number" formControlName="companyMileage"
+            class="form-controll" required></ion-input>
+        </ion-item>
+  
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.companyMileage">
+            <div class="error-message" *ngIf="companyCarForm.get('companyMileage').hasError(validation.type) && 
+            (companyCarForm.get('companyMileage').dirty || companyCarForm.get('companyMileage').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+    </section>
+
+    <button ion-button full type="submit" [disabled]="!companyCarForm.valid">Genereer werkbriefje</button>
+  </form>
+
+  <form *ngIf="companyCar === false" class="activity-form validations-form" [formGroup]="carForm" (ngSubmit)="submitCar(carForm.value)">
+    <section class="form-section">
+        <h2 class="section-title">Hoeveel kilometer heb je deze week gereden?</h2>
+        
+        <ion-item>
+            <ion-label floating>Aantal kilometer</ion-label>
+            <ion-input name="mileage" type="number" formControlName="mileage"
+            class="form-controll" required></ion-input>
+        </ion-item>
+  
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.mileage">
+            <div class="error-message" *ngIf="carForm.get('mileage').hasError(validation.type) && 
+            (carForm.get('mileage').dirty || carForm.get('mileage').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+    </section>
+
+    <button ion-button full type="submit" [disabled]="!carForm.valid">Genereer werkbriefje</button>
+    </form>
+  
+</ion-content>

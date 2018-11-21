@@ -148,7 +148,7 @@ export class TimesheetPage implements OnDestroy {
   }
 
   openCarInputModal(choice: string) {
-    let modal = this.modalCtrl.create(CarInputComponent, { carChoice: choice });
+    let modal = this.modalCtrl.create(CarInputComponent, { carChoice: choice, user: this.userObject });
     modal.present();
   }
 

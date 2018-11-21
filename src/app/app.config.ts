@@ -132,6 +132,18 @@ export const slideOptions: NativeTransitionOptions = {
     { type: 'required', message: 'Vul aub een locatie in.' },
     { type: 'minlength', message: 'Locatie moet minimaal 4 tekens bevatten.' },
     { type: 'maxlength', message: 'Locatie mag niet langer zijn dan 25 tekens.' }
+  ],
+  'licenseplate': [
+    { type: 'required', message: 'Het is verplicht om een kenteken in te vullen.' },
+    { type: 'minlength', message: 'Kenteken moet minimaal 4 tekens bevatten.' },
+    { type: 'maxlength', message: 'Kenteken mag niet langer zijn dan 10 tekens.' }
+  ],
+  'companyMileage': [
+    { type: 'required', message: 'Vul aub de kilometerstand in.' },
+    { type: 'isValid', message: `Let op: gebruik een rond getal tussen de 5000 en 400000. Er mag dus geen '.' tussen zitten.`}
+  ],
+  'mileage': [
+    { type: 'required', message: 'Vul aub het aantal kilometers in.' },
+    { type: 'isValid', message: 'Let op: gebruik een rond getal tussen de 5 en 1000.'}
   ]
-
 };

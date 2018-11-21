@@ -1,10 +1,22 @@
 export const sampleTable = {
         content: [
-            {text: 'WEEK-WERKBRIEFJE', style: 'header'},
-            {text: 'Week nr. 46', style: 'subheader'},
+            {
+                text: 'WEEK-WERKBRIEFJE', 
+                style: 'header'
+            },
+            {
+                text: 'Week nr. 46', 
+                style: 'subheader'
+            },
             
-            {text: ['Ingevuld door Willem Waanders'], bold: true},
-            {text: ['Van maandag 12 november t/m vrijdag 16 november 2018'], bold: true},
+            {
+                text: 'Ingevuld door Willem Waanders',
+                bold: true
+            },
+            {
+                text: 'Van maandag 12 november t/m vrijdag 16 november 2018', 
+                bold: true
+            },
             {
                 style: 'tableExample',
                 margin: [0, 25],
@@ -18,7 +30,12 @@ export const sampleTable = {
                             'Maandag 12 nov',
                             '7.5',
                             'Needse molen',
-                            'Onderwerk: schilderen en afnemen'
+                            {
+                                ul: [
+                                    'item 1',
+                                    'item 2'
+                                ]
+                            }
                         ],
                         [
                             'Dinsdag 13 nov',
