@@ -1,6 +1,6 @@
 .legal-header
 {
-	@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
+	@include header-styles(color($colors, header, base), color($colors, header, contrast));
 }
 
 .legal-content
@@ -16,7 +16,7 @@
 
 	.legal-title
 	{
-		color: $secondary-theme-color;
+		color: $theme-color;
 		margin-top: 10px;
 		margin-bottom: 25px;
 	}

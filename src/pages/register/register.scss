@@ -7,6 +7,19 @@ page-register {
    .login-content
    {
 
+    .legal-stuff
+		{
+			color: $white-d;
+			text-align: center;
+			margin: 10px 12px;
+
+			.legal-action
+			{
+				font-weight: 500;
+				color: $theme-color;
+			}
+		}
+
     .section-title
     {
         font-size: 1.8rem;

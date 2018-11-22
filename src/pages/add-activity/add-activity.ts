@@ -32,6 +32,9 @@ export class AddActivityPage {
     public formBuilder: FormBuilder, public authProvider: AuthProvider, public layoutProvider: LayoutProvider) {
 
     this.user = this.navParams.get('userObject');
+  }
+
+  ionViewWillLoad() {
     this.firstActivityForm = new FormGroup({
       clientName: new FormControl('', Validators.compose([
         Validators.maxLength(25),

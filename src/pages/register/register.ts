@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LayoutProvider } from '../../providers/layout/layout.service';
@@ -7,6 +7,7 @@ import { UserProvider } from '../../providers/user/user.service';
 import { PasswordValidator } from '../../components/validators/password.validator';
 import { validation_messages } from '../../app/app.config';
 import { Subscription } from 'rxjs';
+import { PrivacyPolicyComponent } from '../../components/privacy-policy/privacy-policy';
 
 @IonicPage({
   name: 'register'
@@ -25,7 +26,7 @@ export class RegisterPage {
   validation_messages = validation_messages;
   userSubscription: Subscription;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modal: ModalController,
     public authProvider: AuthProvider, public layout: LayoutProvider, public userService: UserProvider) {
 
   }
@@ -47,15 +48,9 @@ export class RegisterPage {
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
-      matching_passwords: this.matching_passwords_group
+      matching_passwords: this.matching_passwords_group,
+      terms: new FormControl(true, Validators.pattern('true'))
     });
-
-    this.forgotPasswordForm = new FormGroup({
-      email: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ])),
-    })
   }
 
   async registerAccount(value: any) {
@@ -87,11 +82,9 @@ export class RegisterPage {
     }
   }
 
-  forgotPassword(value: any) {
-    console.log(value);
-    this.authProvider.resetPassword(value.email)
-      .then(_ => this.layout.presentBottomToast('Volg de aanwijzingen in de email om je wachtwoord te veranderen.'))
-      .catch(e => this.layout.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.'))
+  showPrivacyModal() {
+    let modal = this.modal.create(PrivacyPolicyComponent);
+    modal.present();
   }
 
   ngOnDestroy() {

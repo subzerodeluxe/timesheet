@@ -145,5 +145,8 @@ export const slideOptions: NativeTransitionOptions = {
   'mileage': [
     { type: 'required', message: 'Vul aub het aantal kilometers in.' },
     { type: 'isValid', message: 'Let op: gebruik een rond getal tussen de 5 en 1000.'}
+  ],
+  'terms': [
+    { type: 'pattern', message: 'Je moet akkoord gaan met de privacy voorwaarden.' }
   ]
 };

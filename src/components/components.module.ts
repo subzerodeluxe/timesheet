@@ -15,6 +15,7 @@ import { DailyFooterCounterComponent } from './daily-footer-counter/daily-footer
 import { NoWeekActivitiesComponent } from './no-week-activities/no-week-activities';
 import { ActivityFormComponent } from './activity-form/activity-form';
 import { CarInputComponent } from './car-input/car-input';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy';
 
 @NgModule({
 	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
@@ -24,7 +25,8 @@ import { CarInputComponent } from './car-input/car-input';
     DailyFooterCounterComponent,
     NoWeekActivitiesComponent,
     ActivityFormComponent,
-    CarInputComponent
+    CarInputComponent,
+    PrivacyPolicyComponent
     ],
 	imports: [IonicModule, PipesModule, CommonModule, ReactiveFormsModule],
 	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
@@ -34,7 +36,8 @@ import { CarInputComponent } from './car-input/car-input';
     DailyFooterCounterComponent,
     NoWeekActivitiesComponent,
     ActivityFormComponent,
-    CarInputComponent
+    CarInputComponent,
+    PrivacyPolicyComponent
     ]
 })
 export class ComponentsModule {}

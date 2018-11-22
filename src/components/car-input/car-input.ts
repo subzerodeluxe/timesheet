@@ -42,15 +42,10 @@ export class CarInputComponent {
         companyMileage: new FormControl('', Validators.compose([
           Validators.required,
           CompanyMileageValidator.isValid
-        ])),
+        ]))
     });
     
     this.carForm = new FormGroup({
-      licenseplate: new FormControl('', Validators.compose([
-        Validators.maxLength(10),
-        Validators.minLength(4),
-        Validators.required
-        ])),
         mileage: new FormControl('', Validators.compose([
           Validators.required,
           MileageValidator.isValid

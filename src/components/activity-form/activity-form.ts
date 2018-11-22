@@ -45,7 +45,9 @@ export class ActivityFormComponent {
         console.log('Hebben we een user?', user);
         this.user = user;
       });
+  }
 
+  ionViewWillLoad() {
     this.activityForm = new FormGroup({
       clientName: new FormControl('', Validators.compose([
         Validators.maxLength(25),

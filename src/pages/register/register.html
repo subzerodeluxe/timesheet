@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content class="login-content auth-content">
+    <h2 class="section-title">Maak een profiel aan</h2>
   <form class="login-form auth-form validations-form" [formGroup]="registerForm" (ngSubmit)="registerAccount(registerForm.value)">
     <ion-item>
       <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
@@ -52,9 +53,20 @@
         </ng-container>
       </div>
     </div>
-    
 
-     
+    <ion-item class="terms-item">
+        <ion-label>Ik ga akkoord met de privacy voorwaarden</ion-label>
+        <ion-checkbox formControlName="terms"></ion-checkbox>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.terms">
+          <div class="error-message" *ngIf="registerForm.get('terms').hasError(validation.type) 
+          && (registerForm.get('terms').dirty || registerForm.get('terms').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+    
     <button ion-button block class="auth-action-button login-button" type="submit" [disabled]="!registerForm.valid">Registreer</button>
   </form>
 
@@ -70,33 +82,7 @@
     <ion-col no-padding width-50></ion-col>
   </ion-row>
 
-  <h2 class="section-title">Wachtwoord vergeten?</h2>
-  <form class="login-form auth-form validations-form" [formGroup]="forgotPasswordForm" (ngSubmit)="forgotPassword(forgotPasswordForm.value)">
-    <ion-item>
-      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-    </ion-item>
-
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.email">
-          <div class="error-message" *ngIf="forgotPasswordForm.get('email').hasError(validation.type) && (forgotPasswordForm.get('email').dirty 
-          || forgotPasswordForm.get('email').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
-      <button ion-button block class="auth-action-button login-button" type="submit" [disabled]="!forgotPasswordForm.valid">Verstuur nieuw wachtwoord</button>
-
-    </form>
-
-    <div class="validation-errors">
-      <ng-container >
-        <div class="error-message" *ngIf="errorMessage">
-               {{ errorMessage }}
-        </div>
-      </ng-container>
-    </div>
-    
-    <ion-row class="alt-options">
-      <ion-col no-padding width-50></ion-col>
-    </ion-row>
+  <p class="legal-stuff">
+      Lees de <a class="legal-action" (click)="showPrivacyModal()">privacy voorwaarden.</a>
+  </p>
 </ion-content>

@@ -43,12 +43,12 @@
         </div>
     </section>
 
-    <button ion-button full type="submit" [disabled]="!companyCarForm.valid">Genereer werkbriefje</button>
+    <button ion-button full type="submit">Maak werkbriefje</button>
   </form>
 
   <form *ngIf="companyCar === false" class="activity-form validations-form" [formGroup]="carForm" (ngSubmit)="submitCar(carForm.value)">
     <section class="form-section">
-        <h2 class="section-title">Hoeveel kilometer heb je deze week gereden?</h2>
+        <h2 class="section-title">Hoeveel kilometer heb je deze week gereden met je eigen auto?</h2>
         
         <ion-item>
             <ion-label floating>Aantal kilometer</ion-label>
@@ -66,7 +66,7 @@
         </div>
     </section>
 
-    <button ion-button full type="submit" [disabled]="!carForm.valid">Genereer werkbriefje</button>
+    <button ion-button full type="submit" [disabled]="!carForm.valid">Maak werkbriefje</button>
     </form>
   
 </ion-content>

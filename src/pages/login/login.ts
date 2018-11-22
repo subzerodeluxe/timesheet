@@ -21,6 +21,9 @@ export class LoginPage implements OnDestroy {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider,
   public authProvider: AuthProvider, public layout: LayoutProvider) {
+  }
+
+  ionViewWillLoad() {
     this.loginForm = new FormGroup({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
@@ -32,7 +35,7 @@ export class LoginPage implements OnDestroy {
   }
 
   forgotPassword() {
-    this.navCtrl.push('register');
+    this.navCtrl.push('forgot-password');
   }
 
   async regularLogin(value: any) {

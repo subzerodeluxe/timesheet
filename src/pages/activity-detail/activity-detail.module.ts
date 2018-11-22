@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { ActivityDetailPage } from './activity-detail';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ComponentsModule } from '../../components/components.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { ComponentsModule } from '../../components/components.module';
   imports: [
     IonicPageModule.forChild(ActivityDetailPage),
     ComponentsModule,
+    ReactiveFormsModule,
     PipesModule
   ]
 })
