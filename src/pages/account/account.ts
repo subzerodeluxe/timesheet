@@ -58,10 +58,10 @@ export class AccountPage implements OnInit, OnDestroy {
     this.profileImage = './assets/images/amerongen-schilderwerken.jpg';
     this.authenticatedEmployee$ = this.userProvider.getAuthenticatedUserProfile().subscribe(employeeProfile => {
       this.employee = employeeProfile;
-      if (employeeProfile.vehicleInformation.licensePlate === null) {
+      if (employeeProfile.vehicleInformation.licenseplate === null) {
         this.licensePlate = '';
       } else {
-        this.licensePlate = employeeProfile.vehicleInformation.licensePlate;
+        this.licensePlate = employeeProfile.vehicleInformation.licenseplate;
       }
       console.log('Opgehaalde account: ', this.employee);
     }, err => {
@@ -70,8 +70,7 @@ export class AccountPage implements OnInit, OnDestroy {
   }
 
   async saveProfile(employeeObject: any) {
-    let emObject: Employee = { firstName: employeeObject.firstName, lastName: employeeObject.lastName, 
-        vehicleInformation: { licensePlate: employeeObject.licensePlate, vehicleNotPresent: employeeObject.vehicleNotPresent }};
+    let emObject: Employee = { firstName: employeeObject.firstName, lastName: employeeObject.lastName};
     this.layout.presentLoadingDefault(); 
     const result = await this.userProvider.saveProfile(emObject, this.employee.uid);
     if (result) {

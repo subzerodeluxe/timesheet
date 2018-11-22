@@ -1,10 +1,5 @@
 export interface Vehicle {
-    licensePlate?: string; // 59-VGR-5    --> auto blijft bij Willem, mag dus vast staan (?) 
-    mileAge?: number; // 128.895 
-    vehicleNotPresent: boolean;
-}
-
-export interface VehicleInfo {
-    licensePlate: string;
-    type: string // company or private
+    licenseplate?: string; // 59-VGR-5    --> auto blijft bij Willem, mag dus vast staan (?) 
+    mileage?: string // 
+    type: string // private or company
 }

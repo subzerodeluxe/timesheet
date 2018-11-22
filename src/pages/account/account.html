@@ -37,19 +37,6 @@
           </div>
       </section>
 
-        <section class="form-section">
-          <h2 class="section-title">Aanvullende informatie</h2> 
-            <ion-item *ngIf="!checked">
-              <ion-label stacked>Kenteken bedrijfsauto</ion-label>
-              <ion-input type="text" name="licensePlate" [(ngModel)]="licensePlate" formControlName="licensePlate"></ion-input>
-            </ion-item> 
-
-            <ion-item class="terms-item">
-              <ion-label>Geen bedrijfsauto</ion-label>
-              <ion-checkbox [(ngModel)]="isToggled" formControlName="vehicleNotPresent" (click)="vehicleIsToggled($event)"></ion-checkbox>
-            </ion-item>
-        </section>
-
         <button ion-button 
           icon-start block class="auth-action-button" 
           [hidden]="!profileForm.valid" 
@@ -59,7 +46,6 @@
         <button ion-button icon-start block class="auth-action-button" (click)="logOut()">
             <ion-icon name="log-out"></ion-icon>
             Uitloggen</button> 
-
       </form>
 
       

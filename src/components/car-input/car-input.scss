@@ -51,16 +51,17 @@ car-input {
 				}
 			}
 
-			.section-title
-			{
-				font-size: 1.8rem;
-				line-height: 1.2;
-				letter-spacing: 1.1px;
-				text-align: center;
-				color: $theme-color;
-				font-weight: 400;
-				margin: 0px;
-			}
+      .section-title
+      {
+          font-size: 1.8rem;
+          line-height: 1.2;
+          letter-spacing: 1.1px;
+          text-align: center;
+          color: $theme-color;
+          font-weight: 400;
+          margin-top: 35px;
+      }
+ 
 
 			.form-action-button
 			{

@@ -1,18 +1,19 @@
 <ion-header>
-  <ion-navbar>
-    <ion-buttons end>
-        <button ion-button icon-only (click)="closeModal()">
-          <ion-icon name="close"></ion-icon>
-        </button>
-      </ion-buttons>
-  </ion-navbar>
+  <ion-toolbar>
+    <ion-buttons start>
+      <button ion-button (click)="closeModal()">
+        <span showWhen="ios">Annuleer</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding class="forms-validations-content">
-    <form *ngIf="companyCar === true" class="activity-form validations-form" [formGroup]="companyCarForm" (ngSubmit)="submitCar(companyCarForm.value)">
+  <form *ngIf="companyCar === true" class="activity-form validations-form" [formGroup]="companyCarForm">
     <section class="form-section">
         <h2 class="section-title">Informatie over bedrijfsauto</h2>
-        <ion-item>
+        <ion-item> 
           <ion-label floating>Kenteken</ion-label>
           <ion-input name="licenseplate" type="text" formControlName="licenseplate"
           class="form-controll" required></ion-input>
@@ -29,10 +30,10 @@
 
         <ion-item>
             <ion-label floating>Huidige kilometerstand</ion-label>
-            <ion-input name="companyMileage" type="number" formControlName="companyMileage"
-            class="form-controll" required></ion-input>
+            <ion-input name="companyMileage"  formControlName="companyMileage" [brmasker]="{numberAndTousand: true, thousand: '.'}"
+            class="form-controll"  required></ion-input>
         </ion-item>
-  
+   
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.companyMileage">
             <div class="error-message" *ngIf="companyCarForm.get('companyMileage').hasError(validation.type) && 
@@ -43,17 +44,17 @@
         </div>
     </section>
 
-    <button ion-button full type="submit">Maak werkbriefje</button>
+    <button ion-button full (click)="addCarToPDF(companyCarForm.value)">Maak werkbriefje</button>
   </form>
 
-  <form *ngIf="companyCar === false" class="activity-form validations-form" [formGroup]="carForm" (ngSubmit)="submitCar(carForm.value)">
+  <form *ngIf="companyCar === false" class="activity-form validations-form" [formGroup]="carForm">
     <section class="form-section">
         <h2 class="section-title">Hoeveel kilometer heb je deze week gereden met je eigen auto?</h2>
         
         <ion-item>
             <ion-label floating>Aantal kilometer</ion-label>
-            <ion-input name="mileage" type="number" formControlName="mileage"
-            class="form-controll" required></ion-input>
+            <ion-input name="mileage" type="number" formControlName="mileage" [brmasker]="{numberAndTousand: true, thousand: '.'}"
+            class="form-controll"></ion-input>
         </ion-item>
   
         <div class="validation-errors">
@@ -66,7 +67,7 @@
         </div>
     </section>
 
-    <button ion-button full type="submit" [disabled]="!carForm.valid">Maak werkbriefje</button>
-    </form>
+    <button ion-button full (click)="addCarToPDF(carForm.value)">Maak werkbriefje</button>
+  </form>
   
 </ion-content>

@@ -4,25 +4,27 @@ export class MileageValidator {
  
     static isValid(control: FormControl): any {
  
-        if(isNaN(control.value)){
+        let input = parseInt(control.value)
+        console.log(input);
+        if(isNaN(input)){
             return {
                 isValid: true
               };
         }
  
-        if(control.value % 1 !== 0){
+        if(input % 1 !== 0){
             return {
                 isValid: true
               };
         }
  
-        if(control.value < 5){
+        if(input < 5){
             return {
                 isValid: true
               };
         }
  
-        if (control.value > 1000){
+        if (input > 1000){
             return {
                 isValid: true
             };

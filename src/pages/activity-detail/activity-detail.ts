@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, IonicPage, Form } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth.service';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { validation_messages } from '../../app/app.config';
@@ -17,7 +16,6 @@ export class ActivityDetailPage {
 
   activityObject: any;
   clientName: string; 
-  activityForm: FormGroup;
   minutesDifference: number;
   minutesWithBreakDifference: number;
   validation_messages = validation_messages;
@@ -25,7 +23,7 @@ export class ActivityDetailPage {
   update: boolean = true;  
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public layout: LayoutProvider, public time: TimesheetProvider,
-    public authProvider: AuthProvider, public formBuilder: FormBuilder) {
+    public authProvider: AuthProvider) {
 
     if (this.navParams.get("activity") != null) {
       this.clientName = this.navParams.get("activity").clientName; 

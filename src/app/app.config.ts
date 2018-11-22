@@ -140,11 +140,11 @@ export const slideOptions: NativeTransitionOptions = {
   ],
   'companyMileage': [
     { type: 'required', message: 'Vul aub de kilometerstand in.' },
-    { type: 'isValid', message: `Let op: gebruik een rond getal tussen de 5000 en 400000. Er mag dus geen '.' tussen zitten.`}
+    { type: 'isValid', message: `Let op: gebruik een rond getal tussen de 5.000 en 400.000.`}
   ],
   'mileage': [
     { type: 'required', message: 'Vul aub het aantal kilometers in.' },
-    { type: 'isValid', message: 'Let op: gebruik een rond getal tussen de 5 en 1000.'}
+    { type: 'isValid', message: 'Let op: gebruik een rond getal tussen de 5 en 1.000.'}
   ],
   'terms': [
     { type: 'pattern', message: 'Je moet akkoord gaan met de privacy voorwaarden.' }

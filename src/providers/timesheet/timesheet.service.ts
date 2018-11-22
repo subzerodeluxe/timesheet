@@ -10,13 +10,6 @@ import * as moment from 'moment';
 import 'moment-duration-format';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { LayoutProvider } from '../layout/layout.service';
-import { FileOpener } from '@ionic-native/file-opener';
-import { Platform } from 'ionic-angular';
-import { File } from '@ionic-native/file';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Injectable()
 export class TimesheetProvider {
@@ -31,9 +24,7 @@ export class TimesheetProvider {
   public totalWeekMinutesCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(public afs: AngularFirestore, public userService: UserProvider, public layout: LayoutProvider,
-    private fns: AngularFireFunctions, public plt: Platform, 
-    private file: File, private fileOpener: FileOpener,
-    public authService: AuthProvider, public storage: Storage) {
+    private fns: AngularFireFunctions, public authService: AuthProvider, public storage: Storage) {
       this.activitiesRef = this.afs.collection('activities');
 
       this.currentDate = this.getCurrentDayNumber().toString(); 
@@ -67,11 +58,7 @@ export class TimesheetProvider {
         )
   }
 
-
-
-
   findTimesheetByUserAndWeekNumber(): Observable<any> {
-
     const activities = this.afs.collection('activities', ref => {
       return ref.where('timesheetId', '==', `week-47-2018-eFI1cHuXpyS01Yjcj8jWAQavIMN2`);
          }).snapshotChanges().pipe(
@@ -85,43 +72,7 @@ export class TimesheetProvider {
       
     const timesheet = this.afs.collection('timesheets').doc('week-47-2018-eFI1cHuXpyS01Yjcj8jWAQavIMN2').valueChanges();
     const correctTimesheet = combineLatest(activities, timesheet);
-
     return correctTimesheet;
-      
-  }
-
-
-  createLocalPDF(docDefinition: any) {
-    try {
-      const generatedPDF = pdfMake.createPdf(docDefinition);
-      return generatedPDF;
-    } catch (err) {
-      return err;
-    }
-  }
-
-  downloadLocalPDF(pdfObj: any, userObject: any) {
-    const weekNumber = this.getCurrentWeekNumber().toString();
-    const currentYear = this.getCurrentYear();
-    const file = `werkurenbriefje-week-${weekNumber}-${currentYear}-${userObject.firstName}-${userObject.lastName}`;
-
-    if (this.plt.is('cordova')) {
-      pdfObj.getBuffer((buffer) => {
-        let blob = new Blob([buffer], { type: 'application/pdf' });
-        // Save the PDF to the data Directorys of our App
-        this.file.writeFile(this.file.dataDirectory, file, blob, { replace: true }).then(fileEntry => {
-          // Open the PDf with the correct OS tools
-          this.fileOpener.open(this.file.dataDirectory + file, 'application/pdf');
-        }).catch(e => this.layout.presentBottomToast('Er ging iets mis met het ophalen van het werkbriefje. Probeer het opnieuw.')); 
-      });
-    } else {
-      // On a browser simply use download!
-      try {
-        pdfObj.download(file);
-      } catch (error) {
-        this.layout.presentBottomToast('Er ging iets mis met het ophalen van het werkbriefje. Probeer het opnieuw.');
-      }
-    }
   }
 
   calculateDailyMinutes(incomingMinutes: any) {
@@ -161,6 +112,7 @@ export class TimesheetProvider {
     const timeObject = {
       earliestDate: moment(earliestDate).format('dddd D MMMM'),
       latestDate: moment(latestDate).format('dddd D MMMM'),
+      weekNumber: moment(earliestDate).format('WW'),
       year: moment(earliestDate).format('YYYY')
     };
     

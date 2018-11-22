@@ -76,11 +76,7 @@ export class AuthProvider {
     const data: Employee = {
       uid: user.user.uid,
       email: user.user.email,
-      creationTime: user.user.metadata.creationTime,
-      vehicleInformation: {
-        licensePlate: '',
-        vehicleNotPresent: true
-      }
+      creationTime: user.user.metadata.creationTime
     };
 
     return userRef.set(data); 
@@ -97,7 +93,7 @@ export class AuthProvider {
         errorMessage = 'Inloggegevens zijn niet langer geldig. Probeer opnieuw in te loggen.';
       break; 
       case ('auth/invalid-email'):
-        errorMessage = 'Het emailadres is niet correct geformateerd.';
+        errorMessage = 'Geen geldig emailadres.';
       break; 
       case ('auth/email-already-in-use'):
       errorMessage = 'Er bestaat al een account met dit emailadres.';

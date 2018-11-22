@@ -16,19 +16,22 @@ import { NoWeekActivitiesComponent } from './no-week-activities/no-week-activiti
 import { ActivityFormComponent } from './activity-form/activity-form';
 import { CarInputComponent } from './car-input/car-input';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy';
+import { BrMaskerModule } from 'brmasker-ionic-3';
 
 @NgModule({
-	declarations: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
-    NoActivitiesComponent,
-    SkeletonItemComponent,
-    WeeklyFooterCounterComponent,
-    DailyFooterCounterComponent,
-    NoWeekActivitiesComponent,
-    ActivityFormComponent,
-    CarInputComponent,
-    PrivacyPolicyComponent
+	declarations: [
+        BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
+        NoActivitiesComponent,
+        SkeletonItemComponent,
+        WeeklyFooterCounterComponent,
+        DailyFooterCounterComponent,
+        NoWeekActivitiesComponent,
+        ActivityFormComponent,
+        CarInputComponent,
+        PrivacyPolicyComponent
     ],
-	imports: [IonicModule, PipesModule, CommonModule, ReactiveFormsModule],
+	imports: [IonicModule, PipesModule, CommonModule, ReactiveFormsModule, BrMaskerModule,
+    ],
 	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
     NoActivitiesComponent,
     SkeletonItemComponent,

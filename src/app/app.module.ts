@@ -35,6 +35,7 @@ import { PipesModule } from '../pipes/pipes.module';
 import { LocalNotificationService } from '../providers/local-notification-service/local-notification.service';
 import { CarInputComponent } from '../components/car-input/car-input';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy';
+import { PdfProvider } from '../providers/pdf/pdf';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-pol
     LayoutProvider,
     UserProvider,
     LocalNotifications,
-    LocalNotificationService
+    LocalNotificationService,
+    PdfProvider
   ]
 })
 export class AppModule {}
