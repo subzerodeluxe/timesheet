@@ -4,17 +4,18 @@ import { UserProvider } from '../user/user.service';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { Storage } from '@ionic/storage';
-import { map, mergeMap, first} from 'rxjs/operators';
-import { firebaseActivity } from '../../models/activityLine.interface';
+import { map } from 'rxjs/operators';
+import { firebaseActivity, firebaseTimesheet } from '../../models/activityLine.interface';
 import * as moment from 'moment';
 import 'moment-duration-format';
-import { AngularFireFunctions } from '@angular/fire/functions';
 import { LayoutProvider } from '../layout/layout.service';
+import { Vehicle } from '../../models/vehicle.interface';
+import { Employee } from '../../models/employee.interface';
 
 @Injectable()
 export class TimesheetProvider {
 
-  enrichedActivity: any;
+  enrichedActivity: firebaseActivity;
   activitiesRef: AngularFirestoreCollection<any>;
   currentDate: string;
   weekNumber: string;
@@ -24,7 +25,7 @@ export class TimesheetProvider {
   public totalWeekMinutesCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(public afs: AngularFirestore, public userService: UserProvider, public layout: LayoutProvider,
-    private fns: AngularFireFunctions, public authService: AuthProvider, public storage: Storage) {
+     public authService: AuthProvider, public storage: Storage) {
       this.activitiesRef = this.afs.collection('activities');
 
       this.currentDate = this.getCurrentDayNumber().toString(); 
@@ -124,46 +125,52 @@ export class TimesheetProvider {
     return formattedDate;
   }
 
-  async saveActivity(activityObject: any, user: any) {
-    console.log('Doorgestuurde user: ', user.uid);
+  async saveActivity(activityObject: any, user: any, weekActivity: boolean) {
     const weekNumber = this.getCurrentWeekNumber().toString();
     const year = this.getCurrentYear().toString(); 
   
+    let correctDayNumber;
+    if (weekActivity === true) {
+      correctDayNumber = this.calculateDayNumber(activityObject.isoDateString);
+    } else {
+      correctDayNumber = this.getCurrentDayNumber().toString();
+    }
+    
     this.enrichedActivity = {
       timesheetId: `week-${weekNumber}-${year}-${user.uid}`,
       uid: user.uid,
-      userDateString: `${this.getCurrentDayNumber().toString()}-week-${weekNumber}-${year}-${user.uid}`,
+      userDateString: `${correctDayNumber}-week-${weekNumber}-${year}-${user.uid}`,
       ...activityObject
     };
     this.activitiesRef.add(this.enrichedActivity);
   }
 
-  async saveActivityWithCustomDate(activityObject: any, user: any) {
-    console.log('Doorgestuurde user: ', user.uid);
-    const weekNumber = this.getCurrentWeekNumber().toString();
-    const year = this.getCurrentYear().toString(); 
-    const dayNumber = this.calculateDayNumber(activityObject.isoDateString);
-
-    this.enrichedActivity = {
-      timesheetId: `week-${weekNumber}-${year}-${user.uid}`,
-      uid: user.uid,
-      userDateString: `${dayNumber.toString()}-week-${weekNumber}-${year}-${user.uid}`,
-      ...activityObject
-    };
-    this.activitiesRef.add(this.enrichedActivity);
-  }
-
-  async updateActivity(activityObject: any, id: string): Promise<boolean> { 
+  updateActivity(activityObject: any, id: string) { 
     const ref = this.activitiesRef.doc(id)
-    try {
-      const uploadedActivity = activityObject;
-      await ref.update({...uploadedActivity});
-      return true;
-    } 
-    catch(e) {
-      console.log('Er gaat iets niet goed. ', e);
-      return false;
-    } 
+    const uploadedActivity = activityObject;
+    return ref.update({...uploadedActivity});
+  }
+      
+  addTimesheet(carObject: Vehicle, user: Employee) {
+    const ref = this.afs.collection('timesheets');
+    const docId = `week-${this.weekNumber}-${this.year}-${user.uid}`;
+    const doc = ref.doc(docId)
+
+    const timesheetObject: firebaseTimesheet = 
+    {
+      vehicleInfo: {
+        type: carObject.type,
+        mileage: carObject.mileage || "",
+        licenseplate: carObject.licenseplate || ""
+      },
+      employee: {
+        firstName: user.firstName,
+        lastName: user.lastName
+      },
+      timesheetId: docId
+    };
+    
+    return doc.set({...timesheetObject});
   }
 
   calculateMinutesDifference(startTime, endTime): number {

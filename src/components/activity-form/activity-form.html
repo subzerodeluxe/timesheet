@@ -1,116 +1,74 @@
-<form class="sample-form validations-form" [formGroup]="activityForm" (ngSubmit)="performChange(activityForm.value, update)">
-    <section class="form-section">
+<form *ngIf="update" class="sample-form validations-form" [formGroup]="updateActivityForm" 
+(ngSubmit)="performChange(updateActivityForm.value, update)">
+  <section class="form-section">
+    <h2 class="section-title">Klantgegevens</h2>
+    <ion-item>
+      <ion-label floating>Naam van klant</ion-label>
+      <ion-input name="clientName" type="text" formControlName="clientName" [(ngModel)]="activityObject.clientName" 
+        class="form-controll" required></ion-input>
+    </ion-item>
 
-      <h2 class="section-title">Klantgegevens</h2>
-      <ion-item *ngIf="update">
-        <ion-label floating>Naam van klant</ion-label>
-        <ion-input name="clientName" type="text" formControlName="clientName" [(ngModel)]="activityObject.clientName" 
-          class="form-controll" required></ion-input>
-      </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.clientName">
+        <div class="error-message" *ngIf="updateActivityForm.get('clientName').hasError(validation.type) 
+          && (updateActivityForm.get('clientName').dirty || updateActivityForm.get('clientName').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
-      <ion-item *ngIf="!update">
-          <ion-label floating>Naam van klant</ion-label>
-          <ion-input name="clientName" type="text" formControlName="clientName"
-            class="form-controll" required></ion-input>
-        </ion-item>
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.clientName">
-          <div class="error-message" *ngIf="activityForm.get('clientName').hasError(validation.type) 
-            && (activityForm.get('clientName').dirty || activityForm.get('clientName').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
+    <ion-item>
+      <ion-label floating>Locatie</ion-label>
+      <ion-input name="location" type="text" formControlName="location" [(ngModel)]="activityObject.location" 
+        class="form-controll" required></ion-input>
+    </ion-item>
 
-      <ion-item *ngIf="update">
-        <ion-label floating>Locatie</ion-label>
-        <ion-input name="location" type="text" formControlName="location" [(ngModel)]="activityObject.location" 
-          class="form-controll" required></ion-input>
-      </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.location">
+        <div class="error-message" *ngIf="updateActivityForm.get('location').hasError(validation.type) 
+          && (updateActivityForm.get('location').dirty || updateActivityForm.get('location').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+  </section> 
 
-      <ion-item *ngIf="!update">
-          <ion-label floating>Locatie</ion-label>
-          <ion-input name="location" type="text" formControlName="location" 
-            class="form-controll" required></ion-input>
-        </ion-item>
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.location">
-          <div class="error-message" *ngIf="activityForm.get('location').hasError(validation.type) 
-            && (activityForm.get('location').dirty || activityForm.get('location').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
-    </section> 
-
-    <section class="form-section">
-      <h2 *ngIf="update && !minutesWithBreakDifference" class="section-title">Tijden</h2>
-      <h2 *ngIf="update && minutesWithBreakDifference" class="section-title">{{ minutesWithBreakDifference | formatHours}} gewerkt inclusief pauze</h2>
-      
-      <h2 *ngIf="!update && !minutesWithBreakDifference" class="section-title">Tijdstip en datum</h2>
-      <h2 *ngIf="!update && minutesWithBreakDifference" class="section-title">{{ minutesWithBreakDifference | formatHours}} gewerkt inclusief pauze</h2>
-
-      <ion-item *ngIf="!update">
-        <ion-label floating>Datum</ion-label>
-        <ion-datetime 
-        formControlName="date" 
-        [(ngModel)]="timeObject.start"
-        displayFormat="DD/MM/YY" 
-        [min]="timeObject.min" 
-        [max]="timeObject.max"
-        required 
-        pickerFormat="DD-MM-YYYY" 
+  <section class="form-section">
+    <h2 *ngIf="update && !minutesWithBreakDifference" class="section-title">Tijden</h2>
+    <h2 *ngIf="update && minutesWithBreakDifference" class="section-title">{{ minutesWithBreakDifference | formatHours}} gewerkt inclusief pauze</h2>
+  
+    <ion-item>
+      <ion-label floating>Begonnen om</ion-label>
+      <ion-datetime 
+        displayFormat="HH:mm" 
+        minuteValues="0,15,30,45"
+        formControlName="startTime"
+        [(ngModel)]="activityObject.startTime" 
         cancelText=Annuleer 
         doneText=Bevestig></ion-datetime>
-      </ion-item>
+    </ion-item>
 
-      <ion-item *ngIf="update">
-        <ion-label floating>Begonnen om</ion-label>
+    <ion-item>
+      <ion-label floating>Gestopt om</ion-label>
         <ion-datetime 
-          (ionChange)="calculateBreak(activityForm.value.startTime, activityForm.value.endTime)"  
-          displayFormat="HH:mm" 
-          minuteValues="0,15,30,45"
-          formControlName="startTime"
-          [(ngModel)]="activityObject.startTime" 
-          cancelText=Annuleer 
-          doneText=Bevestig></ion-datetime>
-      </ion-item>
-
-      <ion-item *ngIf="!update">
-          <ion-label floating>Begonnen om</ion-label>
-          <ion-datetime 
-            (ionChange)="calculateBreak(activityForm.value.startTime, activityForm.value.endTime)"  
-            displayFormat="HH:mm" 
-            minuteValues="0,15,30,45"
-            formControlName="startTime"
+            (ionChange)="calculateBreak(updateActivityForm.value.startTime, updateActivityForm.value.endTime)"
+            displayFormat="HH:mm"
+            minuteValues="0,15,30,45"  
+            formControlName="endTime"
+            [(ngModel)]="activityObject.endTime"
             cancelText=Annuleer 
-            doneText=Bevestig></ion-datetime>
-        </ion-item>
+            doneText=Bevestig>
+        </ion-datetime>
+    </ion-item>
+  </section>
 
-      <ion-item *ngIf="update">
-        <ion-label floating>Gestopt om</ion-label>
-          <ion-datetime 
-              (ionChange)="calculateBreak(activityForm.value.startTime, activityForm.value.endTime)"
-              displayFormat="HH:mm"
-              minuteValues="0,15,30,45" 
-              formControlName="endTime"
-              [(ngModel)]="activityObject.endTime"
-              cancelText=Annuleer 
-              doneText=Bevestig>
-          </ion-datetime>
-      </ion-item>
-
-      <ion-item *ngIf="!update">
-          <ion-label floating>Gestopt om</ion-label>
-            <ion-datetime 
-                (ionChange)="calculateBreak(activityForm.value.startTime, activityForm.value.endTime)"
-                displayFormat="HH:mm"
-                minuteValues="0,15,30,45" 
-                formControlName="endTime"
-                cancelText=Annuleer 
-                doneText=Bevestig>
-            </ion-datetime>
-        </ion-item>
-    </section>
-    <button ion-button full type="submit" [disabled]="!activityForm.valid">Opslaan</button>
-  </form>
+  <section class="form-section">
+      <h2 class="section-title">Werkzaamheden</h2>
+      <div *ngFor="let activity of activityObject.activities">
+        <ul>
+          <li>{{ activity.name }}</li>
+        </ul>
+      </div>
+  </section>
+  <button ion-button full type="submit" [disabled]="!updateActivityForm.valid">Opslaan</button>
+</form> 

@@ -7,7 +7,6 @@
 
   <h2 class="section-title">Persoonlijke gegevens</h2> 
 
-
     <form [formGroup]="profileForm" class="profile-form">
       <section class="form-section">
           <ion-item>
@@ -37,16 +36,8 @@
           </div>
       </section>
 
-        <button ion-button 
-          icon-start block class="auth-action-button" 
-          [hidden]="!profileForm.valid" 
+        <button ion-button class="form-action-button" [disabled]="!profileForm.valid" 
           (click)="saveProfile(profileForm.value)">
           Gegevens opslaan</button> 
-        
-        <button ion-button icon-start block class="auth-action-button" (click)="logOut()">
-            <ion-icon name="log-out"></ion-icon>
-            Uitloggen</button> 
       </form>
-
-      
 </ion-content>

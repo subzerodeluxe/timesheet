@@ -8,8 +8,25 @@
   <ion-slides #slider (ionSlideDidChange)="onSlideChanged()" [pager]="true" paginationType="progress">
     <ion-slide class="slide-1">
       <form class="activity-form validations-form" [formGroup]="firstActivityForm"> 
-          <h2 class="section-title">Waar ben je geweest?</h2>
+        <h2 class="section-title">Waar ben je geweest?</h2>
         <section class="form-section"> 
+          
+        <ion-item *ngIf="weekActivity === true">
+          <ion-label floating>Datum</ion-label>
+          <ion-datetime 
+            formControlName="date" 
+            [(ngModel)]="timeObject.start"
+            displayFormat="DD MMMM YYYY" 
+            [min]="timeObject.min" 
+            [max]="timeObject.max"
+            required
+            monthNames="januari, februari, maart, april, mei, juni, juli, augustus, september, oktober, november, december"
+            monthShortNames="jan, feb, mrt, apr, mei, jun, jul, aug, sep, okt, nov, dec"
+            pickerFormat="DD-MM-YYYY" 
+            cancelText=Annuleer 
+            doneText=Bevestig></ion-datetime> 
+          </ion-item>
+
           <ion-item>
             <ion-label floating>Naam van klant</ion-label>
             <ion-input type="text" formControlName="clientName" class="form-controll" required></ion-input>
@@ -23,7 +40,7 @@
             </div>
 
           <ion-item>
-              <ion-label floating>Locatie</ion-label>
+              <ion-label floating>Plaatsnaam en/of adres</ion-label>
               <ion-input type="text" formControlName="location" class="form-controll" required></ion-input>
           </ion-item>
 
@@ -84,14 +101,11 @@
               <ion-item>
                   <ion-label floating>Hoe laat ben je begonnen?</ion-label>
                   <ion-datetime 
-                    (ionChange)="calculateBreak(thirdActivityForm.value.startTime, thirdActivityForm.value.endTime)"
                     displayFormat="HH:mm" 
                     minuteValues="0,15,30,45"
                     formControlName="startTime" 
                     cancelText=Annuleer 
                     doneText=Bevestig></ion-datetime>
-
-                  <!-- <ion-input type="time" formControlName="startTime" class="form-controll" required></ion-input> -->
               </ion-item>
 
               <ion-item>
@@ -108,7 +122,7 @@
           </section>
 
           
-          <button ion-button icon-right (click)="saveActivity()">Opslaan</button>
+          <button ion-button (click)="saveActivity()">Opslaan</button>
           
         </form>
       </ion-slide>

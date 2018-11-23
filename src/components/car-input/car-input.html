@@ -67,7 +67,7 @@
         </div>
     </section>
 
-    <button ion-button full (click)="addCarToPDF(carForm.value)">Maak werkbriefje</button>
+    <button ion-button full [disabled]="!carForm.valid" (click)="addCarToPDF(carForm.value)">Maak werkbriefje</button>
   </form>
   
 </ion-content>

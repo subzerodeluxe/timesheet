@@ -4,8 +4,10 @@ import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@ang
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
-import { ActivityLine } from '../../models/activityLine.interface';
+import { firebaseActivity } from '../../models/activityLine.interface';
 import { validation_messages } from '../../app/app.config';
+import { UserProvider } from '../../providers/user/user.service';
+import { Subscription } from 'rxjs';
 
 @IonicPage({
   name: 'add-activity'
@@ -22,16 +24,31 @@ export class AddActivityPage {
   totalMinutes: number; 
   lastSlide = false;
   user: any;
+  timeObject: any;
+  subscription: Subscription;
+  weekActivity = false;
   validation_messages = validation_messages;
   minutesDifference: number;
   minutesWithBreakDifference: number;
   usedBreak: boolean = false;
   @ViewChild('slider') slider: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public time: TimesheetProvider,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public time: TimesheetProvider, public userProvider: UserProvider,
     public formBuilder: FormBuilder, public authProvider: AuthProvider, public layoutProvider: LayoutProvider) {
-
-    this.user = this.navParams.get('userObject');
+    
+      this.timeObject = this.time.calculateDateRange(); 
+      if (this.navParams.get('userObject') != null) {
+        this.user = this.navParams.get('userObject');
+      } else {
+        this.subscription = this.userProvider.getAuthenticatedUserProfile()
+          .subscribe(user => {
+            this.user = user; 
+          });
+      }
+      if (this.navParams.get('newWeekActivity') === true) {
+        this.weekActivity = true; 
+        console.log('Week activity true? ', this.weekActivity);
+      }
   }
 
   ionViewWillLoad() {
@@ -42,10 +59,11 @@ export class AddActivityPage {
         Validators.required
         ])),
       location: new FormControl('', Validators.compose([
-        Validators.maxLength(25),
+        Validators.maxLength(75),
         Validators.minLength(4),
         Validators.required
-        ]))
+        ])),
+        date: new FormControl(Validators.required)
     });
 
     this.secondActivityForm = this.formBuilder.group({
@@ -55,7 +73,7 @@ export class AddActivityPage {
     });
     
     this.thirdActivityForm = new FormGroup({
-      startTime: new FormControl('07:00', Validators.required),
+      startTime: new FormControl('06:00', Validators.required),
       endTime: new FormControl('16:00', Validators.required)
     }); 
   }
@@ -74,15 +92,13 @@ export class AddActivityPage {
   removeInputField(i: number): void {
    const control = <FormArray>this.secondActivityForm.controls.activities;
    control.removeAt(i);
-}
+  }
 
   onSlideChanged() {
-    // If it's the last slide, then hide the 'Skip' button on the header
     this.lastSlide = this.slider.isEnd();
   }
 
   nextSlide() {
-    // this.slider.lockSwipeToNext(true);
     this.slider.slideNext();
   }
 
@@ -112,8 +128,17 @@ export class AddActivityPage {
         this.minutesDifference = this.minutesWithBreakDifference;
       }
 
-      const activityObject: ActivityLine  = { 
-        isoDateString: this.time.getCurrentIsoString(),
+      let correctDate; let weekActivityBoolean;
+      if (this.weekActivity === true) {
+        correctDate = this.firstActivityForm.value.date;
+        weekActivityBoolean = true;
+      } else {
+        weekActivityBoolean = false;
+        correctDate = this.time.getCurrentIsoString();
+      }
+
+      const activityObject: firebaseActivity  = { 
+        isoDateString: correctDate,
         clientName: this.firstActivityForm.value.clientName,
         location: this.firstActivityForm.value.location,
         startTime: this.thirdActivityForm.value.startTime,  
@@ -123,7 +148,7 @@ export class AddActivityPage {
       };
 
       try {
-        await this.time.saveActivity(activityObject, this.user);
+        await this.time.saveActivity(activityObject, this.user, weekActivityBoolean);
         loading.dismiss().then(() => {
           this.layoutProvider.presentBottomToast('Klus toegevoegd aan werkbriefje.');
           setTimeout(() => {

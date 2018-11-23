@@ -63,9 +63,7 @@
     </div> 
 
     <div *ngSwitchCase="'overview'">
-
-        <no-week-activities [authenticatedUser]="userObject" *ngIf="noWeekActivities === true"></no-week-activities>
-
+      <no-week-activities [authenticatedUser]="userObject" *ngIf="noWeekActivities === true"></no-week-activities>
       <ion-list class="schedule-list" @staggerAnimation>
         <ion-item class="schedule-item" *ngFor="let activity of weekActivities">
           <h2 class="section-title">{{ activity.isoDateString | formatDate: 'dddd'}}</h2> 

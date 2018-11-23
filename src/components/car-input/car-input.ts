@@ -48,8 +48,8 @@ export class CarInputComponent {
         Validators.required
         ])),
         companyMileage: new FormControl('', Validators.compose([
-          Validators.required
-          // CompanyMileageValidator.isValid
+          Validators.required,
+          CompanyMileageValidator.isValid
         ]))
     });
     
@@ -68,7 +68,7 @@ export class CarInputComponent {
     return this.brMaskerIonic3.writeCreateValue(incomingMilage, config);
   }
 
-  closeModal() {
+  closeModal(): void {
     this.viewCtrl.dismiss();
   }
 

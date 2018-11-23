@@ -1,17 +1,4 @@
-export interface EnrichedActivity {
-    id: string;
-    activityLine: ActivityLine;
-}
-
-export interface ActivityLine {
-    isoDateString: string;
-    minutesDifference: number;
-    clientName: string;  // Needse molen 
-    location: string; // Neede
-    startTime: string; // 7:30
-    endTime: string; // 16:45 
-    activities: Array<Activity>; // Bovenwerk: Afwassen balken kruiwerk,raampjes,luiken en schuren..
-}
+import { Employee } from "./employee.interface";
 
 export interface Activity {
     name: string; // Trapleuning geschilderd 
@@ -29,4 +16,14 @@ export interface firebaseActivity {
     timesheetId?: string;
     uid?: string;
     userDateString?: string; 
+}
+
+export interface firebaseTimesheet {
+    vehicleInfo: {
+        type: string;
+          mileage: string;
+          licenseplate: string;
+    },
+    employee: Employee;
+    timesheetId: string;
 }

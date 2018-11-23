@@ -25,9 +25,8 @@ export class PdfProvider {
   constructor(public layout: LayoutProvider, 
      public time: TimesheetProvider, private plt: Platform, private file: File, private fileOpener: FileOpener) { }
 
-  generatePDF(weekActivities: Array<firebaseActivity>, userObject: Employee, carObject: Vehicle) {
-
-    if (weekActivities.length === 0 || weekActivities === null) {
+  async generatePDF(weekActivities: Array<firebaseActivity>, userObject: Employee, carObject: Vehicle) {
+    if (weekActivities === null || weekActivities.length === 0 || weekActivities === null) {
       this.layout.presentBottomToast('Niet mogelijk om werkbriefje te genereren. Reden: er zijn geen klussen om de werkbrief te vullen.');
     } else {
 
@@ -46,10 +45,17 @@ export class PdfProvider {
 
       const generatedPDF = this.createLocalPDF(pdf);
 
-      setTimeout(() => {
-        this.downloadLocalPDF(generatedPDF);
+      try {
+        await this.time.addTimesheet(this.carObject, this.userObject);
+        setTimeout(() => {
+          this.layout.presentBottomToast('Het werkbriefje is succesvol samengesteld. Je download start dadelijk.');
+          this.downloadLocalPDF(generatedPDF);
+          loading.dismiss();
+        }, 3000);
+      } catch (error) {
         loading.dismiss();
-      }, 3000);
+        this.layout.presentBottomToast('Er ging iets mis met het maken van een werkbriefje. Probeer het opnieuw.');
+      }
     }
   }
 

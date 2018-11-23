@@ -29,10 +29,6 @@ export class MileageValidator {
                 isValid: true
             };
         }
- 
-        return {
-            isValid: false
-          };
     }
  
 }

@@ -7,7 +7,6 @@ import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs-compat/Subscription';
 import { Employee } from '../../models/employee.interface';
 import { infinitePulse, staggerAnimation } from '../../app/animations';
-import { sampleTable } from '../../assets/example-data/sample-pdf-table';
 import { CarInputComponent } from '../../components/car-input/car-input';
 import { PdfProvider } from '../../providers/pdf/pdf';
 import { Vehicle } from '../../models/vehicle.interface';

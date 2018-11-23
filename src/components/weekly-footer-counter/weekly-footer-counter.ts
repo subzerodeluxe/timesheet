@@ -26,10 +26,9 @@ export class WeeklyFooterCounterComponent {
 
 
   addNewActivity() {
-    this.navCtrl.push('activity-detail');
+    this.navCtrl.push('add-activity', { newWeekActivity: true});
   }
 
-  
   ionViewDidLoad() {
     setTimeout(() => {
       this.state = 'big';

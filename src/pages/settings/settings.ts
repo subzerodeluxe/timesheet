@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage, Platform } from 'ionic-angular';
+import { NavController, IonicPage, Platform, App } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { LocalNotificationService } from '../../providers/local-notification-service/local-notification.service';
@@ -26,7 +26,8 @@ export class SettingsPage {
   notificationsOff: boolean;
   defaultNotifications: boolean;
 
-  constructor(public navCtrl: NavController, public layout: LayoutProvider, public platform: Platform, public localNotService: LocalNotificationService,
+  constructor(public navCtrl: NavController, public layout: LayoutProvider,  public app: App,
+    public platform: Platform, public localNotService: LocalNotificationService,
     private localNot: LocalNotifications, public authProvider: AuthProvider) {
 
         // this.notifyTime = "17:00";
@@ -144,6 +145,14 @@ export class SettingsPage {
     this.chosenMinutes = time.minute;
     console.log('Gekozen minuten: ', this.chosenMinutes);
   }
+
+  logOut(): void {
+    this.authProvider.logOut()
+      .then(_ => {
+        this.app.getRootNav().setRoot('login');
+      }).catch(_  => this.layout.showAlertMessage('Oeps!', 'Er ging iets mis. Probeer het opnieuw!', 'Ok'));
+  }
+
 
   cancelAll() {
     console.log('Cancelling notifications');

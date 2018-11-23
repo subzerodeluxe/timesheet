@@ -35,4 +35,8 @@
     </div>
 
   <button ion-button block class="auth-action-button" (click)="setupNotifications()" [disabled]="notificationsOff">Opslaan</button>
+
+  <button ion-button block class="auth-action-button" icon-start (click)="logOut()">
+      <ion-icon end name="log-out"></ion-icon>
+      Uitloggen</button> 
 </ion-content>
