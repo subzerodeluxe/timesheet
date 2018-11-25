@@ -83,8 +83,6 @@ export class ActivityFormComponent {
     }
   }
 
-
-
   async updateActivity(activityFormValue: any) {
      
     const loading = this.layout.showLoading();

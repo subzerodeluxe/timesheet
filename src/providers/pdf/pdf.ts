@@ -108,7 +108,7 @@ export class PdfProvider {
     let rows = weekActivities.map(activity => ([
       this.time.formatRowDateForPDF(activity.isoDateString), 
       this.time.transformMinutesToHours(activity.minutesDifference), 
-      activity.clientName,
+      [{text: activity.clientName}, {text: activity.location, color: 'gray'}],
       {
         ul: activity.activities.map(single => ([
           single.name
@@ -122,7 +122,7 @@ export class PdfProvider {
     return {
         headerRows: 2,
         heights: [30, 40, 40, 40, 40],
-        widths: ['*', 50, '*', 200],
+        widths: [100, 50, '*', 190],
         body: rows
     };
   }
@@ -143,14 +143,11 @@ export class PdfProvider {
     if (this.plt.is('cordova')) {
       pdfObj.getBuffer((buffer) => {
         let blob = new Blob([buffer], { type: 'application/pdf' });
-        // Save the PDF to the data Directorys of our App
         this.file.writeFile(this.file.dataDirectory, file, blob, { replace: true }).then(fileEntry => {
-          // Open the PDf with the correct OS tools
           this.fileOpener.open(this.file.dataDirectory + file, 'application/pdf');
         }).catch(e => this.layout.presentBottomToast('Er ging iets mis met het ophalen van het werkbriefje. Probeer het opnieuw.')); 
       });
     } else {
-      // On a browser simply use download!
       try {
         pdfObj.download(file);
       } catch (error) {
