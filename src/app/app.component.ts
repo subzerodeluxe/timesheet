@@ -6,6 +6,7 @@ import { LayoutProvider } from '../providers/layout/layout.service';
 import { Subscription } from 'rxjs/Subscription';
 import { UserProvider } from '../providers/user/user.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { timer } from 'rxjs';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,6 +16,7 @@ export class MyApp {
   rootPage: any;
   present: boolean;
   timesheetSub: Subscription;
+  showSplash = true; // <-- show animation
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private afAuth: AngularFireAuth,
     public layoutProvider: LayoutProvider, private userProvider: UserProvider) {
@@ -23,6 +25,8 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+
+      timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
 
       
 

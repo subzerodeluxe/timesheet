@@ -16,6 +16,7 @@ export class ActivityDetailPage {
   activityObject: any;
   clientName: string; 
   startUpdate: boolean = false;
+  formLoaded: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public layout: LayoutProvider, public time: TimesheetProvider,
     public authProvider: AuthProvider) {
@@ -26,9 +27,19 @@ export class ActivityDetailPage {
     }
   }
 
-  loadForm() {
-    console.log('Load form');
-    this.startUpdate = true; 
+  loadForm(check: string) {
+    console.log(check);
+    if (check === 'noCheck') {
+      this.formLoaded = true;
+      this.startUpdate = true; 
+    }
+
+    if (check === "check") {
+      
+        this.formLoaded = false;
+        this.startUpdate = false; 
+      
+    }
   }
 
   deleteActivity() {

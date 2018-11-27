@@ -1,23 +1,37 @@
 <no-week-activities *ngIf="noActivityObject === true"></no-week-activities>
 
 <div *ngIf="noActivityObject === false" class="sample-form validations-form">
-  <section class="form-section">
-    <h2 class="section-title">Klantgegevens</h2>
-      <h4 class="sub-title">Naam van klant</h4>
-      <p class="input">{{ activityObject?.clientName }}</p>
-      <h4 class="sub-title">Plaatsnaam en/of adres</h4>
-      <p class="input">{{ activityObject?.location }}</p>
-  </section>
-
-  <section class="form-section">
-      <h2 class="section-title">Tijden</h2>
-        <ion-col class="special">
-          <ion-row> 
-              <p>Gestart om:</p><span><p>{{ activityObject?.startTime }} uur</p></span>
-          </ion-row>
-          <ion-row>
-              <p>Gestopt om:</p><span><p>{{ activityObject?.endTime }} uur</p></span>
-          </ion-row>
-        </ion-col>
+    <section class="form-section">
+        <h2 class="section-title">Klantgegevens</h2>
+        <h4 class="sub-title">Naam van klant</h4>
+        <p class="input">{{ activityObject?.clientName }}</p>
+        <h4 class="sub-title">Plaatsnaam en/of adres</h4>
+        <p class="input">{{ activityObject?.location }}</p>
     </section>
+
+    <section class="form-section">
+        <h2 class="section-title">Werkzaamheden</h2>
+        <div *ngFor="let activity of activityObject.activities">
+            <ul>
+            <li>{{ activity.name }}</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section class="form-section">
+        <h2 class="section-title">Datum en Tijden</h2>
+        <h4 class="sub-title">Datum</h4>
+        <p class="input">{{ activityObject?.isoDateString | formatDate:'dddd DD MMMM YYYY' }}</p>
+        <ion-row class="no-padding-row" text-center>
+            <ion-col> 
+                <p class="theme">Begonnen om:</p><span class="time"><p>{{ activityObject?.startTime }} uur</p></span>
+            </ion-col>
+            <ion-col>
+                <p class="theme">Gestopt om:</p><span class="time"><p>{{ activityObject?.endTime }} uur</p></span>
+            </ion-col>
+        </ion-row>
+        <p text-center class="input">Totaal {{ activityObject?.minutesDifference | formatHours }} gewerkt
+            <span id="break"><br>(inclusief pauze)</span></p>
+    </section>
+
 </div>

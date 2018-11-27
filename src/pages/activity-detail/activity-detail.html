@@ -6,14 +6,19 @@
         <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
       </button>
 
-      <button ion-button (click)="loadForm()">
+      <button ion-button *ngIf="formLoaded === false" (click)="loadForm('noCheck')">
           <ion-icon ios="ios-create" md="md-create"></ion-icon>
+        </button>
+
+        
+      <button ion-button *ngIf="formLoaded === true" (click)="loadForm('check')">
+          <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
         </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding class="forms-validations-content">
-  <activity-detail-overview></activity-detail-overview>
+  <activity-detail-overview *ngIf="startUpdate === false"></activity-detail-overview>
   <activity-form *ngIf="startUpdate === true"></activity-form>
 </ion-content>

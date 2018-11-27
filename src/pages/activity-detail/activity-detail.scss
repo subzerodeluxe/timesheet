@@ -16,7 +16,7 @@ page-activity-detail {
 
 				.item:first-child
 				{
-					margin-top: 20px;
+					margin-top: 0px;
 				}
 			}
 
@@ -58,8 +58,8 @@ page-activity-detail {
 				text-align: center;
 				color: $theme-color;
 				font-weight: 400;
-				margin: 0px;
-      }
+				margin: 0px;  
+      }  
       
 			.form-action-button
 			{

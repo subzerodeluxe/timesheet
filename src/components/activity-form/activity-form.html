@@ -35,31 +35,38 @@
 
   <section class="form-section">
     <h2 *ngIf="update && !minutesWithBreakDifference" class="section-title">Tijden</h2>
-    <h2 *ngIf="update && minutesWithBreakDifference" class="section-title">{{ minutesWithBreakDifference | formatHours}} gewerkt inclusief pauze</h2>
+    <h2 *ngIf="update && minutesWithBreakDifference" class="section-title">{{ minutesWithBreakDifference | formatHours}} gewerkt<span id="break"><br>(inclusief pauze)</span></h2>
   
-    <ion-item>
-      <ion-label floating>Begonnen om</ion-label>
-      <ion-datetime 
-        displayFormat="HH:mm" 
-        minuteValues="0,15,30,45"
-        formControlName="startTime"
-        [(ngModel)]="activityObject.startTime" 
-        cancelText=Annuleer 
-        doneText=Bevestig></ion-datetime>
-    </ion-item>
+    <ion-row no-padding text-center>
+      <ion-col>
+          <ion-item class="date-input">
+              <ion-label floating>Begonnen om</ion-label>
+              <ion-datetime 
+                displayFormat="HH:mm" 
+                minuteValues="0,15,30,45"
+                formControlName="startTime"
+                [(ngModel)]="activityObject.startTime" 
+                cancelText=Annuleer 
+                doneText=Bevestig></ion-datetime>
+          </ion-item>
+      </ion-col>
 
-    <ion-item>
-      <ion-label floating>Gestopt om</ion-label>
-        <ion-datetime 
-            (ionChange)="calculateBreak(updateActivityForm.value.startTime, updateActivityForm.value.endTime)"
-            displayFormat="HH:mm"
-            minuteValues="0,15,30,45"  
-            formControlName="endTime"
-            [(ngModel)]="activityObject.endTime"
-            cancelText=Annuleer 
-            doneText=Bevestig>
-        </ion-datetime>
-    </ion-item>
+      <ion-col>
+          <ion-item class="date-input">
+              <ion-label floating>Gestopt om</ion-label>
+                <ion-datetime 
+                    (ionChange)="calculateBreak(updateActivityForm.value.startTime, updateActivityForm.value.endTime)"
+                    displayFormat="HH:mm"
+                    minuteValues="0,15,30,45"  
+                    formControlName="endTime"
+                    [(ngModel)]="activityObject.endTime"
+                    cancelText=Annuleer 
+                    doneText=Bevestig>
+                </ion-datetime>
+            </ion-item>
+      </ion-col> 
+    </ion-row>
+
   </section>
 
   <section class="form-section">
