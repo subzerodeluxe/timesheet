@@ -5,7 +5,7 @@ import { Employee } from '../../models/employee.interface';
 
 import { FileOpener } from '@ionic-native/file-opener';
 import { Platform } from 'ionic-angular';
-import { File } from '@ionic-native/file';
+import { File, FileEntry } from '@ionic-native/file';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -140,20 +140,22 @@ export class PdfProvider {
   downloadLocalPDF(pdfObj: any) {
     const file = `werkurenbriefje-week-${this.correctDates.weekNumber}-${this.correctDates.year}-${this.userObject.firstName}-${this.userObject.lastName}`;
 
-    if (this.plt.is('cordova')) {
-      pdfObj.getBuffer((buffer) => {
-        let blob = new Blob([buffer], { type: 'application/pdf' });
-        this.file.writeFile(this.file.dataDirectory, file, blob, { replace: true }).then(fileEntry => {
-          this.fileOpener.open(this.file.dataDirectory + file, 'application/pdf');
-        }).catch(e => this.layout.presentBottomToast('Er ging iets mis met het ophalen van het werkbriefje. Probeer het opnieuw.')); 
-      });
-    } else {
+    // if (this.plt.is('cordova')) {
+    //  pdfObj.getBuffer((buffer) => {
+    //     let blob = new Blob([buffer], { type: 'application/pdf' });
+    //     this.file.writeFile(this.file.dataDirectory, file, blob, { replace: true })
+    //     .then((fileEntry: FileEntry) => {
+    //       this.fileOpener.open(fileEntry.toURL(), 'application/pdf')
+    //         .catch((err) => this.layout.presentBottomToast(JSON.stringify(err)));
+    //     }).catch(e => this.layout.presentBottomToast('Er ging iets mis met het ophalen van het werkbriefje. Probeer het opnieuw.')); 
+    //   });
+    // } else {
       try {
         pdfObj.download(file);
       } catch (error) {
         this.layout.presentBottomToast('Er ging iets mis met het ophalen van het werkbriefje. Probeer het opnieuw.');
       }
-    }
+    
   }
 
   generatePDFStyles() {

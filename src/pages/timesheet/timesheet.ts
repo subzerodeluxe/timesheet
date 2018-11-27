@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { NavController, NavParams, SegmentButton, IonicPage, Platform, ModalController } from 'ionic-angular';
+import { NavController, NavParams, SegmentButton, IonicPage, ModalController } from 'ionic-angular';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
@@ -34,12 +34,11 @@ export class TimesheetPage implements OnDestroy {
   state = 'small';
   activities: any;
   weekActivities: any;
-  
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public pdf: PdfProvider,
     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
-      this.segment = "today";
       this.isoString = this.time.getCurrentIsoString();
-
+      this.segment = "today";
       this.subscription = this.userProvider.getAuthenticatedUserProfile()
       .subscribe(user => {
         this.userObject = user;
@@ -66,58 +65,63 @@ export class TimesheetPage implements OnDestroy {
   }
 
   presentPDFAlert() {
-    let alert = this.layout.alertCtrl.create({
-      cssClass: 'category-prompt'
-    });
-    alert.setTitle('Welke auto heb je deze week gebruikt?');
-
-    alert.addInput({
-      type: 'radio',
-      label:'Bedrijfsauto',
-      value:'companyCar',
-      checked: true
-    });
-
-    alert.addInput({
-      type: 'radio',
-      label:'Eigen auto',
-      value:'ownCar'
-    });
-
-    alert.addInput({
-      type: 'radio',
-      label:'Geen auto gebruikt',
-      value:'noCar'
-    });
-
-    alert.addButton('Annuleer');
-    alert.addButton({
-      text: 'Bevestig keuze',
-      handler: choice => {
-        switch (choice) {
-          case 'noCar': {
-            const carObject = { type: 'noCar'} as Vehicle;
-            this.pdf.generatePDF(this.weekActivities, this.userObject, carObject);
-            break;
-          }
-          case 'companyCar': {
-            const carObject = { type: 'company'} as Vehicle;
-            this.openCarInputModal(carObject);
-            break;
-          }
-          case 'ownCar': {
-            const carObject = { type: 'private'} as Vehicle;
-            this.openCarInputModal(carObject);
-            break;
-          }
-          default: {
-            this.layout.presentBottomToast('Er ging iets mis. Probeer het opnieuw.');
-            break;
+    if (this.weekActivities != null) {
+      let alert = this.layout.alertCtrl.create({
+        cssClass: 'category-prompt'
+      });
+      alert.setTitle('Welke auto heb je deze week gebruikt?');
+  
+      alert.addInput({
+        type: 'radio',
+        label:'Bedrijfsauto',
+        value:'companyCar',
+        checked: true
+      });
+  
+      alert.addInput({
+        type: 'radio',
+        label:'Eigen auto',
+        value:'ownCar'
+      });
+  
+      alert.addInput({
+        type: 'radio',
+        label:'Geen auto gebruikt',
+        value:'noCar'
+      });
+  
+      alert.addButton('Annuleer');
+      alert.addButton({
+        text: 'Bevestig keuze',
+        handler: choice => {
+          switch (choice) {
+            case 'noCar': {
+              const carObject = { type: 'noCar'} as Vehicle;
+              this.pdf.generatePDF(this.weekActivities, this.userObject, carObject);
+              break;
+            }
+            case 'companyCar': {
+              const carObject = { type: 'company'} as Vehicle;
+              this.openCarInputModal(carObject);
+              break;
+            }
+            case 'ownCar': {
+              const carObject = { type: 'private'} as Vehicle;
+              this.openCarInputModal(carObject);
+              break;
+            }
+            default: {
+              this.layout.presentBottomToast('Er ging iets mis. Probeer het opnieuw.');
+              break;
+            }
           }
         }
-      }
-    });
-    alert.present();
+      });
+      alert.present();
+    } else {
+      this.layout.presentBottomToast('Het is niet mogelijk een werkbriefje samen te stellen. Voeg eerst een klus toe.');
+    }
+   
   }
 
   openCarInputModal(carObject: Vehicle) {

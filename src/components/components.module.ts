@@ -17,6 +17,7 @@ import { ActivityFormComponent } from './activity-form/activity-form';
 import { CarInputComponent } from './car-input/car-input';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy';
 import { BrMaskerModule } from 'brmasker-ionic-3';
+import { ActivityDetailOverviewComponent } from './activity-detail-overview/activity-detail-overview';
 
 @NgModule({
 	declarations: [
@@ -28,7 +29,8 @@ import { BrMaskerModule } from 'brmasker-ionic-3';
         NoWeekActivitiesComponent,
         ActivityFormComponent,
         CarInputComponent,
-        PrivacyPolicyComponent
+        PrivacyPolicyComponent,
+    ActivityDetailOverviewComponent
     ],
 	imports: [IonicModule, PipesModule, CommonModule, ReactiveFormsModule, BrMaskerModule,
     ],
@@ -40,7 +42,8 @@ import { BrMaskerModule } from 'brmasker-ionic-3';
     NoWeekActivitiesComponent,
     ActivityFormComponent,
     CarInputComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    ActivityDetailOverviewComponent
     ]
 })
 export class ComponentsModule {}

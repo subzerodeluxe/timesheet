@@ -1,14 +1,19 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ clientName }}</ion-title>
-    <ion-buttons [hidden]="!update" end (click)="deleteActivity()">
-      <button ion-button>
+    <ion-buttons end>
+      <button ion-button (click)="deleteActivity()">
         <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
       </button>
+
+      <button ion-button (click)="loadForm()">
+          <ion-icon ios="ios-create" md="md-create"></ion-icon>
+        </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding class="forms-validations-content">
-  <activity-form></activity-form>
+  <activity-detail-overview></activity-detail-overview>
+  <activity-form *ngIf="startUpdate === true"></activity-form>
 </ion-content>

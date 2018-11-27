@@ -36,7 +36,7 @@ import { LocalNotificationService } from '../providers/local-notification-servic
 import { CarInputComponent } from '../components/car-input/car-input';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy';
 import { PdfProvider } from '../providers/pdf/pdf';
-
+ 
 @NgModule({
   declarations: [
     MyApp

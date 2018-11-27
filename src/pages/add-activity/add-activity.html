@@ -12,7 +12,9 @@
         <section class="form-section"> 
           
         <ion-item *ngIf="weekActivity === true">
-          <ion-label floating>Datum</ion-label>
+          <ion-label floating>
+              <ion-icon class="description-icon" name="calendar" item-left primary></ion-icon>
+            Datum (Druk om te wijzigen)</ion-label>
           <ion-datetime 
             formControlName="date" 
             [(ngModel)]="timeObject.start"
@@ -28,8 +30,9 @@
           </ion-item>
 
           <ion-item>
-            <ion-label floating>Naam van klant</ion-label>
-            <ion-input type="text" formControlName="clientName" class="form-controll" required></ion-input>
+            <ion-label floating>Naam van klant
+            </ion-label>
+            <ion-input type="text" formControlName="clientName" class="form-controll" required clearInput></ion-input>
           </ion-item>
           <div class="validation-errors">
               <ng-container *ngFor="let validation of validation_messages.clientName">
@@ -40,8 +43,9 @@
             </div>
 
           <ion-item>
-              <ion-label floating>Plaatsnaam en/of adres</ion-label>
-              <ion-input type="text" formControlName="location" class="form-controll" required></ion-input>
+              <ion-label floating>Plaatsnaam en/of adres
+              </ion-label>
+              <ion-input type="text" formControlName="location" class="form-controll" required clearInput></ion-input>
           </ion-item>
 
           <div class="validation-errors">
@@ -69,7 +73,7 @@
             *ngFor="let a of secondActivityForm.controls.activities.controls; let i = index">
             <ion-item>
                 <ion-label floating>Taak</ion-label>
-                <ion-input type="text" class="form-controll" maxlength="50" formControlName="name"></ion-input>
+                <ion-input type="text" class="form-controll" maxlength="50" formControlName="name" clearInput></ion-input>
             </ion-item>
 
             <span float-right ion-button icon-left clear

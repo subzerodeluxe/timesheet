@@ -1,0 +1,23 @@
+<no-week-activities *ngIf="noActivityObject === true"></no-week-activities>
+
+<div *ngIf="noActivityObject === false" class="sample-form validations-form">
+  <section class="form-section">
+    <h2 class="section-title">Klantgegevens</h2>
+      <h4 class="sub-title">Naam van klant</h4>
+      <p class="input">{{ activityObject?.clientName }}</p>
+      <h4 class="sub-title">Plaatsnaam en/of adres</h4>
+      <p class="input">{{ activityObject?.location }}</p>
+  </section>
+
+  <section class="form-section">
+      <h2 class="section-title">Tijden</h2>
+        <ion-col class="special">
+          <ion-row> 
+              <p>Gestart om:</p><span><p>{{ activityObject?.startTime }} uur</p></span>
+          </ion-row>
+          <ion-row>
+              <p>Gestopt om:</p><span><p>{{ activityObject?.endTime }} uur</p></span>
+          </ion-row>
+        </ion-col>
+    </section>
+</div>

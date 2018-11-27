@@ -201,7 +201,6 @@ export class TimesheetProvider {
   }
 
   deleteActivity(activityObject: any): Promise<void> {
-    console.log('Dit gaat er af: ', activityObject.minutesDifference);
     return this.activitiesRef.doc(activityObject.id).delete();
   }
 

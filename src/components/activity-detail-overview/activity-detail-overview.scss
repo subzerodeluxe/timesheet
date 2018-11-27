@@ -1,0 +1,32 @@
+activity-detail-overview {
+    .sub-title {
+        font-size: 1.4rem;
+        line-height: 1.2;
+        letter-spacing: 1px;
+        color: #8a2c2c;
+        font-weight: 400;
+        margin: 0px;
+    }
+
+    .input {
+        font-size: 1.4rem;
+        padding-top: 0px;
+        margin-top: 2.5px;
+    }
+
+    .special {
+        padding: 0px;
+        position: relative;
+        width: 100%;
+        margin: 0;
+        min-height: 1px;
+        -webkit-flex-basis: 0;
+        -ms-flex-preferred-size: 0;
+        flex-basis: 0;
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        max-width: 100%;
+    }
+}

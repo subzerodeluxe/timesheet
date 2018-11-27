@@ -35,10 +35,6 @@ export class ActivityFormComponent {
       if (this.navParams.get("activity") != null) {
         this.activityObject = this.navParams.get("activity");
         this.update = true;
-        console.log(this.activityObject);
-      } else {
-        this.update = false;
-        console.log('Dit is een nieuwe activiteit');
       }
 
     this.userSubscription = this.userProvider.getAuthenticatedUserProfile()

@@ -3,7 +3,6 @@ import { NavController, NavParams, IonicPage, Form } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
-import { validation_messages } from '../../app/app.config';
 
 @IonicPage({
   name: 'activity-detail'
@@ -16,11 +15,7 @@ export class ActivityDetailPage {
 
   activityObject: any;
   clientName: string; 
-  minutesDifference: number;
-  minutesWithBreakDifference: number;
-  validation_messages = validation_messages;
-  usedBreak: boolean = false;
-  update: boolean = true;  
+  startUpdate: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public layout: LayoutProvider, public time: TimesheetProvider,
     public authProvider: AuthProvider) {
@@ -28,16 +23,15 @@ export class ActivityDetailPage {
     if (this.navParams.get("activity") != null) {
       this.clientName = this.navParams.get("activity").clientName; 
       this.activityObject = this.navParams.get("activity");
-      this.update = true; 
-    } else {
-      this.clientName = 'Nieuwe klus';
-      this.update = false;
     }
   }
 
+  loadForm() {
+    console.log('Load form');
+    this.startUpdate = true; 
+  }
+
   deleteActivity() {
-    console.log('Deleting activity');
-      
     let alert = this.layout.alertCtrl.create({
       cssClass: 'delete-prompt'
     });

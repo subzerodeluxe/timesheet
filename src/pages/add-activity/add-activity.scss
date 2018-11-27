@@ -103,6 +103,17 @@ page-add-activity {
         {
           margin-bottom: 20px;
         }
+
+        .datetime-text {
+          color: $white-d;
+        }
+
+        .description-icon
+        {
+          color: $theme-color;
+          font-size: 2.3rem;
+        }
+
       }
 
       .terms-item

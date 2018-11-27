@@ -153,10 +153,9 @@ export class AddActivityPage {
           this.layoutProvider.presentBottomToast('Klus toegevoegd aan werkbriefje.');
           setTimeout(() => {
             this.navCtrl.setRoot('timesheet');
-          }, 1500);
+          }, 1000);
         });
       } catch (e) {
-        console.log(e);
         loading.dismiss().then(_ => {
           this.layoutProvider.presentBottomToast(e);
         });
