@@ -7,37 +7,41 @@
 
   <h2 class="section-title">Persoonlijke gegevens</h2> 
 
-    <form [formGroup]="profileForm" class="profile-form">
-      <section class="form-section">
-          <ion-item>
-            <ion-label stacked>Voornaam</ion-label>
-            <ion-input type="text" name="firstName" [(ngModel)]="employee.firstName" formControlName="firstName"></ion-input>
-          </ion-item>
-          
-          <div class="validation-errors">
-            <ng-container *ngFor="let validation of validation_messages.firstName">
-              <div class="error-message" *ngIf="profileForm.get('firstName').hasError(validation.type) && (profileForm.get('firstName').dirty || profileForm.get('firstName').touched)">
-                {{ validation.message }}
+  <ion-grid fixed>
+      <form [formGroup]="profileForm" class="profile-form">
+          <section class="form-section">
+              <ion-item>
+                <ion-label stacked>Voornaam</ion-label>
+                <ion-input type="text" name="firstName" [(ngModel)]="employee.firstName" formControlName="firstName"></ion-input>
+              </ion-item>
+              
+              <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.firstName">
+                  <div class="error-message" *ngIf="profileForm.get('firstName').hasError(validation.type) && (profileForm.get('firstName').dirty || profileForm.get('firstName').touched)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
               </div>
-            </ng-container>
-          </div>
-
-          <ion-item>
-            <ion-label stacked>Achternaam</ion-label>
-            <ion-input type="text" name="lastName" [(ngModel)]="employee.lastName" formControlName="lastName"></ion-input>
-          </ion-item>
-
-          <div class="validation-errors">
-            <ng-container *ngFor="let validation of validation_messages.lastName">
-              <div class="error-message" *ngIf="profileForm.get('lastName').hasError(validation.type) && (profileForm.get('lastName').dirty || profileForm.get('lastName').touched)">
-                {{ validation.message }}
+    
+              <ion-item>
+                <ion-label stacked>Achternaam</ion-label>
+                <ion-input type="text" name="lastName" [(ngModel)]="employee.lastName" formControlName="lastName"></ion-input>
+              </ion-item>
+    
+              <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.lastName">
+                  <div class="error-message" *ngIf="profileForm.get('lastName').hasError(validation.type) && (profileForm.get('lastName').dirty || profileForm.get('lastName').touched)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
               </div>
-            </ng-container>
-          </div>
-      </section>
+          </section>
+    
+            <button ion-button class="form-action-button" [disabled]="!profileForm.valid" 
+              (click)="saveProfile(profileForm.value)">
+              Gegevens opslaan</button> 
+          </form>
 
-        <button ion-button class="form-action-button" [disabled]="!profileForm.valid" 
-          (click)="saveProfile(profileForm.value)">
-          Gegevens opslaan</button> 
-      </form>
+  </ion-grid>
+
 </ion-content>

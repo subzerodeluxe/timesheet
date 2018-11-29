@@ -8,7 +8,11 @@ page-add-activity {
 	{
         background-color: color($colors, background, base);
 
-        ion-slide{
+        ion-slides {
+          margin-top: 10px;
+        }
+
+        ion-slide {
           height: auto;
         }
            
@@ -23,6 +27,7 @@ page-add-activity {
 
     .activity-form
 		{
+      margin-top: 25vh;
 			.form-section
 			{
 				padding: 0px 14px;
@@ -74,8 +79,7 @@ page-add-activity {
 				margin: 0px;
 			}
 
-			.form-action-button
-			{
+			.form-action-button {
 				margin: 0px;
 				margin-top: 20px;
 
@@ -116,19 +120,6 @@ page-add-activity {
 
       }
 
-      .terms-item
-      {
-        .item-inner
-        {
-          border-bottom: none;
-
-          ion-label {
-            white-space: normal;
-            color: $white-d;
-            font-size: 14px;
-          }
-        }
-      }
 
       .validation-errors
       {

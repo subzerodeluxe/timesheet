@@ -1,11 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Werkurenbriefje - week {{ isoString | formatDate:'W' }}</ion-title>
+    <ion-title>Week {{ isoString | formatDate:'W' }}</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="presentPDFAlert()">
-          <ion-icon name="document"></ion-icon>     
-         </button>
+          <ion-icon name="document"></ion-icon>   
+          Genereer PDF  
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -23,78 +24,84 @@
     
     <div [ngSwitch]="segment">
       <div *ngSwitchCase="'today'">
-  
         <no-activities [authenticatedUser]="userObject" *ngIf="noActivities === true"></no-activities>
-  
-        <ion-list class="schedule-list"  *ngIf="!noActivities">
-          <ion-item class="schedule-item" *ngFor="let activity of activities">
+        <ion-grid fixed>
+          <ion-list class="schedule-list"  *ngIf="!noActivities">
+            <ion-item class="schedule-item" *ngFor="let activity of activities">
             <ion-row>
               <ion-col width-20 class="schedule-date">
                 <h2 class="schedule-day">{{ activity?.isoDateString | formatDate:'D' }}</h2>
                 <h3 class="schedule-month">{{ activity?.isoDateString | formatDate:'MMM' | slice:0:-1 | uppercase }}</h3>
                 <h4 class="schedule-time">{{ activity?.isoDateString | formatDate:'YYYY' }}</h4>
               </ion-col>
-  
+
               <ion-col width-80 class="schedule-data">
                 <div class="data-item" (click)="openActivity(activity)">
                   <div class="item-content">
                       <h2 class="item-title one-line">{{ activity?.clientName }}</h2>
-                    <div class="item-description">
+                      <div class="item-description">
                       <ion-icon class="description-icon" name="time"></ion-icon>
-                      <p class="description-text">{{ activity?.startTime }} - {{ activity?.endTime }}</p>
+                          <p class="description-text">{{ activity?.startTime }} - {{ activity?.endTime }} uur</p>
+                      </div>
+                      <div class="item-description">
+                        <ion-icon class="description-icon" name="map"></ion-icon>
+                        <p class="description-text one-line">{{ activity?.location }}</p>
+                      </div>
+                      <div class="item-description">
+                          <ion-icon class="description-icon" name="checkmark-circle"></ion-icon>
+                          <h3 class="sub-hours one-line">{{ activity?.minutesDifference | formatHours }}</h3>
+                      </div>
                     </div>
-                    <div class="item-description">
-                      <ion-icon class="description-icon" name="map"></ion-icon>
-                      <p class="description-text one-line">{{ activity?.location }}</p>
-                      <h3 class="sub-hours">{{ activity?.minutesDifference | formatHours }}</h3>
-                    </div>
-  
+                    <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
                   </div>
-  
-                  <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
-                </div>
-              </ion-col>
-            </ion-row>
-          </ion-item>
-        </ion-list>
-        <ion-fab bottom right [@shake]="state" (@shake.done)="onEnd($event)">
-            <button ion-fab (click)="addNewActivity()">
-              <ion-icon name="add"></ion-icon>
-            </button>  
-          </ion-fab>
+                </ion-col>
+                </ion-row>
+              </ion-item>
+            </ion-list>
+          <ion-fab bottom right [@shake]="state" (@shake.done)="onEnd($event)">
+              <button ion-fab (click)="addNewActivity()">
+                <ion-icon name="add"></ion-icon>
+              </button>  
+            </ion-fab>
+        </ion-grid>
       </div> 
     
         <div *ngSwitchCase="'overview'">
           <no-week-activities [authenticatedUser]="userObject" *ngIf="noWeekActivities === true"></no-week-activities>
-          <ion-list class="schedule-list" @staggerAnimation>
-            <ion-item class="schedule-item" *ngFor="let activity of weekActivities">
-              <h2 class="section-title">{{ activity.isoDateString | formatDate: 'dddd'}}</h2> 
-              <ion-row>
-                <ion-col width-20 class="schedule-date">
-                    <h2 class="schedule-day">{{ activity.isoDateString | formatDate:'D' }}</h2>
-                    <h3 class="schedule-month">{{ activity.isoDateString | formatDate:'MMM' | slice:0:-1 | uppercase }}</h3>
-                    <h4 class="schedule-time">{{ activity.isoDateString | formatDate:'YYYY' }}</h4>
-                </ion-col>
-                <ion-col width-80 class="schedule-data" (click)="openActivity(activity)">
-                    <div class="data-item">
-                        <div class="item-content">
-                          <h2 class="item-title one-line">{{activity.clientName}}</h2>
-                          <div class="item-description">
-                            <ion-icon class="description-icon" name="time"></ion-icon>
-                            <p class="description-text">{{activity.startTime}} - {{activity.endTime}} uur</p>
+          <ion-grid fixed>
+            <ion-list class="schedule-list" @staggerAnimation>
+              <ion-item class="schedule-item" *ngFor="let activity of weekActivities">
+                <h2 class="section-title">{{ activity.isoDateString | formatDate: 'dddd'}}</h2> 
+                <ion-row>
+                  <ion-col width-20 class="schedule-date">
+                      <h2 class="schedule-day">{{ activity.isoDateString | formatDate:'D' }}</h2>
+                      <h3 class="schedule-month">{{ activity.isoDateString | formatDate:'MMM' | slice:0:-1 | uppercase }}</h3>
+                      <h4 class="schedule-time">{{ activity.isoDateString | formatDate:'YYYY' }}</h4>
+                  </ion-col>
+                  <ion-col width-80 class="schedule-data" (click)="openActivity(activity)">
+                      <div class="data-item">
+                          <div class="item-content">
+                            <h2 class="item-title one-line">{{activity.clientName}}</h2>
+                            <div class="item-description">
+                              <ion-icon class="description-icon" name="time"></ion-icon>
+                              <p class="description-text">{{activity.startTime}} - {{activity.endTime}} uur</p>
+                            </div>
+                            <div class="item-description">
+                              <ion-icon class="description-icon" name="map"></ion-icon>
+                              <p class="description-text one-line">{{ activity.location }}</p>
+                            </div>
+                            <div class="item-description">
+                                <ion-icon class="description-icon" name="checkmark-circle"></ion-icon>
+                                <h3 class="sub-hours one-line">{{ activity?.minutesDifference | formatHours }}</h3>
+                            </div>
                           </div>
-                          <div class="item-description">
-                            <ion-icon class="description-icon" name="map"></ion-icon>
-                            <p class="description-text one-line">{{ activity.location }}</p>
-                            <h3 class="sub-hours">{{ activity?.minutesDifference | formatHours }}</h3>
-                          </div>
+                          <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
                         </div>
-                        <ion-icon class="item-icon" name="arrow-forward"></ion-icon>
-                      </div>
-                </ion-col>
-              </ion-row>
-            </ion-item>  
-          </ion-list>
+                  </ion-col>
+                </ion-row>
+              </ion-item>  
+            </ion-list>
+          </ion-grid>
         </div>
       </div>
   </ion-grid>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
+import { LayoutProvider } from '../../providers/layout/layout.service';
 
 @Component({
   selector: 'activity-detail-overview',
@@ -8,16 +9,17 @@ import { NavParams } from 'ionic-angular';
 export class ActivityDetailOverviewComponent {
 
   activityObject: any;
+  browser: boolean; 
   noActivityObject: boolean = false; 
-  constructor(public navParams: NavParams) {
+  constructor(public navParams: NavParams, private layout: LayoutProvider) {
  
     if (this.navParams.get("activity") != null) {
       this.activityObject = this.navParams.get("activity");
-      console.log('Activity object: ', this.activityObject);
     } else {
       this.noActivityObject = true;
     }
-    
+
+    this.browser = this.layout.checkBrowser(); 
     
   }
 

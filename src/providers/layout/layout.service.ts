@@ -1,12 +1,27 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController, LoadingController, PopoverController } from 'ionic-angular';
+import { AlertController, ToastController, LoadingController, PopoverController, Platform } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AppConfig } from '../../app/app.config';
 @Injectable()
 export class LayoutProvider {
 
   constructor(public alertCtrl: AlertController, 
-    public loadingCtrl: LoadingController, public toastCtrl: ToastController, public sanitizer: DomSanitizer, public popOver: PopoverController) {
+    public loadingCtrl: LoadingController, public platform: Platform, public toastCtrl: ToastController, 
+    public sanitizer: DomSanitizer, public popOver: PopoverController) {
+
+
+  }
+
+  public checkBrowser(): boolean {
+    let browser;
+    if (this.platform.is('cordova') === false) {
+      console.log('We are on the browser!'); 
+      browser = true; 
+    } else {
+      console.log('We are definitely not on a browser!');
+      browser = false; 
+    }
+    return browser;
   }
 
   showLoading() {
