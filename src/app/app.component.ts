@@ -28,8 +28,7 @@ export class MyApp {
 
       timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
 
-      
-
+    
       const authObserver = afAuth.authState.subscribe(user => {
         if (user) {
           this.rootPage = 'tabs';
@@ -46,8 +45,12 @@ export class MyApp {
           // this.initTimesheetListener(user);   // Wordt enkel getriggerd wanneer gebruiker is ingelogt
           authObserver.unsubscribe();  
         } else {
-          this.rootPage = 'walkthrough';
-          authObserver.unsubscribe();
+            if (platform.is('cordova') === true) {
+              this.rootPage = 'walkthrough';
+              authObserver.unsubscribe();
+            } else {
+              this.rootPage = 'login';
+            }
         }
       });
     })
