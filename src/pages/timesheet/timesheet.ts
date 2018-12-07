@@ -25,7 +25,6 @@ import { Vehicle } from '../../models/vehicle.interface';
 export class TimesheetPage implements OnDestroy {
   
   segment: string;
-  subscription: Subscription;
   showWeekHours: boolean = false;
   noActivities: boolean = true;
   noWeekActivities: boolean = true;
@@ -34,34 +33,44 @@ export class TimesheetPage implements OnDestroy {
   state = 'small';
   activities: any;
   weekActivities: any;
+  fbSubs: Subscription[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public pdf: PdfProvider,
     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
       this.isoString = this.time.getCurrentIsoString();
       this.segment = "today";
-      this.subscription = this.userProvider.getAuthenticatedUserProfile()
+      this.fbSubs.push(this.userProvider.getAuthenticatedUserProfile()
       .subscribe(user => {
         this.userObject = user;
-        this.time.findAllWeekActivitiesByUser(this.userObject).subscribe(weekActivities => {
+        this.fbSubs.push(this.time.findAllWeekActivitiesByUser(this.userObject).subscribe(weekActivities => {
           if (weekActivities.length === 0) {
             this.noWeekActivities = true; 
           } else {
             this.noWeekActivities = false;
             this.weekActivities = weekActivities;
+            console.log('Week activities: ', this.weekActivities);
             this.time.calculateWeekMinutes(this.weekActivities);
-          }
-      })
+          } 
+      }, error => {
+        console.log(error);
+      }));
 
-      this.time.findAllDailyActivitiesByUser(this.userObject).subscribe(activities => {
+      this.fbSubs.push(this.time.findAllDailyActivitiesByUser(this.userObject)
+      .subscribe(activities => {
         if (activities.length === 0) {
           this.noActivities = true;
         } else { 
           this.noActivities = false;
           this.activities = activities;
+          console.log('Daily activities: ', this.activities);
           this.time.calculateDailyMinutes(this.activities);
         } 
-      });
-    }); 
+      }, error => {
+        console.log(error);
+      }));
+    }, error => {
+      console.log(error);
+    }));
   }
 
   presentPDFAlert() {
@@ -173,8 +182,8 @@ export class TimesheetPage implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription != null) {
-      this.subscription.unsubscribe();
+    if (this.fbSubs != null) {
+      this.fbSubs.forEach(sub => sub.unsubscribe());
     }
   }
 }

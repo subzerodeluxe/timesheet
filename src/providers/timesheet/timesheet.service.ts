@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AuthProvider } from '../auth/auth.service';
-import { UserProvider } from '../user/user.service';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { map } from 'rxjs/operators';
-import { firebaseActivity, firebaseTimesheet } from '../../models/activityLine.interface';
-import * as moment from 'moment';
-import 'moment-duration-format';
 import { LayoutProvider } from '../layout/layout.service';
+
+import { firebaseActivity, firebaseTimesheet } from '../../models/activityLine.interface';
 import { Vehicle } from '../../models/vehicle.interface';
 import { Employee } from '../../models/employee.interface';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+
+import * as moment from 'moment';
+import 'moment-duration-format';
 
 @Injectable()
 export class TimesheetProvider {
@@ -24,8 +24,7 @@ export class TimesheetProvider {
   public totalDailyMinutesCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public totalWeekMinutesCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-  constructor(public afs: AngularFirestore, public userService: UserProvider, public layout: LayoutProvider,
-     public authService: AuthProvider, public storage: Storage) {
+  constructor(public afs: AngularFirestore, public layout: LayoutProvider, public storage: Storage) {
       this.activitiesRef = this.afs.collection('activities');
 
       this.currentDate = this.getCurrentDayNumber().toString(); 
@@ -33,28 +32,28 @@ export class TimesheetProvider {
       this.year = this.getCurrentYear().toString();
   }
 
-  findAllDailyActivitiesByUser(userObject: any): Observable<any> {
+  findAllDailyActivitiesByUser(userObject: any): Observable<firebaseActivity[]> {
      return this.afs.collection('activities', ref => {
       return ref.where('userDateString', '==', `${this.currentDate}-week-${this.weekNumber}-${this.year}-${userObject.uid}`);
         }).snapshotChanges().pipe(
           map(actions => actions.map(a => {
-            const data = a.payload.doc.data() as firebaseActivity;
-            const id = a.payload.doc.id;
-            return { id, ...data };
+            let data = a.payload.doc.data() as firebaseActivity;
+            data.id = a.payload.doc.id;
+            return { ...data };
           })
         )
       )
   }
 
   
-  findAllWeekActivitiesByUser(userObject: any): Observable<any> {
+  findAllWeekActivitiesByUser(userObject: any): Observable<firebaseActivity[]> {
     return this.afs.collection('activities', ref => {
      return ref.where('timesheetId', '==', `week-${this.weekNumber}-${this.year}-${userObject.uid}`);
         }).snapshotChanges().pipe(
           map(actions => actions.map(a => {
-            const data = a.payload.doc.data() as firebaseActivity;
-            const id = a.payload.doc.id;
-            return { id, ...data };
+            let data = a.payload.doc.data() as firebaseActivity;
+            data.id = a.payload.doc.id;
+            return { ...data };
           }))
         )
   }

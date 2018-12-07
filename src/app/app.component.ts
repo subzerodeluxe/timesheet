@@ -41,6 +41,8 @@ export class MyApp {
                 this.layoutProvider.presentTopToast(`Welkom terug, ${user.email}`);
                 o.unsubscribe();
               }
+            }, error => {
+              console.log(error);
             });
           // this.initTimesheetListener(user);   // Wordt enkel getriggerd wanneer gebruiker is ingelogt
           authObserver.unsubscribe();  

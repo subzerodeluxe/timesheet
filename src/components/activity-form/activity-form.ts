@@ -40,6 +40,8 @@ export class ActivityFormComponent {
     this.userSubscription = this.userProvider.getAuthenticatedUserProfile()
       .subscribe(user => {
         this.user = user;
+    }, error => {
+      console.log(error);
     });
 
     this.initUpdateActivityForm();

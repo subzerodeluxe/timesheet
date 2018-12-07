@@ -3,6 +3,7 @@ import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { loadHoursAnimation, infinitePulse } from '../../app/animations';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { NavController } from 'ionic-angular';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class WeeklyFooterCounterComponent {
 
   totalMinutes: number;
   state = 'small';
+  totalMinutesSubscription: Subscription;
 
   constructor(private time: TimesheetProvider, public navCtrl: NavController, public layout: LayoutProvider) {
     this.time.totalWeekMinutesCounter.subscribe((minutes) => {
@@ -41,6 +43,12 @@ export class WeeklyFooterCounterComponent {
       setTimeout(() => {
         this.state = 'big';
       }, 0);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.totalMinutesSubscription != null) {
+      this.totalMinutesSubscription.unsubscribe();
     }
   }
 }

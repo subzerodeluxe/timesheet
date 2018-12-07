@@ -6,6 +6,7 @@ import { Employee } from '../../models/employee.interface';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '@firebase/auth-types';
+import { TimesheetProvider } from '../timesheet/timesheet.service';
 
 
 @Injectable()
@@ -13,7 +14,7 @@ export class AuthProvider {
 
   errorMessage: string;
 
-  constructor(public afAuth: AngularFireAuth, public platform: Platform, private afs: AngularFirestore) {}
+  constructor(public afAuth: AngularFireAuth, public time: TimesheetProvider, public platform: Platform, private afs: AngularFirestore) {}
 
 
   getAuthenticatedUser(): Observable<User> {

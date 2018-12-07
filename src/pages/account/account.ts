@@ -41,7 +41,7 @@ export class AccountPage implements OnInit, OnDestroy {
     this.authenticatedEmployee$ = this.userProvider.getAuthenticatedUserProfile().subscribe(employeeProfile => {
       this.employee = employeeProfile;
     }, err => {
-      console.error('Oops:', err.message);
+      console.error('Oops:', err);
     });
   }
 

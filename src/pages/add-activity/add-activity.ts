@@ -43,6 +43,8 @@ export class AddActivityPage {
         this.subscription = this.userProvider.getAuthenticatedUserProfile()
           .subscribe(user => {
             this.user = user; 
+          }, error => {
+            console.log(error);
           });
       }
       if (this.navParams.get('newWeekActivity') === true) {
@@ -207,5 +209,11 @@ export class AddActivityPage {
       }
     });
     alert.present();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription != null) {
+      this.subscription.unsubscribe();
+    }
   }
 }
