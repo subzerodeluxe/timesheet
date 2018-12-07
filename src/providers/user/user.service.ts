@@ -33,7 +33,6 @@ export class UserProvider {
       return true;
     } 
     catch(e) {
-      console.log('Er gaat iets niet goed. ', e);
       return false;
     } 
   }

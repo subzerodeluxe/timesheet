@@ -44,18 +44,13 @@ export class SettingsPage {
   }
 
   setupNotifications() {
-    // this.localNot.addNotifications(this.days, this.chosenHours, this.chosenMinutes);
     let currentDate = new Date();
     let currentDay = currentDate.getDay(); // Sunday = 0, Monday = 1, etc.
-    
-    console.log('Incoming days: ', this.days);
-    console.log('ChoosenHours: ', this.chosenHours);
+   
     let firstNotificationTime = new Date();
 
     firstNotificationTime.setHours(this.chosenHours);
-    console.log('EN TOEN???: ', firstNotificationTime.setHours(this.chosenHours));
     firstNotificationTime.setMinutes(this.chosenMinutes);
-    console.log('CRAZY: ', firstNotificationTime.setMinutes(this.chosenMinutes));
    
     let notification = {
       id: 1,
@@ -103,10 +98,7 @@ export class SettingsPage {
     //     }
     // }
  
-    console.log("Notifications to be scheduled: ", this.notifications);
 
-    
- 
         if (this.platform.is('cordova')) {
             // Cancel any existing notifications
             this.localNot.cancelAll().then(() => {
@@ -128,7 +120,6 @@ export class SettingsPage {
   }
 
   notify(ev) {
-    console.log(ev.checked);
     if (ev.checked === true) {
       this.notificationsOff = false;
     }
@@ -139,11 +130,8 @@ export class SettingsPage {
   }
 
   timeChange(time) {
-    console.log(time);
     this.chosenHours = time.hour;
-    console.log('Gekozen uren: ', this.chosenHours);
     this.chosenMinutes = time.minute;
-    console.log('Gekozen minuten: ', this.chosenMinutes);
   }
 
   logOut(): void {
@@ -155,8 +143,6 @@ export class SettingsPage {
 
 
   cancelAll() {
-    console.log('Cancelling notifications');
-    // this.localNot.cancelAll();
     this.localNot.cancelAll().then(() => {
       this.notifications = [];
     })

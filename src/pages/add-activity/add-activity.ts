@@ -8,6 +8,7 @@ import { firebaseActivity } from '../../models/activityLine.interface';
 import { validation_messages } from '../../app/app.config';
 import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs';
+import { TimeObject } from '../../models/time.interface';
 
 @IonicPage({
   name: 'add-activity'
@@ -24,7 +25,7 @@ export class AddActivityPage {
   totalMinutes: number; 
   lastSlide = false;
   user: any;
-  timeObject: any;
+  timeObject: TimeObject;
   subscription: Subscription;
   weekActivity = false;
   validation_messages = validation_messages;
@@ -44,12 +45,10 @@ export class AddActivityPage {
           .subscribe(user => {
             this.user = user; 
           }, error => {
-            console.log(error);
-          });
+            this.layoutProvider.presentBottomToast(error);          });
       }
       if (this.navParams.get('newWeekActivity') === true) {
         this.weekActivity = true; 
-        console.log('Week activity true? ', this.weekActivity);
       }
   }
 
@@ -202,10 +201,8 @@ export class AddActivityPage {
     alert.addButton({
       text: 'Bevestig pauze',
       handler: breakMinutes => {
-        console.log('Minuten pauze: ', breakMinutes);
         this.usedBreak = true;
         this.minutesWithBreakDifference = (minutesDifferenceBeforeBreak - breakMinutes);
-        console.log('Totaal ', this.minutesWithBreakDifference);
       }
     });
     alert.present();

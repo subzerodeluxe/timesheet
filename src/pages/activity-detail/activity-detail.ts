@@ -28,7 +28,6 @@ export class ActivityDetailPage {
   }
 
   loadForm(check: string) {
-    console.log(check);
     if (check === 'noCheck') {
       this.formLoaded = true;
       this.startUpdate = true; 

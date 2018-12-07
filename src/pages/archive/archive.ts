@@ -56,17 +56,11 @@ export class ArchivePage {
               }];
   }
 
-  // ionViewCanEnter() {
-  //   return this.authProvider.authenticated();
-  // }
 
- 
   expandItem(item, week){
       if (week.month === "Augustus 2018") {
-        console.log(week.month);
         this.loop(this.archiveAugust, item);
       } else {
-        console.log(week.month);
         this.loop(this.archiveSeptember, item);
       }
   }
@@ -74,7 +68,6 @@ export class ArchivePage {
   loop(array, item) {
 
     array[0].weeks.map((listItem) => {
-      console.log(listItem);
       if(item == listItem){
           listItem.expanded = !listItem.expanded;
       } else {

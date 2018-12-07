@@ -8,20 +8,27 @@ export class LayoutProvider {
   constructor(public alertCtrl: AlertController, 
     public loadingCtrl: LoadingController, public platform: Platform, public toastCtrl: ToastController, 
     public sanitizer: DomSanitizer, public popOver: PopoverController) {
-
-
   }
 
   public checkBrowser(): boolean {
     let browser;
     if (this.platform.is('cordova') === false) {
-      console.log('We are on the browser!'); 
       browser = true; 
     } else {
-      console.log('We are definitely not on a browser!');
       browser = false; 
     }
     return browser;
+  }
+
+  public checkScreenWidth(): any {
+    this.platform.ready().then(_ => {
+      const dimensions = {
+        height: this.platform.height(),
+        width: this.platform.width()
+      };
+
+      return dimensions;
+    });
   }
 
   showLoading() {

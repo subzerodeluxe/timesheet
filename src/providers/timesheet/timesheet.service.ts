@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 
 import * as moment from 'moment';
 import 'moment-duration-format';
+import { TimeObject } from '../../models/time.interface';
 
 @Injectable()
 export class TimesheetProvider {
@@ -64,35 +65,35 @@ export class TimesheetProvider {
          }).snapshotChanges().pipe(
            map(actions => actions.map(a => {
              const data = a.payload.doc.data() as firebaseActivity;
-             const id = a.payload.doc.id;
-             return { id, ...data };
+             data.id = a.payload.doc.id;
+             return { ...data };
            })
-          )
-         );
+        )
+      );
       
     const timesheet = this.afs.collection('timesheets').doc('week-47-2018-eFI1cHuXpyS01Yjcj8jWAQavIMN2').valueChanges();
     const correctTimesheet = combineLatest(activities, timesheet);
     return correctTimesheet;
   }
 
-  calculateDailyMinutes(incomingMinutes: any) {
+  calculateDailyMinutes(incomingMinutes: Array<firebaseActivity>) {
     const totalMinutes = incomingMinutes.reduce((acc, activity) => acc + activity.minutesDifference, 0);
     this.totalDailyMinutesCounter.next(totalMinutes);
   }
 
-  calculateWeekMinutes(incomingMinutes: any) {
+  calculateWeekMinutes(incomingMinutes: Array<firebaseActivity>) {
     const totalMinutes = incomingMinutes.reduce((acc, activity) => acc + activity.minutesDifference, 0);
     this.totalWeekMinutesCounter.next(totalMinutes); 
   }
 
-  calculateDateRange(): any {
+  calculateDateRange(): TimeObject {
     const currentYear = this.getCurrentYear(); 
     const currentWeekNumber = this.getCurrentWeekNumber(); 
     const startDayofWeekNumberAsISOString = moment([currentYear]).isoWeek(currentWeekNumber).startOf('isoWeek').format()    
 
     let max = moment(startDayofWeekNumberAsISOString).add(5, 'days').format();
 
-     const timeObject = {
+     const timeObject: TimeObject = {
         start: startDayofWeekNumberAsISOString,
         min: startDayofWeekNumberAsISOString,
         max: max, 
@@ -101,7 +102,7 @@ export class TimesheetProvider {
     return timeObject;
   }
 
-  calculateDatesForPDF(weekActivies: any): any {
+  calculateDatesForPDF(weekActivies: any): TimeObject {
     weekActivies.sort((a, b) => {   
           return a.isoDateString > b.isoDateString ? 1 : a.isoDateString < b.isoDateString ? -1 : 0
     });
@@ -109,7 +110,7 @@ export class TimesheetProvider {
     const earliestDate = weekActivies[0].isoDateString;
     const latestDate   = weekActivies[weekActivies.length - 1].isoDateString;
 
-    const timeObject = {
+    const timeObject: TimeObject = {
       earliestDate: moment(earliestDate).format('dddd D MMMM'),
       latestDate: moment(latestDate).format('dddd D MMMM'),
       weekNumber: moment(earliestDate).format('WW'),
@@ -153,7 +154,7 @@ export class TimesheetProvider {
   addTimesheet(carObject: Vehicle, user: Employee) {
     const ref = this.afs.collection('timesheets');
     const docId = `week-${this.weekNumber}-${this.year}-${user.uid}`;
-    const doc = ref.doc(docId)
+    const doc = ref.doc(docId);
 
     const timesheetObject: firebaseTimesheet = 
     {
@@ -183,7 +184,6 @@ export class TimesheetProvider {
     let d = moment.duration(end.diff(start));
   
     const correctMinutes = d.asMinutes();
-    console.log('Correct minutes?: ', correctMinutes);   
     return correctMinutes;
   }
 

@@ -1,9 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BackgroundImage } from './background-image/background-image';
-import { ExpandableComponent } from './expandable/expandable';
-import { PreloadImage } from './preload-image/preload-image';
-import { ShowHideContainer } from './show-hide-password/show-hide-container';
-import { ShowHideInput } from './show-hide-password/show-hide-input';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from 'ionic-angular';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,10 +13,18 @@ import { CarInputComponent } from './car-input/car-input';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy';
 import { BrMaskerModule } from 'brmasker-ionic-3';
 import { ActivityDetailOverviewComponent } from './activity-detail-overview/activity-detail-overview';
+import { BackgroundImage } from './background-image/background-image';
+import { ExpandableComponent } from './expandable/expandable';
+import { PreloadImage } from './preload-image/preload-image';
+import { ShowHideContainer } from './show-hide-password/show-hide-container';
+import { ShowHideInput } from './show-hide-password/show-hide-input';
+
 
 @NgModule({
 	declarations: [
-        BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
+        BackgroundImage, ExpandableComponent, PreloadImage, 
+        ShowHideContainer,
+        ShowHideInput,
         NoActivitiesComponent,
         SkeletonItemComponent,
         WeeklyFooterCounterComponent,
@@ -30,12 +33,14 @@ import { ActivityDetailOverviewComponent } from './activity-detail-overview/acti
         ActivityFormComponent,
         CarInputComponent,
         PrivacyPolicyComponent,
-    ActivityDetailOverviewComponent
+        ActivityDetailOverviewComponent
     ],
 	imports: [IonicModule, PipesModule, CommonModule, ReactiveFormsModule, BrMaskerModule,
     ],
-	exports: [BackgroundImage, ExpandableComponent, PreloadImage, ShowHideContainer, ShowHideInput,
+	exports: [BackgroundImage, ExpandableComponent, PreloadImage, 
     NoActivitiesComponent,
+    ShowHideContainer,
+    ShowHideInput,
     SkeletonItemComponent,
     WeeklyFooterCounterComponent,
     DailyFooterCounterComponent,

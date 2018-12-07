@@ -10,6 +10,7 @@ import { infinitePulse, staggerAnimation } from '../../app/animations';
 import { CarInputComponent } from '../../components/car-input/car-input';
 import { PdfProvider } from '../../providers/pdf/pdf';
 import { Vehicle } from '../../models/vehicle.interface';
+import { firebaseActivity } from '../../models/activityLine.interface';
 
 @IonicPage({
   name: 'timesheet'
@@ -31,8 +32,8 @@ export class TimesheetPage implements OnDestroy {
   isoString: string;
   userObject: Employee;
   state = 'small';
-  activities: any;
-  weekActivities: any;
+  activities: firebaseActivity[];
+  weekActivities: firebaseActivity[];
   fbSubs: Subscription[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public pdf: PdfProvider,
@@ -48,11 +49,10 @@ export class TimesheetPage implements OnDestroy {
           } else {
             this.noWeekActivities = false;
             this.weekActivities = weekActivities;
-            console.log('Week activities: ', this.weekActivities);
             this.time.calculateWeekMinutes(this.weekActivities);
           } 
       }, error => {
-        console.log(error);
+        this.layout.presentBottomToast(error);
       }));
 
       this.fbSubs.push(this.time.findAllDailyActivitiesByUser(this.userObject)
@@ -62,14 +62,13 @@ export class TimesheetPage implements OnDestroy {
         } else { 
           this.noActivities = false;
           this.activities = activities;
-          console.log('Daily activities: ', this.activities);
           this.time.calculateDailyMinutes(this.activities);
         } 
       }, error => {
-        console.log(error);
+        this.layout.presentBottomToast(error);
       }));
     }, error => {
-      console.log(error);
+      this.layout.presentBottomToast(error);
     }));
   }
 

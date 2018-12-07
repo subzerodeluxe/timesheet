@@ -31,7 +31,6 @@ export class CarInputComponent {
     this.carObject = params.get('carObject');
     this.userObject = params.get('user'); 
     this.weekActivities = params.get('weekActivities');
-    console.log("Dit is meegekomen " + this.carObject.type, ' en ', this.userObject, ' en ', this.weekActivities);
   
     if (this.carObject.type === 'company') {
       this.companyCar = true;
@@ -74,10 +73,8 @@ export class CarInputComponent {
 
   addCarToPDF(value: any) {
     if (value.licenseplate != null) {
-      console.log('Company car');
       this.carObject = { mileage: this.formatMileage(value.companyMileage), licenseplate: value.licenseplate, type: 'company'};
     } else {
-      console.log('Private car');
       this.carObject = { mileage: this.formatMileage(value.mileage), type: 'private' };
     }
     

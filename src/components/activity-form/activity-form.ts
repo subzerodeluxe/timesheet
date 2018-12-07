@@ -8,6 +8,7 @@ import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';
 import { validation_messages } from '../../app/app.config';
 import { UserProvider } from '../../providers/user/user.service';
 import { Subscription } from 'rxjs';
+import { TimeObject } from '../../models/time.interface';
 
 @Component({
   selector: 'activity-form',
@@ -23,7 +24,7 @@ export class ActivityFormComponent {
   validation_messages = validation_messages;
   usedBreak: boolean = false; 
   update: boolean = true;
-  timeObject: any;
+  timeObject: TimeObject;
   user: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider, 
@@ -41,7 +42,7 @@ export class ActivityFormComponent {
       .subscribe(user => {
         this.user = user;
     }, error => {
-      console.log(error);
+      this.layout.presentBottomToast(error);
     });
 
     this.initUpdateActivityForm();
@@ -153,10 +154,8 @@ export class ActivityFormComponent {
     alert.addButton({
       text: 'Bevestig pauze',
       handler: breakMinutes => {
-        console.log('Minuten pauze: ', breakMinutes);
         this.usedBreak = true;
         this.minutesWithBreakDifference = (minutesDifferenceBeforeBreak - breakMinutes);
-        console.log('Totaal ', this.minutesWithBreakDifference);
       }
     });
     alert.present();

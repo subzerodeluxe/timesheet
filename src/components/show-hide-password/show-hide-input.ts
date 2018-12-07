@@ -1,17 +1,17 @@
-import { Directive, HostBinding, ElementRef } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 
 @Directive({
   selector: '[show-hide-input]'
 })
 export class ShowHideInput
 {
-  @HostBinding() type: string;
+  @Input() type: string;
 
   constructor(public el: ElementRef){
     this.type = 'password';
   }
 
-  changeType (type:string) {
+  changeType(type:string) {
     this.type = type;
     this.el.nativeElement.children[0].type = this.type;
   }

@@ -23,13 +23,18 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
+      if (platform.is('cordova')) {
+        statusBar.styleDefault();
+        splashScreen.hide();
+      }
 
+      const dimensions = this.layoutProvider.checkScreenWidth();
+      console.log(JSON.stringify(dimensions));
+     
       timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
 
     
-      const authObserver = afAuth.authState.subscribe(user => {
+      const authObserver = this.afAuth.authState.subscribe(user => {
         if (user) {
           this.rootPage = 'tabs';
           const o = this.userProvider.getAuthenticatedUserProfile()
@@ -42,7 +47,7 @@ export class MyApp {
                 o.unsubscribe();
               }
             }, error => {
-              console.log(error);
+              this.layoutProvider.presentBottomToast(error);
             });
           // this.initTimesheetListener(user);   // Wordt enkel getriggerd wanneer gebruiker is ingelogt
           authObserver.unsubscribe();  
@@ -53,7 +58,7 @@ export class MyApp {
             } else {
               this.rootPage = 'login';
             }
-        }
+          }
       });
     })
   }

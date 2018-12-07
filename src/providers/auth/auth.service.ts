@@ -8,13 +8,13 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '@firebase/auth-types';
 import { TimesheetProvider } from '../timesheet/timesheet.service';
 
-
 @Injectable()
 export class AuthProvider {
 
   errorMessage: string;
 
-  constructor(public afAuth: AngularFireAuth, public time: TimesheetProvider, public platform: Platform, private afs: AngularFirestore) {}
+  constructor(public afAuth: AngularFireAuth, public time: TimesheetProvider,
+    public platform: Platform, private afs: AngularFirestore) {}
 
 
   getAuthenticatedUser(): Observable<User> {
@@ -34,11 +34,9 @@ export class AuthProvider {
   async registerAccount(value: any): Promise<string> {
     try {
       const user = await this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.matching_passwords.password);
-      console.log('Wat is de user?', user.user.metadata.creationTime);
       await this.createUserProfileOnRegister(user);
       return 'success';
     } catch(err) {
-      console.log(err);
       const authError = err.code.startsWith('auth');
       if (authError == true) {
         this.errorMessage = this.handleFirebaseError(err.code);

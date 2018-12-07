@@ -77,7 +77,7 @@ import { PdfProvider } from '../providers/pdf/pdf';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     { provide: FunctionsRegionToken, useValue: 'us-central1' },
     TimesheetProvider,
-    Keyboard,,
+    Keyboard,
     NativePageTransitions,
     File,
     FileOpener,

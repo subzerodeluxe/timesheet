@@ -5,7 +5,6 @@ export class CompanyMileageValidator {
     static isValid(control: FormControl): any {
  
         let input = Number(control.value);
-        console.log(input)
 
         if(isNaN(input)){
             return {

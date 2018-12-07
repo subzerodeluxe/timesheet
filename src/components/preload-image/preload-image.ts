@@ -33,8 +33,6 @@ export class PreloadImage implements OnChanges {
 		this._renderer.setElementStyle(this._elementRef.nativeElement, 'padding-bottom', ratio_height);
 
     this._update();
-    console.log("CHANGES preload-image", this._src);
-    console.log(changes['src'].isFirstChange());
   }
 
 	_update() {

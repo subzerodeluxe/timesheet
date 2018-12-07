@@ -132,7 +132,6 @@ export class PdfProvider {
       const generatedPDF = pdfMake.createPdf(docDefinition);
       return generatedPDF;
     } catch (err) {
-      console.log('Error van PDF: ', err);
       return err;
     }
   }

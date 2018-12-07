@@ -5,84 +5,92 @@
 </ion-header>
 
 <ion-content class="login-content auth-content">
-    <h2 class="section-title">Maak een profiel aan</h2>
-  <form class="login-form auth-form validations-form" [formGroup]="registerForm" (ngSubmit)="registerAccount(registerForm.value)">
-    <ion-item>
-      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-    </ion-item>
-
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.email">
-          <div class="error-message" *ngIf="registerForm.get('email').hasError(validation.type) && (registerForm.get('email').dirty || registerForm.get('email').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
+  <ion-grid fixed>
+      <h2 class="section-title">Maak een profiel aan</h2>
+      <form class="login-form auth-form validations-form" [formGroup]="registerForm" (ngSubmit)="registerAccount(registerForm.value)">
+        <ion-item>
+          <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+        </ion-item>
     
-    <div formGroupName="matching_passwords">
-      <ion-item>
-        <ion-input type="password" placeholder="Wachtwoord" formControlName="password"></ion-input>
-      </ion-item>
-
-        <div class="validation-errors">
-          <ng-container *ngFor="let validation of validation_messages.password">
-            <div class="error-message" *ngIf="registerForm.get('matching_passwords').get('password').hasError(validation.type) && (registerForm.get('matching_passwords').get('password').dirty || registerForm.get('matching_passwords').get('password').touched)">
-              {{ validation.message }}
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.email">
+              <div class="error-message" *ngIf="registerForm.get('email').hasError(validation.type) && (registerForm.get('email').dirty || registerForm.get('email').touched)">
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
+        
+        <div formGroupName="matching_passwords">
+            <show-hide-container>
+                <ion-item>
+                  <ion-input type="password" placeholder="Wachtwoord" formControlName="password" show-hide-input></ion-input>
+                </ion-item>
+              </show-hide-container>
+        
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.password">
+                <div class="error-message" *ngIf="registerForm.get('matching_passwords').get('password').hasError(validation.type) && (registerForm.get('matching_passwords').get('password').dirty || registerForm.get('matching_passwords').get('password').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
-          </ng-container>
-        </div>
-
-      <ion-item>
-        <ion-input type="password" placeholder="Herhaal wachtwoord" formControlName="confirm_password"></ion-input>
-      </ion-item>
-
-        <div class="validation-errors">
-          <ng-container *ngFor="let validation of validation_messages.confirm_password">
-            <div class="error-message" *ngIf="registerForm.get('matching_passwords').get('confirm_password').hasError(validation.type) && (registerForm.get('matching_passwords').get('confirm_password').dirty || registerForm.get('matching_passwords').get('confirm_password').touched)">
-              {{ validation.message }}
+    
+            <show-hide-container>
+                <ion-item>
+                  <ion-input type="password" placeholder="Wachtwoord" formControlName="confirm_password" show-hide-input></ion-input>
+                </ion-item>
+              </show-hide-container>
+        
+    
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.confirm_password">
+                <div class="error-message" *ngIf="registerForm.get('matching_passwords').get('confirm_password').hasError(validation.type) && (registerForm.get('matching_passwords').get('confirm_password').dirty || registerForm.get('matching_passwords').get('confirm_password').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
-          </ng-container>
+        
+          <!-- These validations are for the form group -->
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.matching_passwords">
+              <div class="error-message" *ngIf="registerForm.get('matching_passwords').hasError(validation.type) && (registerForm.get('matching_passwords').get('confirm_password').dirty || registerForm.get('matching_passwords').get('confirm_password').touched)">
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
         </div>
     
-      <!-- These validations are for the form group -->
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.matching_passwords">
-          <div class="error-message" *ngIf="registerForm.get('matching_passwords').hasError(validation.type) && (registerForm.get('matching_passwords').get('confirm_password').dirty || registerForm.get('matching_passwords').get('confirm_password').touched)">
-            {{ validation.message }}
+        <ion-item class="terms-item">
+            <ion-label>Ik ga akkoord met de privacy voorwaarden</ion-label>
+            <ion-checkbox formControlName="terms"></ion-checkbox>
+          </ion-item>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.terms">
+              <div class="error-message" *ngIf="registerForm.get('terms').hasError(validation.type) 
+              && (registerForm.get('terms').dirty || registerForm.get('terms').touched)">
+                {{ validation.message }}
+              </div>
+            </ng-container>
           </div>
-        </ng-container>
-      </div>
-    </div>
-
-    <ion-item class="terms-item">
-        <ion-label>Ik ga akkoord met de privacy voorwaarden</ion-label>
-        <ion-checkbox formControlName="terms"></ion-checkbox>
-      </ion-item>
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.terms">
-          <div class="error-message" *ngIf="registerForm.get('terms').hasError(validation.type) 
-          && (registerForm.get('terms').dirty || registerForm.get('terms').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
+        
+        <button ion-button block class="auth-action-button login-button" type="submit" [disabled]="!registerForm.valid">Registreer</button>
+      </form>
     
-    <button ion-button block class="auth-action-button login-button" type="submit" [disabled]="!registerForm.valid">Registreer</button>
-  </form>
-
-  <div class="validation-errors">
-    <ng-container >
-      <div class="error-message" *ngIf="errorMessage">
-             {{ errorMessage }}
+      <div class="validation-errors">
+        <ng-container >
+          <div class="error-message" *ngIf="errorMessage">
+                 {{ errorMessage }}
+          </div>
+        </ng-container>
       </div>
-    </ng-container>
-  </div>
-  
-  <ion-row class="alt-options">
-    <ion-col no-padding width-50></ion-col>
-  </ion-row>
-
-  <p class="legal-stuff">
-      Lees de <a class="legal-action" (click)="showPrivacyModal()">privacy voorwaarden.</a>
-  </p>
+      
+      <ion-row class="alt-options">
+        <ion-col no-padding width-50></ion-col>
+      </ion-row>
+    
+      <p class="legal-stuff">
+          Lees de <a class="legal-action" (click)="showPrivacyModal()">privacy voorwaarden.</a>
+      </p>
+    
+  </ion-grid>
 </ion-content>
