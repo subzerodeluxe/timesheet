@@ -49,7 +49,7 @@ export class RegisterPage {
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
       matching_passwords: this.matching_passwords_group,
-      terms: new FormControl(true, Validators.pattern('true'))
+      terms: new FormControl(false, Validators.pattern('true'))
     });
   }
 

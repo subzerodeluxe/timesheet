@@ -31,6 +31,7 @@ export class TimesheetPage implements OnDestroy {
   noWeekActivities: boolean = true;
   isoString: string;
   userObject: Employee;
+  smallScreen: boolean; 
   state = 'small';
   activities: firebaseActivity[];
   weekActivities: firebaseActivity[];
@@ -70,6 +71,19 @@ export class TimesheetPage implements OnDestroy {
     }, error => {
       this.layout.presentBottomToast(error);
     }));
+  }
+
+  
+  ionViewDidLoad() {
+    this.layout.presentLoadingDefault();
+    setTimeout(() => {
+      this.state = 'big';
+    }, 0);  
+
+    this.layout.smallScreen.subscribe((smallScreen: boolean) => {
+      console.log('Small screen? ', smallScreen);
+      this.smallScreen = smallScreen;
+    })
   }
 
   presentPDFAlert() {
@@ -135,13 +149,6 @@ export class TimesheetPage implements OnDestroy {
   openCarInputModal(carObject: Vehicle) {
     let modal = this.modalCtrl.create(CarInputComponent, { carObject: carObject, user: this.userObject, weekActivities: this.weekActivities });
     modal.present();
-  }
-
-  ionViewDidLoad() {
-    this.layout.presentLoadingDefault();
-    setTimeout(() => {
-      this.state = 'big';
-    }, 0);  
   }
 
   onEnd(event) {

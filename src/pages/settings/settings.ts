@@ -25,16 +25,13 @@ export class SettingsPage {
   chosenMinutes: number;
   notificationsOff: boolean;
   defaultNotifications: boolean;
+  browser: boolean;
 
   constructor(public navCtrl: NavController, public layout: LayoutProvider,  public app: App,
     public platform: Platform, public localNotService: LocalNotificationService,
     private localNot: LocalNotifications, public authProvider: AuthProvider) {
 
-        // this.notifyTime = "17:00";
         this.notifyTime = moment(new Date()).format();
-        // this.chosenHours = 17;
-        // this.chosenMinutes = 0;
-
         this.chosenHours = new Date().getHours();
         this.chosenMinutes = new Date().getMinutes();
  
@@ -43,10 +40,12 @@ export class SettingsPage {
         this.days = this.localNotService.initDays();
   }
 
+  ionViewWillLoad() {
+    this.browser = this.layout.checkBrowser();
+    console.log('Are we on a browser? ', this.browser);
+  }
+
   setupNotifications() {
-    let currentDate = new Date();
-    let currentDay = currentDate.getDay(); // Sunday = 0, Monday = 1, etc.
-   
     let firstNotificationTime = new Date();
 
     firstNotificationTime.setHours(this.chosenHours);
@@ -62,61 +61,25 @@ export class SettingsPage {
     };
 
     this.notifications.push(notification);
-  
 
-    // for (let day of this.days) {
- 
-    //     if (day.checked) {
- 
-    //         let firstNotificationTime = new Date();
-    //         let dayDifference = day.dayCode - currentDay;
-    //         console.log('Day differnce: ', dayDifference);
-    //         // if (dayDifference < 0) {
-    //         //     dayDifference = dayDifference + 7; // for cases where the day is in the following week
-    //         // }
- 
-    //         firstNotificationTime.setHours(firstNotificationTime.getHours() + (24 * (dayDifference)));
-    //         console.log('MAGIC STUFF: ', firstNotificationTime.setHours(firstNotificationTime.getHours() + (24 * (dayDifference))));
-    //         firstNotificationTime.setHours(this.chosenHours);
-    //         console.log('EN TOEN???: ', firstNotificationTime.setHours(this.chosenHours));
-    //         firstNotificationTime.setMinutes(this.chosenMinutes);
-    //         console.log('CRAZY: ', firstNotificationTime.setMinutes(this.chosenMinutes));
+    if (this.platform.is('cordova')) {
+        // Cancel any existing notifications
+        this.localNot.cancelAll().then(() => {
 
- 
-    //         let notification = {
-    //             id: day.dayCode,
-    //             title: `Herinnering: vul je uren in!`,
-    //             text: 'Hallo Willem. Het is tijd om je werkbriefje bij te werken.',
-    //             data: { mydata: 'Hoe komen we hier.' },
-    //             at: firstNotificationTime,
-    //             every: 'week'
-    //         };
+            this.layout.presentBottomToast(`Local notifications getriggerd om ${this.notifications[0].at}`);
+            // Schedule the new notifications
+            this.localNot.schedule(this.notifications); 
 
-    //         console.log('This gets set: ', firstNotificationTime);
- 
-    //         this.notifications.push(notification);
-    //     }
-    // }
- 
+            this.notifications = [];
 
-        if (this.platform.is('cordova')) {
-            // Cancel any existing notifications
-            this.localNot.cancelAll().then(() => {
-
-                this.layout.presentBottomToast(`Local notifications getriggerd om ${this.notifications[0].at}`);
-                // Schedule the new notifications
-                this.localNot.schedule(this.notifications); 
-
-                this.notifications = [];
-
-                let alert = this.layout.alertCtrl.create({
-                    title: 'Gelukt!',
-                    message: 'Notificaties zijn ingesteld.',
-                    buttons: ['Ok']
-                });
-                alert.present();
-            })   
-        }
+            let alert = this.layout.alertCtrl.create({
+                title: 'Gelukt!',
+                message: 'Notificaties zijn ingesteld.',
+                buttons: ['Ok']
+            });
+            alert.present();
+        })   
+      }
   }
 
   notify(ev) {

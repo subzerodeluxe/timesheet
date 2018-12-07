@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
-    <ion-title *ngIf="wideScreen">Week {{ isoString | formatDate:'W' }}</ion-title>
-    <ion-title *ngIf="!wideScreen">Week {{ isoString | formatDate:'W' }}</ion-title>
+    <ion-title *ngIf="!smallScreen">Werkurenbriefje week {{ isoString | formatDate:'W' }}</ion-title>
+    <ion-title *ngIf="smallScreen">Week {{ isoString | formatDate:'W' }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentPDFAlert()">
         <ion-icon name="document"></ion-icon>

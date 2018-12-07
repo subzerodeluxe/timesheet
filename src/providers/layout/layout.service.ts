@@ -2,8 +2,14 @@ import { Injectable } from '@angular/core';
 import { AlertController, ToastController, LoadingController, PopoverController, Platform } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AppConfig } from '../../app/app.config';
+import { ScreenDimension } from '../../models/screenDimension';
+import { BehaviorSubject } from 'rxjs';
+
 @Injectable()
 export class LayoutProvider {
+
+  screenDimensions: ScreenDimension;
+  public smallScreen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(public alertCtrl: AlertController, 
     public loadingCtrl: LoadingController, public platform: Platform, public toastCtrl: ToastController, 
@@ -12,23 +18,25 @@ export class LayoutProvider {
 
   public checkBrowser(): boolean {
     let browser;
-    if (this.platform.is('cordova') === false) {
-      browser = true; 
-    } else {
+    if (this.platform.is('cordova') === true) {
       browser = false; 
+    } else {
+      browser = true; 
     }
     return browser;
   }
 
-  public checkScreenWidth(): any {
-    this.platform.ready().then(_ => {
-      const dimensions = {
-        height: this.platform.height(),
-        width: this.platform.width()
-      };
+  public setScreenSize() {
+    this.screenDimensions = {
+      height: this.platform.height(),
+      width: this.platform.width()
+    };
 
-      return dimensions;
-    });
+    if (this.screenDimensions.width <= 500) {
+      this.smallScreen.next(true);
+    } else {
+      this.smallScreen.next(false);
+    }
   }
 
   showLoading() {

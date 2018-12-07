@@ -4,39 +4,46 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content class="filters-content">
+  <ion-grid fixed>
 
     <ion-item-divider>Beheer notificaties</ion-item-divider>
-      <ion-list class="switchers-list">
-        <ion-item class="switcher-item">
-          <ion-label>Notificaties uit/aan</ion-label>
-          <ion-toggle [(ngModel)]="defaultNotifications" (ionChange)="notify($event)"></ion-toggle>
-        </ion-item>
-      </ion-list>
+    <ion-list class="switchers-list">
+      <ion-item class="switcher-item">
+        <ion-label>Notificaties uit/aan</ion-label>
+        <ion-toggle [disabled]="browser === true" [(ngModel)]="defaultNotifications" (ionChange)="notify($event)"></ion-toggle>
+      </ion-item>
+    </ion-list>
   
-  <ion-item-divider>Stuur dagelijks een herinnering om</ion-item-divider>
-  <ion-item>
-    <ion-label>Tijdstip</ion-label>
-   
-    <ion-datetime 
-        [disabled]="notificationsOff"
-        (ionChange)="timeChange($event)"
-        displayFormat="HH:mm" 
-        minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"
-        [(ngModel)]="notifyTime" 
-        cancelText=Annuleer 
-        doneText=Klaar>
-    </ion-datetime>
-  </ion-item>
+    <ion-item-divider>Stuur dagelijks een herinnering om</ion-item-divider>
+    <ion-item>
+      <ion-label>Tijdstip</ion-label>
+    
+      <ion-datetime 
+          [disabled]="notificationsOff || browser === true"
+          (ionChange)="timeChange($event)"
+          displayFormat="HH:mm" 
+          minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"
+          [(ngModel)]="notifyTime" 
+          cancelText=Annuleer 
+          doneText=Klaar>
+      </ion-datetime>
+    </ion-item>
 
-  <div class="schedule-data">
-      <h4 class="description-text" text-center>Deze app ondersteunt met het doorgeven van uren. Je kunt zelf bepalen wanneer er een notificatie wordt gestuurd.</h4>
-    </div>
+    <div class="schedule-data">
+        <h4 class="description-text" text-center>Deze app ondersteunt met het doorgeven van uren. Je kunt zelf bepalen wanneer er een notificatie wordt gestuurd.</h4>
+      </div>
 
-  <button ion-button block class="auth-action-button" (click)="setupNotifications()" [disabled]="notificationsOff">Opslaan</button>
+    <button ion-button block class="auth-action-button" (click)="setupNotifications()" [disabled]="notificationsOff || browser === true">Opslaan</button>
 
-  <button ion-button block class="auth-action-button" icon-start (click)="logOut()">
-      <ion-icon end name="log-out"></ion-icon>
-      Uitloggen</button> 
+    <button ion-button block class="auth-action-button" icon-start (click)="logOut()">
+        <ion-icon end name="log-out"></ion-icon>
+        Uitloggen</button> 
+  </ion-grid>
 </ion-content>
+
+<ion-footer *ngIf="browser === true">
+    <div text-center [class.warning]="browser === true">
+        <div id="text">Sorry! Het is helaas nog niet mogelijk om notificaties in te stellen :(</div>
+    </div>
+</ion-footer>

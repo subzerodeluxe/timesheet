@@ -16,7 +16,7 @@ export class MyApp {
   rootPage: any;
   present: boolean;
   timesheetSub: Subscription;
-  showSplash = true; // <-- show animation
+  showSplash = true; 
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private afAuth: AngularFireAuth,
     public layoutProvider: LayoutProvider, private userProvider: UserProvider) {
@@ -28,12 +28,9 @@ export class MyApp {
         splashScreen.hide();
       }
 
-      const dimensions = this.layoutProvider.checkScreenWidth();
-      console.log(JSON.stringify(dimensions));
-     
+      this.layoutProvider.setScreenSize();
       timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
 
-    
       const authObserver = this.afAuth.authState.subscribe(user => {
         if (user) {
           this.rootPage = 'tabs';
