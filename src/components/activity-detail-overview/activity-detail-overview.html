@@ -1,57 +1,57 @@
 <no-week-activities *ngIf="noActivityObject === true"></no-week-activities>
 <div *ngIf="noActivityObject === false" class="sample-form validations-form">
-<ion-grid>
-    <div class="schedule-data">
-        <section class="form-section">
-            <h2 class="section-title">Klantgegevens</h2>
-    
-            <ion-row justify-content-center>
-                <ion-col col-6>
-                    <h4 text-center class="sub-title">Naam van klant</h4>
-                    <p text-center class="input">{{ activityObject?.clientName }}</p>
-                </ion-col>
-                <ion-col col-6> 
-                    <h4 text-center class="sub-title">Plaatsnaam en/of adresgegegevens</h4>
-                    <p text-center class="input">{{ activityObject?.location }}</p>
-                </ion-col>
-            </ion-row>
-        </section>
-    </div>
+    <ion-grid fixed>
+        <div class="schedule-data">
+            <section class="form-section">
+                <h2 class="section-title">Klantgegevens</h2>
         
-    <div class="schedule-data">
-        <section class="form-section">
-            <h2 class="section-title">Werkzaamheden</h2>
-            <ion-row *ngIf="browser === true" justify-content-center>
-                <ion-col col-4>
-                    <div *ngFor="let activity of activityObject.activities">
-                        <ul>
-                            <li>{{ activity.name }}</li>
-                        </ul>
-                    </div>
-                </ion-col>
-            </ion-row>
-        </section>
-    </div>
+                <ion-row justify-content-center>
+                    <ion-col col-6>
+                        <h4 text-center class="sub-title">Naam van klant</h4>
+                        <p text-center class="input">{{ activityObject?.clientName }}</p>
+                    </ion-col>
+                    <ion-col col-6> 
+                        <h4 text-center class="sub-title">Plaatsnaam en/of adresgegegevens</h4>
+                        <p text-center class="input">{{ activityObject?.location }}</p>
+                    </ion-col>
+                </ion-row>
+            </section>
+        </div>
+            
+        <div class="schedule-data">
+            <section class="form-section">
+                <h2 class="section-title">Werkzaamheden</h2>
+                <ion-row *ngIf="smallScreen" justify-content-center>
+                    <ion-col col-4>
+                        <div *ngFor="let activity of activityObject.activities">
+                            <ul>
+                                <li>{{ activity.name }}</li>
+                            </ul>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </section>
+        </div>
 
-    <div class="schedule-data">            
-        <section class="form-section">
-            <h2 class="section-title">Datum en Tijden</h2>
+        <div class="schedule-data">            
+            <section class="form-section">
+                <h2 class="section-title">Datum en Tijden</h2>
 
-            <h4 text-center class="sub-title">Datum</h4>
-            <p text-center class="input">{{ activityObject?.isoDateString | formatDate:'dddd DD MMMM YYYY' }}</p>
+                <h4 text-center class="sub-title">Datum</h4>
+                <p text-center class="input">{{ activityObject?.isoDateString | formatDate:'dddd DD MMMM YYYY' }}</p>
 
-            <ion-row *ngIf="browser === true" justify-content-center>
-                <ion-col col-4> 
-                    <p text-center class="theme">Begonnen om:</p><span class="time"><p text-center>{{ activityObject?.startTime }} uur</p></span>
-                </ion-col>
-                <ion-col col-4>
-                    <p text-center class="theme">Gestopt om:</p><span class="time"><p text-center>{{ activityObject?.endTime }} uur</p></span>
-                </ion-col>
-            </ion-row>
+                <ion-row *ngIf="smallScreen" justify-content-center>
+                    <ion-col col-5> 
+                        <p text-center class="theme">Begonnen om:</p><span class="time"><p text-center>{{ activityObject?.startTime }} uur</p></span>
+                    </ion-col>
+                    <ion-col col-4>
+                        <p text-center class="theme">Gestopt om:</p><span class="time"><p text-center>{{ activityObject?.endTime }} uur</p></span>
+                    </ion-col>
+                </ion-row>
 
-            <p text-center class="input">Totaal <span id="big">{{ activityObject?.minutesDifference | formatHours }}</span> gewerkt
-                <span id="break"><br>(inclusief pauze)</span></p>
-        </section>
-    </div>
-</ion-grid>
+                <p text-center class="input">Totaal <span id="big">{{ activityObject?.minutesDifference | formatHours }}</span> gewerkt
+                    <span id="break"><br>(inclusief pauze)</span></p>
+            </section>
+        </div>
+    </ion-grid>
 </div>

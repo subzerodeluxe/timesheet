@@ -36,6 +36,7 @@ export class TimesheetPage implements OnDestroy {
   activities: firebaseActivity[];
   weekActivities: firebaseActivity[];
   fbSubs: Subscription[] = [];
+  screenSubscription: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public pdf: PdfProvider,
     public authProvider: AuthProvider, public userProvider: UserProvider, public layout: LayoutProvider, public time: TimesheetProvider) {
@@ -80,8 +81,7 @@ export class TimesheetPage implements OnDestroy {
       this.state = 'big';
     }, 0);  
 
-    this.layout.smallScreen.subscribe((smallScreen: boolean) => {
-      console.log('Small screen? ', smallScreen);
+    this.screenSubscription = this.layout.smallScreen.subscribe((smallScreen: boolean) => {
       this.smallScreen = smallScreen;
     })
   }
@@ -185,6 +185,12 @@ export class TimesheetPage implements OnDestroy {
     setTimeout(() => {
       loading.dismiss();
     }, 1500);
+  }
+
+  ionViewWillUnload() {
+    if (this.screenSubscription != null) {
+      this.screenSubscription.unsubscribe();
+    }
   }
 
   ngOnDestroy() {

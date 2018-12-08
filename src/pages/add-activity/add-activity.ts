@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Slides, IonicPage } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth.service';

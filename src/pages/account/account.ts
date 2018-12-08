@@ -36,6 +36,10 @@ export class AccountPage implements OnInit, OnDestroy {
       });
   }
 
+  ionViewCanEnter() {
+     /// THIS WILL BE OUR AUTHGUARD
+  }
+
   ngOnInit() {
     this.layout.presentLoadingDefault();
     this.authenticatedEmployee$ = this.userProvider.getAuthenticatedUserProfile().subscribe(employeeProfile => {

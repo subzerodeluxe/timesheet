@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { firebaseActivity } from '../../models/activityLine.interface';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { NavController, NavParams } from 'ionic-angular';
 import { LayoutProvider } from '../../providers/layout/layout.service';

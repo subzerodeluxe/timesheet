@@ -45,21 +45,68 @@
     animation: sk-rotateplane 1.2s infinite ease-in-out;
   }
   
-  @-webkit-keyframes sk-rotateplane {
-    0% { -webkit-transform: perspective(120px) }
-    50% { -webkit-transform: perspective(120px) rotateY(180deg) }
-    100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+@-webkit-keyframes sk-rotateplane {
+  0% { -webkit-transform: perspective(120px) }
+  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes sk-rotateplane {
+  0% { 
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
+  } 50% { 
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
+  } 100% { 
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
+
+.button-md-light {
+  color: #fff;
+  background-color: $theme-color;
+}
+
+.centervert {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(247, 247, 247);
+  // justify-content: center;
+
+  .button-inner {
+    font-size: 16px;
+  }
+}
+
+ion-footer {
+  .button-inner {
+    font-size: 16px;
+  }
+}
+
+.scroll-content {overflow-y: auto;}
+
+.logo {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15%;
+  width: 200px;
+  height: 200px;
+  
+  h2 {
+    color: $theme-color;
   }
   
-  @keyframes sk-rotateplane {
-    0% { 
-      transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-      -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
-    } 50% { 
-      transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-      -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
-    } 100% { 
-      transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-      -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-    }
+  ion-icon {
+    display: block;
+    font-size: 4em;
+    position: absolute;
+    top: 27%;
+    left: 50%;
+    height: 50%;
+    transform: translate(-50%, -50%);
   }
+}

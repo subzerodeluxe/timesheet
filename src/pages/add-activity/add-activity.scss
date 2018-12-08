@@ -27,7 +27,7 @@ page-add-activity {
 
     .activity-form
 		{
-      margin-top: 25vh;
+      margin-top: 10vh;
 			.form-section
 			{
 				padding: 0px 14px;
@@ -126,7 +126,7 @@ page-add-activity {
         .error-message
         {
           color: color($colors, danger);
-          font-size: 12px;
+          font-size: 14px;
         	font-weight: 500;
           line-height: 1.6rem;
           position: relative;

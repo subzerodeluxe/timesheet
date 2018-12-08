@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, ViewController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 import { Employee } from '../../models/employee.interface';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { validation_messages } from '../../app/app.config';
@@ -26,7 +26,7 @@ export class CarInputComponent {
   companyCar: boolean;
   validation_messages = validation_messages;
 
-  constructor(public params: NavParams, public brMaskerIonic3: BrMaskerIonic3, private viewCtrl: ViewController, private layout: LayoutProvider, private pdf: PdfProvider) {
+  constructor(public params: NavParams, public brMaskerIonic3: BrMaskerIonic3, private viewCtrl: ViewController, private pdf: PdfProvider) {
     
     this.carObject = params.get('carObject');
     this.userObject = params.get('user'); 

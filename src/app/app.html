@@ -1,4 +1,52 @@
 <div *ngIf="showSplash" class="splash">
     <div class="spinner"></div>
 </div>
-<ion-nav [root]="rootPage"></ion-nav>
+
+<ion-split-pane *ngIf="!smallScreen">
+    <ion-menu [content]="content">
+        <ion-content>
+            <div class="centervert">
+
+                <div class="logo">
+                    <ion-icon ios="ios-time" md="md-time" color="primary"></ion-icon>
+                    <h2 text-center>Digitaal werkurenbriefje</h2>
+                    <p text-center>Deze app ondersteunt je met het bijhouden van je werkuren.</p>
+                </div>
+
+                <button ion-button [disabled]="!authenticated" icon-start large block [clear]="!isTimesheet" [color]="isTimesheet ? 'light' : 'primary'" (click)="togglePage('Timesheet')">
+                    <ion-icon name="apps"></ion-icon>
+                    Werkurenbriefje
+                </button>
+
+                <button ion-button [disabled]="!authenticated" icon-start large block [clear]="!isAccount"  [color]="isAccount ? 'light' : 'primary'" (click)="togglePage('Account')">
+                    <ion-icon name="person"></ion-icon>
+                    Profiel
+                </button>
+
+                <button ion-button [disabled]="!authenticated" icon-start large block clear [clear]="!isArchive"  [color]="isArchive ? 'light' : 'primary'" (click)="togglePage('Archive')">
+                    <ion-icon name="archive"></ion-icon>
+                    Archief
+                </button>
+
+                <button ion-button [disabled]="!authenticated" icon-start large block clear [clear]="!isSettings"  [color]="isSettings ? 'light' : 'primary'" (click)="togglePage('Settings')">
+                    <ion-icon name="notifications"></ion-icon>
+                    Instellingen
+                </button>  
+            </div>
+        </ion-content>
+        
+        <ion-footer>
+            <button [disabled]="!authenticated" (click)="logOut()" ion-button icon-start large block clear>
+                <ion-icon name="log-out"></ion-icon>
+                Uitloggen
+            </button>
+
+            <button ion-button icon-start large block clear>
+                Hulp nodig?
+            </button>
+        </ion-footer>
+    </ion-menu>
+    <ion-nav [root]="rootPage" main #content></ion-nav>
+</ion-split-pane>
+
+<ion-nav *ngIf="smallScreen" [root]="rootPage" main #content></ion-nav>

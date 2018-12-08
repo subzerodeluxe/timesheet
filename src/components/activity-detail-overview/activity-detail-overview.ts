@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { LayoutProvider } from '../../providers/layout/layout.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'activity-detail-overview',
@@ -9,8 +10,9 @@ import { LayoutProvider } from '../../providers/layout/layout.service';
 export class ActivityDetailOverviewComponent {
 
   activityObject: any;
-  browser: boolean; 
+  smallScreenSubscription: Subscription;
   noActivityObject: boolean = false; 
+  smallScreen: boolean = true;
   constructor(public navParams: NavParams, private layout: LayoutProvider) {
  
     if (this.navParams.get("activity") != null) {
@@ -19,8 +21,15 @@ export class ActivityDetailOverviewComponent {
       this.noActivityObject = true;
     }
 
-    this.browser = this.layout.checkBrowser(); 
-    
+    this.smallScreenSubscription = this.layout.smallScreen.subscribe((smallScreen: boolean) => {
+      this.smallScreen = smallScreen;
+    });
+  }
+
+  ionViewWillUnload() {
+    if (this.smallScreenSubscription != null) {
+      this.smallScreenSubscription.unsubscribe();
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, IonicPage, Form } from 'ionic-angular';
+import { NavController, NavParams, IonicPage } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth.service';
 import { LayoutProvider } from '../../providers/layout/layout.service';
 import { TimesheetProvider } from '../../providers/timesheet/timesheet.service';

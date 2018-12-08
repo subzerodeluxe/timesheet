@@ -5,16 +5,12 @@
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
 
-
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-
 @import "ionic.globals";
-
-
 
 // Shared Variables
 // --------------------------------------------------
@@ -28,6 +24,11 @@ $app-direction: ltr;
 $theme-color: #8a2c2c; 
 $secondary-theme-color: #5e5874; 
 
+// SPLIT PANE
+$split-pane-ios-side-min-width: 20vw;
+$split-pane-ios-side-max-width: 20vw;
+$split-pane-md-side-min-width: 20vw;
+$split-pane-md-side-max-width: 20vw;
 
 // HELPER COLORS
 $white: #FFFFFF;
@@ -42,8 +43,6 @@ $black-b: lighten($black, 20%);
 $black-c: lighten($black, 40%);
 $black-d: lighten($black, 60%);
 
-// // $theme-color: #6AA7F0;
-// // $secondary-theme-color: #81f2f8;
 
 // Named Color Variables
 // --------------------------------------------------

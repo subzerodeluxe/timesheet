@@ -53,7 +53,7 @@ export class SettingsPage {
    
     let notification = {
       id: 1,
-      title: `Herinnering: vul je uren in!`,
+      title: `Herinnering: vul je werkuren in!`,
       text: 'Hallo Willem. Het is tijd om je werkbriefje bij te werken.',
       data: { mydata: 'Hoe komen we hier.' },
       at: firstNotificationTime,

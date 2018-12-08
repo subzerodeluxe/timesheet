@@ -18,6 +18,8 @@ export class LoginPage implements OnDestroy {
   loginForm: FormGroup;
   errorMessage: string = '';
   userSubscription: Subscription;
+  screenSubscription: Subscription;
+  smallScreen: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider,
   public authProvider: AuthProvider, public layout: LayoutProvider) {
@@ -28,6 +30,10 @@ export class LoginPage implements OnDestroy {
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
+
+    this.screenSubscription = this.layout.smallScreen.subscribe((smallScreen: boolean) => {
+      this.smallScreen = smallScreen; 
+    })
   }
 
   goToSignup() {
@@ -59,6 +65,12 @@ export class LoginPage implements OnDestroy {
     } else {
       this.errorMessage = result;
       this.layout.presentBottomToast('Er ging iets niet goed. Probeer het opnieuw.');
+    }
+  }
+
+  ionViewWillUnload() {
+    if (this.screenSubscription != null) {
+      this.screenSubscription.unsubscribe();
     }
   }
 
