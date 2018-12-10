@@ -98,6 +98,11 @@ ion-footer {
   
   h2 {
     color: $theme-color;
+
+    #small {
+      font-size: 20px;
+      font-weight: 300;
+    }
   }
   
   ion-icon {
@@ -110,3 +115,36 @@ ion-footer {
     transform: translate(-50%, -50%);
   }
 }
+
+
+@media only screen and (max-width: 1120px) {
+  .logo {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15%;
+    width: 100px;
+    padding-top: 45px;
+  
+      h2 {
+        font-size: 16px;
+
+        #small {
+          font-size: 14px;
+        }
+      }
+
+      p {
+        display: none;
+      }
+
+      ion-icon {
+        display: block;
+        font-size: 4em;
+        left: 50%;
+        height: 50%;
+        transform: translate(-50%, -50%);
+      }
+  }
+  
+}
+

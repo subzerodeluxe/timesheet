@@ -42,6 +42,9 @@ export class MyApp {
       this.layoutProvider.setScreenSize();
       timer(3000).subscribe(() => {
         this.showSplash = false;
+        this.screenSubscription = this.layoutProvider.smallScreen.subscribe((smallScreen: boolean) => {
+          this.smallScreen = smallScreen;
+        })
       }) // <-- hide animation after 3s
 
       const authObserver = this.afAuth.authState.subscribe(user => {
@@ -67,9 +70,6 @@ export class MyApp {
               this.rootPage = 'walkthrough';
               authObserver.unsubscribe();
             } else {
-              this.screenSubscription = this.layoutProvider.smallScreen.subscribe((smallScreen: boolean) => {
-                this.smallScreen = smallScreen;
-              })
               this.rootPage = 'login';
             }
           }
